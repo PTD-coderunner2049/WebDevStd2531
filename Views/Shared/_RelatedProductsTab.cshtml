@@ -1,269 +1,88 @@
 ﻿@model IEnumerable<WebDevStd2531.Models.Product>
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
+    var products = Model ?? Enumerable.Empty<WebDevStd2531.Models.Product>();
 }
-<div id="myTab" class="pull-right">
-	<a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="icon-list"></i></span></a>
-	<a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="icon-th-large"></i></span></a>
-</div>
-<br class="clr" />
-<hr class="soft" />
-<div class="tab-content">
-	<div class="tab-pane" id="listView">
-		<div class="row">
-			<div class="span2">
-				<img src="themes/images/products/4.jpg" alt="" />
-			</div>
-			<div class="span4">
-				<h3>New | Available</h3>
-				<hr class="soft" />
-				<h5>Product Name </h5>
-				<p>
-					Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-					that is why our goods are so popular..
-				</p>
-				<a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-				<br class="clr" />
-			</div>
-			<div class="span3 alignR">
-				<form class="form-horizontal qtyFrm">
-					<h3> $222.00</h3>
-					<label class="checkbox">
-						<input type="checkbox">  Adds product to compair
-					</label><br />
-					<div class="btn-group">
-						<a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-						<a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-					</div>
-				</form>
-			</div>
-		</div>
-		<hr class="soft" />
-		<div class="row">
-			<div class="span2">
-				<img src="themes/images/products/5.jpg" alt="" />
-			</div>
-			<div class="span4">
-				<h3>New | Available</h3>
-				<hr class="soft" />
-				<h5>Product Name </h5>
-				<p>
-					Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-					that is why our goods are so popular..
-				</p>
-				<a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-				<br class="clr" />
-			</div>
-			<div class="span3 alignR">
-				<form class="form-horizontal qtyFrm">
-					<h3> $222.00</h3>
-					<label class="checkbox">
-						<input type="checkbox">  Adds product to compair
-					</label><br />
-					<div class="btn-group">
-						<a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-						<a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-					</div>
-				</form>
-			</div>
-		</div>
-		<hr class="soft" />
-		<div class="row">
-			<div class="span2">
-				<img src="themes/images/products/6.jpg" alt="" />
-			</div>
-			<div class="span4">
-				<h3>New | Available</h3>
-				<hr class="soft" />
-				<h5>Product Name </h5>
-				<p>
-					Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-					that is why our goods are so popular..
-				</p>
-				<a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-				<br class="clr" />
-			</div>
-			<div class="span3 alignR">
-				<form class="form-horizontal qtyFrm">
-					<h3> $222.00</h3>
-					<label class="checkbox">
-						<input type="checkbox">  Adds product to compair
-					</label><br />
-					<div class="btn-group">
-						<a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-						<a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-					</div>
-				</form>
-			</div>
-		</div>
-		<hr class="soft" />
-		<div class="row">
-			<div class="span2">
-				<img src="themes/images/products/7.jpg" alt="" />
-			</div>
-			<div class="span4">
-				<h3>New | Available</h3>
-				<hr class="soft" />
-				<h5>Product Name </h5>
-				<p>
-					Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-					that is why our goods are so popular..
-				</p>
-				<a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-				<br class="clr" />
-			</div>
-			<div class="span3 alignR">
-				<form class="form-horizontal qtyFrm">
-					<h3> $222.00</h3>
-					<label class="checkbox">
-						<input type="checkbox">  Adds product to compair
-					</label><br />
-					<div class="btn-group">
-						<a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-						<a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-					</div>
-				</form>
-			</div>
-		</div>
 
-		<hr class="soft" />
-		<div class="row">
-			<div class="span2">
-				<img src="themes/images/products/8.jpg" alt="" />
-			</div>
-			<div class="span4">
-				<h3>New | Available</h3>
-				<hr class="soft" />
-				<h5>Product Name </h5>
-				<p>
-					Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-					that is why our goods are so popular..
-				</p>
-				<a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-				<br class="clr" />
-			</div>
-			<div class="span3 alignR">
-				<form class="form-horizontal qtyFrm">
-					<h3> $222.00</h3>
-					<label class="checkbox">
-						<input type="checkbox">  Adds product to compair
-					</label><br />
-					<div class="btn-group">
-						<a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-						<a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-					</div>
-				</form>
-			</div>
-		</div>
-		<hr class="soft" />
-		<div class="row">
-			<div class="span2">
-				<img src="themes/images/products/9.jpg" alt="" />
-			</div>
-			<div class="span4">
-				<h3>New | Available</h3>
-				<hr class="soft" />
-				<h5>Product Name </h5>
-				<p>
-					Nowadays the lingerie industry is one of the most successful business spheres.We always stay in touch with the latest fashion tendencies -
-					that is why our goods are so popular..
-				</p>
-				<a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-				<br class="clr" />
-			</div>
-			<div class="span3 alignR">
-				<form class="form-horizontal qtyFrm">
-					<h3> $222.00</h3>
-					<label class="checkbox">
-						<input type="checkbox">  Adds product to compair
-					</label><br />
-					<div class="btn-group">
-						<a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-						<a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-					</div>
-				</form>
-			</div>
-		</div>
-		<hr class="soft" />
-	</div>
-	<div class="tab-pane active" id="blockView">
-		<ul class="thumbnails">
-			<li class="span3">
-				<div class="thumbnail">
-					<a href="product_details.html"><img src="themes/images/products/10.jpg" alt="" /></a>
-					<div class="caption">
-						<h5>Manicure &amp; Pedicure</h5>
-						<p>
-							Lorem Ipsum is simply dummy text.
-						</p>
-						<h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">&euro;222.00</a></h4>
-					</div>
-				</div>
-			</li>
-			<li class="span3">
-				<div class="thumbnail">
-					<a href="product_details.html"><img src="themes/images/products/11.jpg" alt="" /></a>
-					<div class="caption">
-						<h5>Manicure &amp; Pedicure</h5>
-						<p>
-							Lorem Ipsum is simply dummy text.
-						</p>
-						<h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">&euro;222.00</a></h4>
-					</div>
-				</div>
-			</li>
-			<li class="span3">
-				<div class="thumbnail">
-					<a href="product_details.html"><img src="themes/images/products/12.jpg" alt="" /></a>
-					<div class="caption">
-						<h5>Manicure &amp; Pedicure</h5>
-						<p>
-							Lorem Ipsum is simply dummy text.
-						</p>
-						<h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">&euro;222.00</a></h4>
-					</div>
-				</div>
-			</li>
-			<li class="span3">
-				<div class="thumbnail">
-					<a href="product_details.html"><img src="themes/images/products/13.jpg" alt="" /></a>
-					<div class="caption">
-						<h5>Manicure &amp; Pedicure</h5>
-						<p>
-							Lorem Ipsum is simply dummy text.
-						</p>
-						<h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">&euro;222.00</a></h4>
-					</div>
-				</div>
-			</li>
-			<li class="span3">
-				<div class="thumbnail">
-					<a href="product_details.html"><img src="themes/images/products/1.jpg" alt="" /></a>
-					<div class="caption">
-						<h5>Manicure &amp; Pedicure</h5>
-						<p>
-							Lorem Ipsum is simply dummy text.
-						</p>
-						<h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">&euro;222.00</a></h4>
-					</div>
-				</div>
-			</li>
-			<li class="span3">
-				<div class="thumbnail">
-					<a href="product_details.html"><img src="themes/images/products/2.jpg" alt="" /></a>
-					<div class="caption">
-						<h5>Manicure &amp; Pedicure</h5>
-						<p>
-							Lorem Ipsum is simply dummy text.
-						</p>
-						<h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">&euro;222.00</a></h4>
-					</div>
-				</div>
-			</li>
-		</ul>
-		<hr class="soft" />
-	</div>
-</div>
-<br class="clr">
+@if (products.Any())
+{
+    <div id="myTab" class="pull-right">
+        <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="icon-list"></i></span></a>
+        <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="icon-th-large"></i></span></a>
+    </div>
+    <br class="clr" />
+    <hr class="soft" />
+
+    <div class="tab-content">
+        <div class="tab-pane" id="listView">
+            @foreach (var product in products)
+            {
+                <div class="row">
+                    <div class="span2">
+                        <a href="@Url.Action("ProdDetail", new { Id = product.Id })">
+                            <img src="@product.ImageUrl" alt="@product.Name" style="max-width: 100%;" />
+                        </a>
+                    </div>
+                    <div class="span4">
+                        <h3>@product.Name</h3>
+                        <hr class="soft" />
+                        <h5>Category: @(product.Category?.Name ?? "N/A")</h5>
+                        <p>
+                            @product.Description
+                        </p>
+                        <a class="btn btn-small pull-right" href="@Url.Action("ProdDetail", new { Id = product.Id })">View Details</a>
+                        <br class="clr" />
+                    </div>
+                    <div class="span3 alignR">
+                        <form class="form-horizontal qtyFrm">
+                            <h3> $@product.Price.ToString("N2")</h3>
+                            <label class="checkbox">
+                                <input type="checkbox">  Adds product to compare
+                            </label><br />
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
+                                <a href="@Url.Action("ProdDetail", new { Id = product.Id })" class="btn btn-large"><i class="icon-zoom-in"></i></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <hr class="soft" />
+            }
+        </div>
+
+        <div class="tab-pane active" id="blockView">
+            <ul class="thumbnails">
+                @foreach (var product in products)
+                {
+                    <li class="span3">
+                        <div class="thumbnail">
+                            <a href="@Url.Action("ProdDetail", new { Id = product.Id })">
+                                <img src="@product.ImageUrl" alt="@product.Name" />
+                            </a>
+                            <div class="caption">
+                                <h5>@product.Name</h5>
+                                <p>
+                                    @(product.Description.Length > 50 ? product.Description.Substring(0, 50) + "..." : product.Description)
+                                </p>
+                                <h4 style="text-align:center">
+                                    <a class="btn" href="@Url.Action("ProdDetail", new { Id = product.Id })"> <i class="icon-zoom-in"></i></a>
+                                    <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
+                                    <a class="btn btn-primary" href="#">$@product.Price.ToString("N2")</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+            <hr class="soft" />
+        </div>
+    </div>
+    <br class="clr">
+}
+else
+{
+    <div class="alert alert-info">
+        <h4 class="alert-heading">No Related Products Found!</h4>
+        <p>Sorry, there are no other related products in this category at this time.</p>
+        <p>Please check back later or explore our <a asp-controller="Home" asp-action="Index">other categories</a>.</p>
+    </div>
+}
