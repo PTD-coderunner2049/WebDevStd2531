@@ -1,20 +1,24 @@
-﻿@model WebDevStd2531.Models.HomeViewModelIndex
+﻿@model List<WebDevStd2531.Models.GrandCategory>
 @{
-    // two most expensive products
-    var topTwoMostExpensive = Model.FeaturedProducts
-    .OrderByDescending(p => p.Price)
-    .Take(2)
-    .ToList();
+    var allProducts = Model
+        .SelectMany(gc => gc.Categories)
+        .SelectMany(c => c.Products)
+        .Where(p => p != null)
+		.ToList();//GCate have many Cate, Cate have many Prod, get all Prods
+
+    var topTwoMostExpensive = allProducts
+        .OrderByDescending(p => p.Price)
+        .Take(2)
+        .ToList();
 }
 
 <div class="well well-small">
-    @* Cart data remains hardcoded as I am not going there yet  *@
+    @* Cart data remains hardcoded as requested *@
     <a id="myCart" href="product_summary.html"><img src="~/assets/themes/images/ico-cart.png" alt="cart">3 Items in your cart  <span class="badge badge-warning pull-right">$155.00</span></a>
 </div>
 
 <ul id="sideManu" class="nav nav-tabs nav-stacked">
-
-    @foreach (var grandCategory in Model.AllGrandCategories)
+    @foreach (var grandCategory in Model) // Iterate over the List<GrandCategory> model
     {
         <li class="subMenu">
             @{
@@ -36,7 +40,6 @@
         </li>
     }
 </ul>
-
 <br />
 
 @* 2 most expensive products *@
@@ -63,3 +66,7 @@
         <h5>Payment Methods</h5>
     </div>
 </div>
+
+
+
+

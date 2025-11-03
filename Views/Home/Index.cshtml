@@ -3,10 +3,6 @@
 @{
 	ViewData["Title"] = "Home Page OwO";
 }
-@section Sidebar {
-	@* @RenderSection("Sidebar", ... ) is called in the layout. I call the Partial View here to insert the sidebar content *@
-	@await Html.PartialAsync("_SidebarPartial")
-}
 <div class="well well-small">
 	<h4>Featured Products <small class="pull-right">200+ featured products</small></h4>
 	<div class="row-fluid">
@@ -31,13 +27,20 @@
 								<li class="span3">
 									<div class="thumbnail">
 										<i class="tag"></i>
-										<a href="product_details.html?id=@item.Id">
+										<a asp-controller="Prod"
+											asp-action="ProdDetail"
+											asp-route-id="@item.Id">
 											<img src="@item.ImageUrl" alt="@item.Name">
 										</a>
 										<div class="caption">
 											<h5>@item.Name</h5>
 											<h4>
-												<a class="btn" href="product_details.html?id=@item.Id">VIEW</a>
+												<a class="btn"
+												   asp-controller="Prod"
+													asp-action="ProdDetail"
+													asp-route-id="@item.Id">
+													VIEW
+												</a>
 												<span class="pull-right">$@item.Price.ToString("F2")</span>
 											</h4>
 										</div>
@@ -65,15 +68,22 @@
 	{
 		<li class="span3">
 			<div class="thumbnail">
-				<a href="product_details.html?id=@item.Id">
-					<img src="@item.ImageUrl" alt="@item.Name" />
+				<a asp-controller="Prod"
+				   asp-action="ProdDetail"
+				   asp-route-id="@item.Id">
+					<img src="@item.ImageUrl" alt="@item.Name">
 				</a>
 				<div class="caption">
 					<h5>@item.Name</h5>
 					<p>@item.Description</p>
 					@* Action Buttons and Price *@
 					<h4 style="text-align:center">
-						<a class="btn" href="product_details.html?id=@item.Id"> <i class="icon-zoom-in"></i></a>
+						<a class="btn"
+						   asp-controller="Prod"
+						   asp-action="ProdDetail"
+						   asp-route-id="@item.Id">
+							<i class="icon-zoom-in"></i>
+						</a>
 						<a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
 						<a class="btn btn-primary" href="#">$@item.Price.ToString("F2")</a>
 					</h4>
