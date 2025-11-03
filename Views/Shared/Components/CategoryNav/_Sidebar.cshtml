@@ -31,7 +31,10 @@
                 {
                     int categoryCount = category.Products?.Count() ?? 0;
                     <li>
-                        <a href="products.html?categoryId=@category.Id">
+                        <a
+                           asp-controller="Prod"
+                           asp-action="ProdDetail"
+                           asp-route-id="@category.Id">
                             <i class="icon-chevron-right"></i>@category.Name (@categoryCount)
                         </a>
                     </li>
@@ -50,7 +53,12 @@
         <div class="caption">
             <h5>@item.Name</h5>
             <h4 style="text-align:center">
-                <a class="btn" href="product_details.html?id=@item.Id"> <i class="icon-zoom-in"></i></a>
+                <a class="btn"
+                   asp-controller="Prod"
+                   asp-action="ProdDetail"
+                   asp-route-id="@item.Id">
+                    <i class="icon-zoom-in"></i>
+                </a>
                 <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
                 <a class="btn btn-primary" href="#">$@item.Price.ToString("F2")</a>
             </h4>
