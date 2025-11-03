@@ -1,6 +1,7 @@
 ﻿@model WebDevStd2531.Models.Category
 @{
     ViewData["Title"] = Model.Name;
+    var productCount = Model.Products?.Count() ?? 0;
 }
 
 <ul class="breadcrumb">
@@ -8,133 +9,138 @@
     <li class="active">@Model.Name</li>
 </ul>
 
-@* Display Category Name and Product Count *@
+@* Display Category Name, Product Count and Description *@
 <h3> @Model.Name <small class="pull-right"> @Model.Products?.Count() products are available </small></h3>
 <hr class="soft" />
-
-@* Display Category Description *@
-<p>
-    @Model.Description
-</p>
+<p> @Model.Description </p>
 <hr class="soft" />
 
-@* The Sorting section is ignored as requested, but kept for layout integrity *@
-<form class="form-horizontal span6">
-    <div class="control-group">
-        <label class="control-label alignL">Sort By </label>
-        <select>
-            <option>Priduct name A - Z</option>
-            <option>Priduct name Z - A</option>
-            <option>Priduct Stoke</option>
-            <option>Price Lowest first</option>
-        </select>
+@if (productCount > 0)
+{
+    @* The Sorting section is still HARDCODED, but kept for layout integrity *@
+    <form class="form-horizontal span6">
+        <div class="control-group">
+            <label class="control-label alignL">Sort By </label>
+            <select>
+                <option>Priduct name A - Z</option>
+                <option>Priduct name Z - A</option>
+                <option>Priduct Stoke</option>
+                <option>Price Lowest first</option>
+            </select>
+        </div>
+    </form>
+
+    <div id="myTab" class="pull-right">
+        <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="icon-list"></i></span></a>
+        <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="icon-th-large"></i></span></a>
     </div>
-</form>
+    <br class="clr" />
 
-<div id="myTab" class="pull-right">
-    <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="icon-list"></i></span></a>
-    <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="icon-th-large"></i></span></a>
-</div>
-<br class="clr" />
+    <div class="tab-content">
 
-<div class="tab-content">
-
-    @* ============================================== *@
-    @* 1. LIST VIEW: Loop through all products *@
-    @* ============================================== *@
-    <div class="tab-pane" id="listView">
-        @if (Model.Products != null)
-        {
-            @foreach (var product in Model.Products)
-            {
-                <div class="row">
-                    <div class="span2">
-                        @* Assuming ImageUrl exists on the Product model for the image path *@
-                        <img src="@product.ImageUrl" alt="@product.Name" />
-                    </div>
-                    <div class="span4">
-                        <h3>New | Available</h3>
-                        <hr class="soft" />
-                        <h5>@product.Name </h5>
-                        <p>
-                            @product.Description
-                        </p>
-                        @* Link to ProdDetail using Tag Helpers *@
-                        <a class="btn btn-small pull-right"
-                           asp-controller="Prod"
-                           asp-action="ProdDetail"
-                           asp-route-id="@product.Id">View Details</a>
-                        <br class="clr" />
-                    </div>
-                    <div class="span3 alignR">
-                        <form class="form-horizontal qtyFrm">
-                            @* Dynamic Price *@
-                            <h3> $@product.Price.ToString("N2")</h3>
-                            <label class="checkbox">
-                                <input type="checkbox">  Adds product to compair
-                            </label><br />
-
-                            @* The "Add to Cart" link is often the same as "View Details" in this template structure *@
-                            <a asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                            <a asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-
-                        </form>
-                    </div>
-                </div>
-                <hr class="soft" />
-            }
-        }
-    </div>
-
-    @* ============================================== *@
-    @* 2. BLOCK VIEW: Loop through all products *@
-    @* ============================================== *@
-    <div class="tab-pane active" id="blockView">
-        <ul class="thumbnails">
+        @* ============================================== *@
+        @* 1. LIST VIEW: Loop through all products *@
+        @* ============================================== *@
+        <div class="tab-pane" id="listView">
             @if (Model.Products != null)
             {
                 @foreach (var product in Model.Products)
                 {
-                    <li class="span3">
-                        <div class="thumbnail">
-                            @* Dynamic Image and Link *@
-                            <a asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id">
-                                <img src="@product.ImageUrl" alt="@product.Name" />
-                            </a>
-                            <div class="caption">
-                                <h5>@product.Name</h5>
-                                <p>
-                                    @* Shortened Description *@
-                                    @((product.Description?.Length > 40 ? product.Description.Substring(0, 37) + "..." : product.Description))
-                                </p>
-                                <h4 style="text-align:center">
-                                    @* View Details / Zoom *@
-                                    <a class="btn" asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id"> <i class="icon-zoom-in"></i></a>
-                                    @* Add to Cart (Placeholder Link) *@
-                                    <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
-                                    @* Dynamic Price *@
-                                    <a class="btn btn-primary" href="#">$@product.Price.ToString("N2")</a>
-                                </h4>
-                            </div>
+                    <div class="row">
+                        <div class="span2">
+                            <img src="@product.ImageUrl" alt="@product.Name" />
                         </div>
-                    </li>
+                        <div class="span4">
+                            <h3>New | Available</h3>
+                            <hr class="soft" />
+                            <h5>@product.Name </h5>
+                            <p>@product.Description</p>
+                            <a class="btn btn-small pull-right"
+                               asp-controller="Prod"
+                               asp-action="ProdDetail"
+                               asp-route-id="@product.Id">View Details</a>
+                            <br class="clr" />
+                        </div>
+                        <div class="span3 alignR">
+                            <form class="form-horizontal qtyFrm">
+                                <h3> $@product.Price.ToString("N2")</h3>
+                                <label class="checkbox">
+                                    <input type="checkbox">  Adds product to compair
+                                </label><br />
+
+                                @* The "Add to Cart" link is the same as "View Details" For now, until I start working on cart I will change it here #HARDCODED *@
+                                <a asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
+                                <a
+                                    class="btn btn-large"
+                                    asp-controller="Prod"
+                                    asp-action="ProdDetail"
+                                    asp-route-id="@product.Id">
+                                    <i class="icon-zoom-in"></i>
+                                </a>
+
+                            </form>
+                        </div>
+                    </div>
+                    <hr class="soft" />
                 }
             }
-        </ul>
-        <hr class="soft" />
-    </div>
-</div>
+        </div>
 
-<a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
-<div class="pagination">
-    <ul>
-        <li><a href="#">&lsaquo;</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">...</a></li>
-        <li><a href="#">&rsaquo;</a></li>
-    </ul>
-</div>
-<br class="clr" />
+        @* ============================================== *@
+        @* 2. BLOCK VIEW: Loop through all products *@
+        @* ============================================== *@
+        <div class="tab-pane active" id="blockView">
+            <ul class="thumbnails">
+                @if (Model.Products != null)
+                {
+                    @foreach (var product in Model.Products)
+                    {
+                        <li class="span3">
+                            <div class="thumbnail">
+                                <a asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id">
+                                    <img src="@product.ImageUrl" alt="@product.Name" />
+                                </a>
+                                <div class="caption">
+                                    <h5>@product.Name</h5>
+                                    <p>
+                                        @((product.Description?.Length > 40 ? product.Description.Substring(0, 37) + "..." : product.Description))
+                                    </p>
+                                    <h4 style="text-align:center">
+                                        <a class="btn" asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id"> <i class="icon-zoom-in"></i></a>
+                                        @* Add to Cart HARDCODED *@
+                                        <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
+                                        <a class="btn btn-primary" href="#">$@product.Price.ToString("N2")</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+            <hr class="soft" />
+        </div>
+    </div>
+    @* HARDCODED *@
+    <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
+    <div class="pagination">
+        <ul>
+            <li><a href="#">&lsaquo;</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">...</a></li>
+            <li><a href="#">&rsaquo;</a></li>
+        </ul>
+    </div>
+    <br class="clr" />
+}
+else
+{
+    @* ELSE Block: Display empty message *@
+    <div class="alert alert-info">
+        <h4 class="alert-heading">No Products Found!</h4>
+        <p>Sorry, there are currently no products available in the **@Model.Name** category.</p>
+        <p>Please check back later or explore our <a asp-controller="Home" asp-action="Index">other categories</a>.</p>
+    </div>
+}

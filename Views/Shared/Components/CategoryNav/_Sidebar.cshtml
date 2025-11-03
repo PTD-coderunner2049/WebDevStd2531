@@ -13,12 +13,12 @@
 }
 
 <div class="well well-small">
-    @* Cart data remains hardcoded as requested *@
+    @* Cart data remains hardcoded as I aint going for it yet *@
     <a id="myCart" href="product_summary.html"><img src="~/assets/themes/images/ico-cart.png" alt="cart">3 Items in your cart  <span class="badge badge-warning pull-right">$155.00</span></a>
 </div>
 
 <ul id="sideManu" class="nav nav-tabs nav-stacked">
-    @foreach (var grandCategory in Model) // Iterate over the List<GrandCategory> model
+    @foreach (var grandCategory in Model)
     {
         <li class="subMenu">
             @{
@@ -32,9 +32,9 @@
                     int categoryCount = category.Products?.Count() ?? 0;
                     <li>
                         <a
-                           asp-controller="Prod"
-                           asp-action="CateDetail"
-                           asp-route-id="@category.Id">
+                            asp-controller="Prod"
+                            asp-action="CateDetail"
+                            asp-route-id="@category.Id">
                             <i class="icon-chevron-right"></i>@category.Name (@categoryCount)
                         </a>
                     </li>
@@ -45,6 +45,7 @@
 </ul>
 <br />
 
+@* STATIC STUFF ---------------------NAV--------------------- *@
 @* 2 most expensive products *@
 @foreach (var item in topTwoMostExpensive)
 {
@@ -54,9 +55,9 @@
             <h5>@item.Name</h5>
             <h4 style="text-align:center">
                 <a class="btn"
-                   asp-controller="Prod"
-                   asp-action="ProdDetail"
-                   asp-route-id="@item.Id">
+                    asp-controller="Prod"
+                    asp-action="ProdDetail"
+                    asp-route-id="@item.Id">
                     <i class="icon-zoom-in"></i>
                 </a>
                 <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>

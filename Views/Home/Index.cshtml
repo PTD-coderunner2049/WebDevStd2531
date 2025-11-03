@@ -27,7 +27,8 @@
 								<li class="span3">
 									<div class="thumbnail">
 										<i class="tag"></i>
-										<a asp-controller="Prod"
+										<a 
+											asp-controller="Prod"
 											asp-action="ProdDetail"
 											asp-route-id="@item.Id">
 											<img src="@item.ImageUrl" alt="@item.Name">
@@ -68,9 +69,10 @@
 	{
 		<li class="span3">
 			<div class="thumbnail">
-				<a asp-controller="Prod"
-				   asp-action="ProdDetail"
-				   asp-route-id="@item.Id">
+				<a
+					asp-controller="Prod"
+					asp-action="ProdDetail"
+					asp-route-id="@item.Id">
 					<img src="@item.ImageUrl" alt="@item.Name">
 				</a>
 				<div class="caption">
@@ -79,9 +81,9 @@
 					@* Action Buttons and Price *@
 					<h4 style="text-align:center">
 						<a class="btn"
-						   asp-controller="Prod"
-						   asp-action="ProdDetail"
-						   asp-route-id="@item.Id">
+							asp-controller="Prod"
+							asp-action="ProdDetail"
+							asp-route-id="@item.Id">
 							<i class="icon-zoom-in"></i>
 						</a>
 						<a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
