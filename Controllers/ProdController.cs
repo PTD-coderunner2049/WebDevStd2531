@@ -20,9 +20,21 @@ namespace WebDevStd2531.Controllers
                 .Include(p => p.Category)
                 .ThenInclude(c => c.GrandCategory)
                 .Where(p => p.Id == Id)     
-                .FirstOrDefault();          
-            return View(currProd);
+                .FirstOrDefault();
             //fully loaded currProd with Category and GrandCategory? for the detail view? ABSOLUTELY UNNECESSARY but why not :D
+            //Now I will do another querry. accessing the already obtained CategoryId to get related products
+            if (currProd == null)
+            {
+                return NotFound();
+            }
+            var relatedProducts = _db.Products
+                .Where(p => p.CategoryId == currProd.CategoryId && p.Id != currProd.Id).Take(4)
+                .ToList();
+            return View(new ProductDetailModel
+            {
+                MainProduct = currProd!,
+                RelatedProds = relatedProducts
+            });
         }
         public IActionResult CateDetail(int Id){
             Category? currCate = _db.Categories

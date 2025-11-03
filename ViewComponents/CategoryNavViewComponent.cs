@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebDevStd2531.AppData;
-using WebDevStd2531.Models;
 
 public class CategoryNavViewComponent : ViewComponent
 {

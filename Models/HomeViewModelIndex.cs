@@ -4,5 +4,6 @@
     {
         public List<Product> FeaturedProducts { get; set; } = new List<Product>();
         public List<GrandCategory> AllGrandCategories { get; set; } = new List<GrandCategory>();
+        public List<Category> AllCategories { get; set; } = new List<Category>();
     }
 }

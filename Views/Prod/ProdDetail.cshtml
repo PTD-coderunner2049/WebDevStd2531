@@ -1,29 +1,37 @@
-﻿@model WebDevStd2531.Models.Product
+﻿@model WebDevStd2531.Models.ProductDetailModel
 @{
-	ViewData["Title"] = Model.Name;
+	ViewData["Title"] = Model.MainProduct.Name;
 }
+
+@{
+	var mProduct = Model.MainProduct;
+}
+
 <ul class="breadcrumb">
 	<li><a asp-controller="Home" asp-action="Index">Home</a> <span class="divider">/</span></li>
-	@if (Model.Category?.GrandCategory != null) {
-		<li><a href="#">@Model.Category.GrandCategory.Name</a> <span class="divider">/</span></li>
+
+	@if (mProduct.Category?.GrandCategory != null)
+	{
+		<li><a href="#">@mProduct.Category.GrandCategory.Name</a> <span class="divider">/</span></li>
 	}
-	@if (Model.Category != null) {
-		<li><a href="#">@Model.Category.Name</a> <span class="divider">/</span></li>
+	@if (mProduct.Category != null)
+	{
+		<li><a href="#">@mProduct.Category.Name</a> <span class="divider">/</span></li>
 	}
-	<li class="active">@Model.Name</li>
+	<li class="active">@mProduct.Name</li>
 </ul>
 
 <div class="row">
 	<div id="gallery" class="span3">
-		<a href="@Model.ImageUrl" title="@Model.Name">
-			<img src="@Model.ImageUrl" style="width:100%" alt="@Model.Name" />
+		<a href="@mProduct.ImageUrl" title="@mProduct.Name">
+			<img src="@mProduct.ImageUrl" style="width:100%" alt="@mProduct.Name" />
 		</a>
 		<div id="differentview" class="moreOptopm carousel slide">
 			<div class="carousel-inner">
 				<div class="item active">
-					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
-					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
-					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
+					<a href="@mProduct.ImageUrl"> <img style="width:29%" src="@mProduct.ImageUrl" alt="" /></a>
+					<a href="@mProduct.ImageUrl"> <img style="width:29%" src="@mProduct.ImageUrl" alt="" /></a>
+					<a href="@mProduct.ImageUrl"> <img style="width:29%" src="@mProduct.ImageUrl" alt="" /></a>
 				</div>
 			</div>
 		</div>
@@ -42,15 +50,15 @@
 	</div>
 	<div class="span6">
 
-		<h3>@Model.Name </h3>
-		<small>- @Model.Description</small>
+		<h3>@mProduct.Name </h3>
+		<small>- @mProduct.Description</small>
 		<hr class="soft" />
 
 		<form class="form-horizontal qtyFrm">
 			<div class="control-group">
-				<label class="control-label"><span>$@Model.Price.ToString("N2")</span></label>
+				<label class="control-label"><span>$@mProduct.Price.ToString("N2")</span></label>
 				<div class="controls">
-					<input type="number" class="span1" placeholder="Qty." value="1" min="1" max="@Model.Stock" />
+					<input type="number" class="span1" placeholder="Qty." value="1" min="1" max="@mProduct.Stock" />
 					<button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
 				</div>
 			</div>
@@ -58,7 +66,7 @@
 
 		<hr class="soft" />
 
-		<h4>@Model.Stock items in stock</h4>
+		<h4>@mProduct.Stock items in stock</h4>
 
 		@* ... static color selection form THAT DO NOT WORK ... *@
 		<form class="form-horizontal qtyFrm pull-right">
@@ -76,7 +84,7 @@
 		</form>
 		<hr class="soft clr" />
 
-		<p> @Model.Description </p>
+		<p> @mProduct.Description </p>
 		<a class="btn btn-small pull-right" href="#detail">More Details</a>
 		<br class="clr" />
 		<a href="#" name="detail"></a>
@@ -89,10 +97,10 @@
 		</ul>
 		<div id="myTabContent" class="tab-content">
 			<div class="tab-pane fade active in" id="home">
-				<partial name="_ProductDetailsTab" />
+				<partial name="_ProductDetailsTab" model="mProduct" />
 			</div>
 			<div class="tab-pane fade" id="profile">
-				<partial name="_relatedProductsTab" />
+				<partial name="_relatedProductsTab" model="Model.RelatedProds" />
 			</div>
+		</div>
 	</div>
-</div>
