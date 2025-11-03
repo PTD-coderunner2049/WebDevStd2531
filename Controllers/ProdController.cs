@@ -24,6 +24,12 @@ namespace WebDevStd2531.Controllers
             return View(currProd);
             //fully loaded currProd with Category and GrandCategory? for the detail view? ABSOLUTELY UNNECESSARY but why not :D
         }
-
+        public IActionResult CateDetail(int Id){
+            Category? currCate = _db.Categories
+                .Include(c => c.Products)
+                .Where(c => c.Id == Id)
+                .FirstOrDefault();
+            return View(currCate);
+        }
     }
 }
