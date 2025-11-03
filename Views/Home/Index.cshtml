@@ -1,10 +1,10 @@
-﻿@model List<WebDevStd2531.Models.Product>
+﻿@* @model List<WebDevStd2531.Models.Product> *@
+@model WebDevStd2531.Models.HomeViewModelIndex
 @{
 	ViewData["Title"] = "Home Page OwO";
 }
 @section Sidebar {
-	@* @RenderSection("Sidebar", ... ) is called in the layout *@
-	@* I call the Partial View here to insert the sidebar content *@
+	@* @RenderSection("Sidebar", ... ) is called in the layout. I call the Partial View here to insert the sidebar content *@
 	@await Html.PartialAsync("_SidebarPartial")
 }
 <div class="well well-small">
@@ -12,7 +12,7 @@
 	<div class="row-fluid">
 		<div id="featured" class="carousel slide">
 			<div class="carousel-inner">
-				@{  var products = Model.ToList();
+				@{  var products = Model.FeaturedProducts.ToList();
 					int totalProducts = products.Count;
 					int totalSlides = (int)Math.Ceiling((double)totalProducts / 4);
 				}
@@ -57,7 +57,7 @@
 <h4>Latest Products </h4>
 <ul class="thumbnails">
 	@{
-		var latestSix = Model
+		var latestSix = Model.FeaturedProducts
 		.OrderByDescending(p => p.Id) //sort by Id
 		.Take(6); //take newest 6
 	}

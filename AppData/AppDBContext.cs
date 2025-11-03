@@ -10,6 +10,7 @@ namespace WebDevStd2531.AppData
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<GrandCategory> GrandCategories { get; set; } = null!;
         public DbSet<OrderProduct> OrderProducts { get; set; } = null!;
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)

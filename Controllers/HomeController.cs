@@ -1,5 +1,6 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using WebDevStd2531.AppData;
 using WebDevStd2531.Models;
 
@@ -18,8 +19,15 @@ namespace WebDevStd2531.Controllers
 
         public IActionResult Index()
         {
-            List<Product> objProductList = _db.Products.ToList();
-            return View(objProductList);
+            var featuredProducts = _db.Products.ToList();
+            var grandCategoriesWithAllData = _db.GrandCategories
+                .Include(gc => gc.Categories)          //if a gcate have 0 cate inside, it is fine. I dont care.
+                .ThenInclude(c => c.Products)          // I want to load everything before sending to view so I can count them in the sidebar, it has a counting number there so....
+                .ToList();
+            return View(new HomeViewModelIndex {
+                FeaturedProducts = featuredProducts,
+                AllGrandCategories = grandCategoriesWithAllData,
+            });
         }
 
         public IActionResult Privacy()
