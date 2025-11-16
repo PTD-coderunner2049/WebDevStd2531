@@ -5,7 +5,7 @@ using WebDevStd2531.Models;
 
 namespace WebDevStd2531.AppData
 {
-    public class AppDBContext : IdentityDbContext<IdentityUser>
+    public class AppDBContext : IdentityDbContext<AppUser>
     {
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
