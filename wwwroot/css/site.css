@@ -29,3 +29,25 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+/* Custom CSS for site.css */
+
+/* 1. Card Styling and Centering for the Registration Form */
+.form-container {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 10px 5px rgba(0, 0, 0, 0.05);
+}
+
+.form-check {
+    gap: 5px;
+    display: flex;
+    margin: 0px;
+}
+.form-check * {
+    margin: 0px;
+}
