@@ -61,7 +61,8 @@
 					}
 				</div>
 				<div class="span6">
-					<div class="pull-right">
+					@Html.Partial("_LoginPartial")
+					@* <div class="pull-right">
 						<a href="product_summary.html"><span class="">Fr</span></a>
 						<a href="product_summary.html"><span class="">Es</span></a>
 						<span class="btn btn-mini">En</span>
@@ -69,7 +70,7 @@
 						<span class="btn btn-mini">$155.00</span>
 						<a href="product_summary.html"><span class="">$</span></a>
 						<a href="product_summary.html"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
-					</div>
+					</div> *@
 				</div>
 			</div>
 			<!-- Navbar ================================================== -->
@@ -94,9 +95,9 @@
 						<button type="submit" id="submitButton" class="btn btn-primary">Go</button>
 					</form>
 					<ul id="topMenu" class="nav pull-right">
-						<li class=""><a href="special_offer.html">Specials Offer</a></li>
-						<li class=""><a href="normal.html">Delivery</a></li>
-						<li class=""><a href="contact.html">Contact</a></li>
+						<li class=""><a href="#">Specials Offer</a></li>
+						<li class=""><a href="#">Delivery</a></li>
+						<li class=""><a href="#">Contact</a></li>
 						<li class="">
 							<a asp-controller="User" asp-action="Login" style="padding-right:0">
 								<span class="btn btn-large btn-success">Login</span>

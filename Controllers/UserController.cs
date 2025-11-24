@@ -48,6 +48,21 @@ namespace WebDevStd2531.Controllers
             };
             return View(model);
         }
+        public async Task<IActionResult> Logout(string? returnUrl = null)
+        {
+            await _signInManager.SignOutAsync();
+            //_logger.LogInformation("User logged out.");
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                // This needs to be a redirect so that the browser performs a new
+                // request and the identity for the user gets updated.
+                return RedirectToAction("Index", "Home");
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model, String returnUrl = "~/")
         {
@@ -118,17 +133,17 @@ namespace WebDevStd2531.Controllers
                 if (result.Succeeded)
                 {
                     //_logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Home");
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    //_logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
+                //if (result.RequiresTwoFactor)
+                //{
+                //    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                //}
+                //if (result.IsLockedOut)
+                //{
+                //    //_logger.LogWarning("User account locked out.");
+                //    return RedirectToPage("./Lockout");
+                //}
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
