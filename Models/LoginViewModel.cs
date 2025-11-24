@@ -5,8 +5,8 @@ namespace WebDevStd2531.Models
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
-        public required string Email { get; set; }
+        [Display(Name = "Username")]
+        public required string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
