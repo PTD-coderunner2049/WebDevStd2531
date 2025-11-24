@@ -80,6 +80,7 @@ namespace WebDevStd2531.Controllers
                 user.DateOfBirth = model.DateOfBirth;
                 user.Address = model.Address;
                 user.Gender = model.Gender;
+                user.EmailConfirmed = true;
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
