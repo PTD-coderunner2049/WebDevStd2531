@@ -51,3 +51,8 @@ body {
 .form-check * {
     margin: 0px;
 }
+
+.form-container h2 {
+    text-align: center;
+    margin-top: 0;
+}

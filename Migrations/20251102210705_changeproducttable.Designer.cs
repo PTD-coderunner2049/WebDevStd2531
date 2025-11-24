@@ -13,7 +13,9 @@ namespace WebDevStd2531.Migrations
 {
     [DbContext(typeof(AppDBContext))]
     [Migration("20251102210705_changeproducttable")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     partial class changeproducttable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

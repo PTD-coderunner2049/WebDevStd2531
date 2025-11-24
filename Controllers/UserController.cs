@@ -38,10 +38,20 @@ namespace WebDevStd2531.Controllers
         {
             return View();
         }
+        public IActionResult Login(string? returnUrl = null)
+        {
+            var model = new LoginViewModel
+            {
+                Email = string.Empty,
+                Password = string.Empty,
+                ReturnUrl = returnUrl // Pass the return URL for post-login redirect
+            };
+            return View(model);
+        }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model, String returnUrl = "~/")
         {
-            //returnUrl = Url.Content("~/");
+            returnUrl = Url.Content("~/");
             // ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -94,6 +104,41 @@ namespace WebDevStd2531.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+        {
+            returnUrl = Url.Content("~/");
+            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (ModelState.IsValid)
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    //_logger.LogInformation("User logged in.");
+                    return LocalRedirect(returnUrl);
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                }
+                if (result.IsLockedOut)
+                {
+                    //_logger.LogWarning("User account locked out.");
+                    return RedirectToPage("./Lockout");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model); // Redisplay the form with the error
+                }
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
         private AppUser CreateUser()
         {
             try
