@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using WebDevStd2531.AppData;
 using WebDevStd2531.Models;
 
@@ -54,8 +55,37 @@ namespace WebDevStd2531.Controllers
         }
         public IActionResult CartDetail()
         {
-            //fetch cart data ("orders table" where current user pk is the fk of that order)
-            return View();
+            // curr user's ID
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+            {
+                // to login page
+                return RedirectToAction("Login", "User");
+            }
+            var cart = _db.Orders
+                .Include(o => o.OrderProducts!)
+                .ThenInclude(op => op.Product)
+                .FirstOrDefault(o => o.UserId == currentUserId && o.Status == "Pending");
+
+            // 3. Project the OrderProducts into your CartItemViewModel
+            var cartItems = new List<CartItemViewModel>();
+
+            if (cart != null && cart.OrderProducts != null)
+            {
+                cartItems = cart.OrderProducts
+                    .Select(op => new CartItemViewModel
+                    {
+                        OrderProductId = op.Id,
+                        Quantity = op.Quantity ?? 0,
+                        Price = op.Price ?? 0,
+                        ProductId = op.ProductId,
+                        ProductName = op.Product!.Name,
+                        ImageUrl = op.Product.ImageUrl,
+                        MaxStock = op.Product.Stock
+                    })
+                    .ToList();
+            }
+            return View(cartItems);
         }
     }
 }
