@@ -8,7 +8,10 @@
 }
 
 <ul class="breadcrumb">
-	<li><a asp-controller="Home" asp-action="Index">Home</a> <span class="divider">/</span></li>
+	<li>
+		<a asp-controller="Home"
+		asp-action="Index">
+		Home</a> <span class="divider">/</span></li>
 
 	@if (mProduct.Category?.GrandCategory != null)
 	{
@@ -16,7 +19,12 @@
 	}
 	@if (mProduct.Category != null)
 	{
-		<li><a href="#">@mProduct.Category.Name</a> <span class="divider">/</span></li>
+		<li>
+			<a asp-controller="Prod"
+			   asp-action="CateDetail"
+			   asp-route-id="@mProduct.Category.Id">
+			   @mProduct.Category.Name</a> <span class="divider">/</span>
+		</li>
 	}
 	<li class="active">@mProduct.Name</li>
 </ul>

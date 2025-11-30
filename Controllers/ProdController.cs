@@ -41,16 +41,21 @@ namespace WebDevStd2531.Controllers
                 .Include(c => c.Products)
                 .Where(c => c.Id == Id)
                 .FirstOrDefault();
-
-            if (Id == 1)
-            {
-                if (currCate != null)
-                {
-                    currCate.Products = new List<Product>();
-                    currCate.Name = "(TEST EMPTY) " + currCate.Name; // Just to be sure
-                }
-            }
+            //code for test
+            //if (Id == 1)
+            //{
+            //    if (currCate != null)
+            //    {
+            //        currCate.Products = new List<Product>();
+            //        currCate.Name = "(TEST EMPTY) " + currCate.Name; // Just to be sure
+            //    }
+            //}
             return View(currCate);
+        }
+        public IActionResult CartDetail()
+        {
+            //fetch cart data ("orders table" where current user pk is the fk of that order)
+            return View();
         }
     }
 }
