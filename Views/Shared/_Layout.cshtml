@@ -2,6 +2,7 @@
 @using WebDevStd2531.AppData
 @using WebDevStd2531.Models
 
+@inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
 <!DOCTYPE html>
@@ -98,11 +99,22 @@
 						<li class=""><a href="#">Specials Offer</a></li>
 						<li class=""><a href="#">Delivery</a></li>
 						<li class=""><a href="#">Contact</a></li>
-						<li class="">
-							<a asp-controller="User" asp-action="Login" style="padding-right:0">
-								<span class="btn btn-large btn-success">Login</span>
-							</a>
-						</li>
+						@if (SignInManager.IsSignedIn(User))
+						{
+							<li class="">
+								<a asp-controller="User" asp-action="Logout" style="padding-right:0">
+									<span class="btn btn-large btn-success">Logout</span>
+								</a>
+							</li>
+						}
+						else 
+						{
+							<li class="">
+								<a asp-controller="User" asp-action="Login" style="padding-right:0">
+									<span class="btn btn-large btn-success">Login</span>
+								</a>
+							</li>
+						}
 					</ul>
 				</div>
 			</div>
