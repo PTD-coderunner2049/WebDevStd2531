@@ -11,5 +11,6 @@ namespace WebDevStd2531.AppData
         public DateTime DateOfBirth { get; set; }
         public string? Address { get; set; }
         public string? Gender { get; set; }
+        public bool IsAdmin { get; set; } = false;
     }
 }
