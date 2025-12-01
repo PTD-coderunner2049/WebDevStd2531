@@ -64,35 +64,60 @@
 		<small>- @mProduct.Description</small>
 		<hr class="soft" />
 
-		<form class="form-horizontal qtyFrm">
+		@* CORRECTED FORM: Targets the AddCart action and includes all necessary inputs *@
+		<form asp-controller="Prod" asp-action="AddCart" method="post" class="form-horizontal qtyFrm">
+
+			@* Hidden input for ProductId (required for AddCart action) *@
+			<input type="hidden" name="ProductId" value="@mProduct.Id" />
+
 			<div class="control-group">
 				<label class="control-label"><span>$@mProduct.Price.ToString("N2")</span></label>
 				<div class="controls">
-					<input type="number" class="span1" placeholder="Qty." value="1" min="1" max="@mProduct.Stock" />
-					<button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
+
+					@* Quantity Input: Name must be 'Quantity' for binding *@
+					<input type="number"
+						   name="Quantity"
+						   class="span1"
+						   placeholder="Qty."
+						   value="1"
+						   min="1"
+						   max="@mProduct.Stock" />
+
+					@* Add to Cart Button *@
+					<button type="submit" class="btn btn-large btn-primary pull-right">
+						Add to cart <i class=" icon-shopping-cart"></i>
+					</button>
 				</div>
 			</div>
-		</form>
 
-		<hr class="soft" />
+			<hr class="soft" />
 
-		<h4>@mProduct.Stock items in stock</h4>
+			<h4>@mProduct.Stock items in stock</h4>
 
-		@* ... static color selection form THAT DO NOT WORK ... *@
-		<form class="form-horizontal qtyFrm pull-right">
 			<div class="control-group">
 				<label class="control-label"><span>Color</span></label>
 				<div class="controls">
-					<select class="span2">
-						<option>Black</option>
-						<option>Red</option>
-						<option>Blue</option>
-						<option>Brown</option>
+					<select name="SelectedType" class="span2">
+						@* product's AvailableOptions *@
+						@if (mProduct.AvailableOptions != null && mProduct.AvailableOptions.Any())
+						{
+							@foreach (var option in mProduct.AvailableOptions)
+							{
+								// Assuming ProductOption has a 'Name' property for the option value/text
+								<option value="@option.Value">@option.Value</option>
+							}
+						}
+						else
+						{
+							// Fallback option if no options are defined
+							<option value="Default">N/A (Default)</option>
+						}
 					</select>
 				</div>
 			</div>
+			<hr class="soft clr" />
 		</form>
-		<hr class="soft clr" />
+		@* END OF CORRECTED FORM *@
 
 		<p> @mProduct.Description </p>
 		<a class="btn btn-small pull-right" href="#detail">More Details</a>

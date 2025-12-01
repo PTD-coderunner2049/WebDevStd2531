@@ -20,6 +20,7 @@ namespace WebDevStd2531.Controllers
             Product? currProd = _db.Products
                 .Include(p => p.Category)
                 .ThenInclude(c => c.GrandCategory)
+                .Include(p => p.AvailableOptions)
                 .Where(p => p.Id == Id)
                 .FirstOrDefault();
             //fully loaded currProd with Category and GrandCategory? for the detail view? ABSOLUTELY UNNECESSARY but why not :D
