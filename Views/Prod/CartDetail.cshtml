@@ -6,8 +6,9 @@
 @inject UserManager<AppUser> UserManager
 
 @{
-    ViewData["Title"] = "CartDetail";
+	ViewData["Title"] = "CartDetail";
 	var totalLineItems = Model.Count;
+	var totalPrice = 0.00;
 }
 <div class="span9">
 	<ul class="breadcrumb">
@@ -48,7 +49,6 @@
 		<tbody>
 			@foreach (var item in Model)
 			{
-
 				// Calculations from previous step (ensuring necessary variables are defined)
 				double discountRate = (item.Discount ?? 0) / 100.0;
 				double taxRate = (item.Tax ?? 0) / 100.0;
@@ -57,14 +57,19 @@
 				double pricePerUnit = item.Price;
 				double discountAmountPerUnit = pricePerUnit * discountRate;
 				double discountedPricePerUnit = pricePerUnit - discountAmountPerUnit;
-				double taxAmountPerUnit = pricePerUnit * taxRate;
+				double taxAmountPerUnit = discountedPricePerUnit * taxRate;
 				double finalPricePerUnit = discountedPricePerUnit + taxAmountPerUnit;
 				double calculatedLineTotal = finalPricePerUnit * quantity;
+
+				totalPrice += calculatedLineTotal;
+
+
 
 				<tr id="row-@item.OrderProductId"
 					data-price="@item.Price.ToString(System.Globalization.CultureInfo.InvariantCulture)"
 					data-discount="@((item.Discount ?? 0).ToString(System.Globalization.CultureInfo.InvariantCulture))"
-					data-tax="@((item.Tax ?? 0).ToString(System.Globalization.CultureInfo.InvariantCulture))">
+					data-tax="@((item.Tax ?? 0).ToString(System.Globalization.CultureInfo.InvariantCulture))"
+					data-current-total="@calculatedLineTotal.ToString(System.Globalization.CultureInfo.InvariantCulture)">
 					<td>
 						<img width="60" src="@item.ImageUrl" alt="@item.ProductName" />
 					</td>
@@ -118,6 +123,26 @@
 			}
 		</tbody>
 	</table>
+	
+	<hr class="soft" />
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<td>
+					<span class="pull-right">
+						<strong>Grand Total (Incl. Discount & Tax):</strong>
+					</span>
+				</td>
+				<td>
+					<span class="pull-right">
+						<strong id="cart-grand-total">$@totalPrice.ToString("N2")</strong>
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr class="soft" />
+	
 	<form asp-controller="Prod" asp-action="Pay" method="post" style="display:inline;">
 		@for (int i = 0; i < Model.Count; i++)
 		{
@@ -138,12 +163,33 @@
 		</button>
 	</form>
 </div>
+
+
 @section Scripts {
 	<script>
 		//  (1234.56 -> $1,234.56)
 		function formatCurrency(value) {
 			return '$' + parseFloat(value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
+        
+        function updateGrandTotal() {
+            let grandTotal = 0;
+            // Select all rows that start with "row-" Get the numeric total from the data attribute
+            const cartRows = document.querySelectorAll('tr[id^="row-"]');
+
+            cartRows.forEach(row => {
+                const lineTotal = parseFloat(row.getAttribute('data-current-total'));
+                if (!isNaN(lineTotal)) {
+                    grandTotal += lineTotal;
+                }
+            });
+
+            // Update the Grand Total display element
+            const grandTotalElement = document.getElementById('cart-grand-total');
+            if (grandTotalElement) {
+                grandTotalElement.innerText = formatCurrency(grandTotal);
+            }
+        }
 
 		function updateLineTotal(inputElement) {
 			const orderProductId = inputElement.getAttribute('data-id');
@@ -152,21 +198,20 @@
 			const totalCell = document.getElementById(`line-total-${orderProductId}`);
 			const maxStock = parseInt(inputElement.getAttribute('max'));
 
-			// Find the corresponding hidden input field using the new ID
 			const hiddenQuantityInput = document.getElementById(`hidden-qty-${orderProductId}`);
 
 			if (newQuantity < 1) {
-				// Revert to 1 if user enters a negative or zero quantity
 				inputElement.value = 1;
 				if (hiddenQuantityInput) { hiddenQuantityInput.value = 1; }
+                updateGrandTotal();
 				return;
 			}
 
 			if (newQuantity > maxStock) {
-				// Revert to max stock if user exceeds limit
 				alert(`Maximum stock for this item is ${maxStock}.`);
 				inputElement.value = maxStock;
 				if (hiddenQuantityInput) { hiddenQuantityInput.value = maxStock; }
+                updateGrandTotal();
 				return;
 			}
 
@@ -176,14 +221,18 @@
 
 			const discountAmountPerUnit = price * discountRate;
 			const discountedPricePerUnit = price - discountAmountPerUnit;
-			const taxAmountPerUnit = price * taxRate;
+			const taxAmountPerUnit = discountedPricePerUnit * taxRate;
 
 			const finalPricePerUnit = discountedPricePerUnit + taxAmountPerUnit;
 
 			const calculatedLineTotal = finalPricePerUnit * newQuantity;
+			
 			totalCell.innerText = formatCurrency(calculatedLineTotal);
+            row.setAttribute('data-current-total', calculatedLineTotal.toString());
+            
+            // Recalculate and update the Grand Total display
+            updateGrandTotal(); 
 
-			// Update the hidden input value so the correct quantity is submitted to the server
 			if (hiddenQuantityInput) {
 				hiddenQuantityInput.value = newQuantity;
 			}

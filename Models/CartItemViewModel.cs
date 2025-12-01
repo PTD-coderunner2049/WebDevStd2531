@@ -8,14 +8,12 @@
         public string ProductName { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public int MaxStock { get; set; } // Available stock for validation
+        public int MaxStock { get; set; }
         public int Quantity { get; set; }
         public double Price { get; set; }
         public double? Discount { get; set; }
         public double? Tax { get; set; }
         public required string SelectedType { get; set; }
-
-        // Calculated property for display
         public double LineTotal => Quantity * Price;
     }
 }
