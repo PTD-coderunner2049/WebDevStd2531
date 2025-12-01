@@ -1,4 +1,9 @@
 ﻿@model List<WebDevStd2531.Models.GrandCategory>
+@using Microsoft.AspNetCore.Identity
+@using WebDevStd2531.AppData
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 @{
     var allProducts = Model
         .SelectMany(gc => gc.Categories)
@@ -12,10 +17,13 @@
         .ToList();
 }
 
-<div class="well well-small">
-    @* Cart data remains hardcoded as I aint going for it yet *@
-    <a id="myCart" asp-controller="Prod" asp-action="CartDetail"><img src="~/assets/themes/images/ico-cart.png" alt="cart">3 Items in your cart  <span class="badge badge-warning pull-right">$155.00</span></a>
-</div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="well well-small">
+        @* Cart data remains hardcoded as I aint going for it yet *@
+            <a id="myCart" asp-controller="Prod" asp-action="CartDetail"><img src="~/assets/themes/images/ico-cart.png" alt="cart">3 Items in your cart  <span class="badge badge-warning pull-right">$155.00</span></a>
+        </div>
+    }
 
 <ul id="sideManu" class="nav nav-tabs nav-stacked">
     @foreach (var grandCategory in Model)

@@ -67,7 +67,7 @@ namespace WebDevStd2531.Controllers
                 .ThenInclude(op => op.Product)
                 .FirstOrDefault(o => o.UserId == currentUserId && o.Status == "Pending");
 
-            // 3. Project the OrderProducts into your CartItemViewModel
+            // got the order, now access orderproduct and map all it's products to CartItemViewModel
             var cartItems = new List<CartItemViewModel>();
 
             if (cart != null && cart.OrderProducts != null)
@@ -86,6 +86,61 @@ namespace WebDevStd2531.Controllers
                     .ToList();
             }
             return View(cartItems);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Pay(List<CartItemViewModel> list)
+        {
+            if (list == null || !list.Any())
+                return RedirectToAction("CartDetail");
+            //fetch order (only one pending per user)
+            var orderProduct = await _db.OrderProducts
+                .Include(op => op.Order)
+                .FirstOrDefaultAsync(op => op.Id == list.First().OrderProductId);
+
+            var orderToUpdate = orderProduct?.Order;
+
+            if (orderToUpdate == null)
+                return RedirectToAction("CartDetail");
+
+            // Start a transaction so all operation go at once.(stock updates and status changes)
+            using var transaction = await _db.Database.BeginTransactionAsync();
+
+            try
+            {
+                orderToUpdate.Status = "Completed";
+                orderToUpdate.PaidAt = DateTime.UtcNow;
+
+                foreach (var item in list)
+                {
+                    //fetch product
+                    var product = await _db.Products.FindAsync(item.ProductId);
+
+                    if (product != null)
+                    {
+                        product.Stock -= item.Quantity;
+
+                        // stock safeguard, undo entire transaction if any product goes below 0
+                        // I should add somthing to notify user that stock is insufficient... but the
+                        // requirement doesn't ask for it so...
+                        if (product.Stock < 0)
+                        {
+                            await transaction.RollbackAsync();
+                            return RedirectToAction("CartDetail");
+                        }
+                    }
+                }
+
+                await _db.SaveChangesAsync();
+                //Commit the transaction
+                await transaction.CommitAsync();
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception)
+            {
+                // Rollback on any failure (database error, unexpected exception)
+                await transaction.RollbackAsync();
+                return RedirectToAction("CartDetail");
+            }
         }
     }
 }
