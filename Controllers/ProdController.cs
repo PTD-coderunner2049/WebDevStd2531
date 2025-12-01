@@ -20,7 +20,7 @@ namespace WebDevStd2531.Controllers
             Product? currProd = _db.Products
                 .Include(p => p.Category)
                 .ThenInclude(c => c.GrandCategory)
-                .Where(p => p.Id == Id)     
+                .Where(p => p.Id == Id)
                 .FirstOrDefault();
             //fully loaded currProd with Category and GrandCategory? for the detail view? ABSOLUTELY UNNECESSARY but why not :D
             //Now I will do another querry. accessing the already obtained CategoryId to get related products
@@ -37,7 +37,8 @@ namespace WebDevStd2531.Controllers
                 RelatedProds = relatedProducts
             });
         }
-        public IActionResult CateDetail(int Id){
+        public IActionResult CateDetail(int Id)
+        {
             Category? currCate = _db.Categories
                 .Include(c => c.Products)
                 .Where(c => c.Id == Id)
@@ -82,66 +83,12 @@ namespace WebDevStd2531.Controllers
                         MaxStock = op.Product.Stock,
                         Description = op.Type,
                         Discount = op.Product.Discount,
-                        Tax = op.Product.Tax
+                        Tax = op.Product.Tax,
+                        SelectedType = op.Type
                     })
                     .ToList();
             }
             return View(cartItems);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Pay(List<CartItemViewModel> list)
-        {
-            if (list == null || !list.Any())
-                return RedirectToAction("CartDetail");
-            //fetch order (only one pending per user)
-            var orderProduct = await _db.OrderProducts
-                .Include(op => op.Order)
-                .FirstOrDefaultAsync(op => op.Id == list.First().OrderProductId);
-
-            var orderToUpdate = orderProduct?.Order;
-
-            if (orderToUpdate == null)
-                return RedirectToAction("CartDetail");
-
-            // Start a transaction so all operation go at once.(stock updates and status changes)
-            using var transaction = await _db.Database.BeginTransactionAsync();
-
-            try
-            {
-                orderToUpdate.Status = "Completed";
-                orderToUpdate.PaidAt = DateTime.UtcNow;
-
-                foreach (var item in list)
-                {
-                    //fetch product
-                    var product = await _db.Products.FindAsync(item.ProductId);
-
-                    if (product != null)
-                    {
-                        product.Stock -= item.Quantity;
-
-                        // stock safeguard, undo entire transaction if any product goes below 0
-                        // I should add somthing to notify user that stock is insufficient... but the
-                        // requirement doesn't ask for it so...
-                        if (product.Stock < 0)
-                        {
-                            await transaction.RollbackAsync();
-                            return RedirectToAction("CartDetail");
-                        }
-                    }
-                }
-
-                await _db.SaveChangesAsync();
-                //Commit the transaction
-                await transaction.CommitAsync();
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception)
-            {
-                // Rollback on any failure (database error, unexpected exception)
-                await transaction.RollbackAsync();
-                return RedirectToAction("CartDetail");
-            }
         }
         [HttpPost]
         public async Task<IActionResult> AddCart(AddCartViewModel model)
@@ -212,5 +159,62 @@ namespace WebDevStd2531.Controllers
                 return RedirectToAction("CartDetail");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Pay(List<CartItemViewModel> list)
+        {
+            if (list == null || !list.Any())
+                return RedirectToAction("CartDetail");
+            //fetch order (only one pending per user)
+            var orderProduct = await _db.OrderProducts
+                .Include(op => op.Order)
+                .FirstOrDefaultAsync(op => op.Id == list.First().OrderProductId);
+
+            var orderToUpdate = orderProduct?.Order;
+
+            if (orderToUpdate == null)
+                return RedirectToAction("CartDetail");
+
+            // Start a transaction so all operation go at once.(stock updates and status changes)
+            using var transaction = await _db.Database.BeginTransactionAsync();
+
+            try
+            {
+                orderToUpdate.Status = "Completed";
+                orderToUpdate.PaidAt = DateTime.UtcNow;
+
+                foreach (var item in list)
+                {
+                    //fetch product
+                    var product = await _db.Products.FindAsync(item.ProductId);
+
+                    if (product != null)
+                    {
+                        product.Stock -= item.Quantity;
+
+                        // stock safeguard, undo entire transaction if any product goes below 0
+                        // I should add somthing to notify user that stock is insufficient... but the
+                        // requirement doesn't ask for it so...
+                        if (product.Stock < 0)
+                        {
+                            await transaction.RollbackAsync();
+                            TempData["StockError"] = $"Transaction failed: Insufficient stock for {product.Name}. The payment cant be proceed.";
+                            return RedirectToAction("CartDetail");
+                        }
+                    }
+                }
+
+                await _db.SaveChangesAsync();
+                //Commit the transaction
+                await transaction.CommitAsync();
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception)
+            {
+                // Rollback on any failure (database error, unexpected exception)
+                await transaction.RollbackAsync();
+                return RedirectToAction("CartDetail");
+            }
+        }
+
     }
 }

@@ -13,6 +13,7 @@
         public double Price { get; set; }
         public double? Discount { get; set; }
         public double? Tax { get; set; }
+        public required string SelectedType { get; set; }
 
         // Calculated property for display
         public double LineTotal => Quantity * Price;

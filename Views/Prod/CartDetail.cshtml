@@ -19,47 +19,18 @@
 		</li>
 		<li class="active"> Shopping Cart</li>
 	</ul>
+	
+	@* Check for TempData error and display the alert firt UwU*@
+	@if (TempData["StockError"] != null)
+	{
+		<div id="stock-error-alert" class="alert alert-error">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Error!</strong> @TempData["StockError"]
+		</div>
+	}
 
 	<h3>  SHOPPING CART [ <small> @totalLineItems Item(s) </small>]<a asp-controller="home" asp-action="Index" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Return to Shop </a></h3>
-	
 	<hr class="soft" />
-
-	@* @if (!SignInManager.IsSignedIn(User))
-	{
-		<table class="table table-bordered">
-			<tr><th> Ops, You are not logged in!!!  </th></tr>
-			<tr>
-				<td>
-					<form class="form-horizontal">
-						<div class="control-group">
-							<label class="control-label" for="inputUsername">Username</label>
-							<div class="controls">
-								<input type="text" id="inputUsername" placeholder="Username">
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="inputPassword1">Password</label>
-							<div class="controls">
-								<input type="password" id="inputPassword1" placeholder="Password">
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="controls">
-
-								<button type="submit" class="btn">Sign in</button> OR
-								<a asp-action="Register" asp-controller="User" asp-route-returnUrl="" class="btn">Register as a new user</a>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="controls">
-								<a href="#" style="text-decoration:underline">Forgot password ?</a>
-							</div>
-						</div>
-					</form>
-				</td>
-			</tr>
-		</table>
-	} *@
 
 	<table class="table table-bordered">
 		<thead>
@@ -77,7 +48,23 @@
 		<tbody>
 			@foreach (var item in Model)
 			{
-				<tr>
+
+				// Calculations from previous step (ensuring necessary variables are defined)
+				double discountRate = (item.Discount ?? 0) / 100.0;
+				double taxRate = (item.Tax ?? 0) / 100.0;
+				int quantity = item.Quantity;
+
+				double pricePerUnit = item.Price;
+				double discountAmountPerUnit = pricePerUnit * discountRate;
+				double discountedPricePerUnit = pricePerUnit - discountAmountPerUnit;
+				double taxAmountPerUnit = pricePerUnit * taxRate;
+				double finalPricePerUnit = discountedPricePerUnit + taxAmountPerUnit;
+				double calculatedLineTotal = finalPricePerUnit * quantity;
+
+				<tr id="row-@item.OrderProductId"
+					data-price="@item.Price.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+					data-discount="@((item.Discount ?? 0).ToString(System.Globalization.CultureInfo.InvariantCulture))"
+					data-tax="@((item.Tax ?? 0).ToString(System.Globalization.CultureInfo.InvariantCulture))">
 					<td>
 						<img width="60" src="@item.ImageUrl" alt="@item.ProductName" />
 					</td>
@@ -85,51 +72,118 @@
 						@item.ProductName
 						<br />
 						<small>@item.Description</small>
+						<br />
+						<small>Option: <strong>@item.SelectedType</strong></small> @* Display the selected option *@
 					</td>
 					<td>
 						<div class="input-append">
-							<input class="span1"
+							<input class="span1 cart-quantity-input"
 								   style="max-width:34px"
 								   placeholder="@item.Quantity"
-								   id="appendedInputButtons_@item.OrderProductId"
+								   id="qty-input-@item.OrderProductId"
 								   size="16"
-								   type="text"
+								   type="number"
 								   value="@item.Quantity"
-								   data-id="@item.OrderProductId"
 								   min="1"
-								   max="@item.MaxStock">
-							<button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>
+								   max="@item.MaxStock"
+								   data-id="@item.OrderProductId"
+								   onchange="updateLineTotal(this)"> @* Removed onchange/data-id *@
+                
+							<button class="btn btn-danger btn-remove" type="button" disabled> @* Added disabled *@
+								<i class="icon-remove icon-white"></i>
+							</button>
 						</div>
 					</td>
 					<td>
 						$@item.Price.ToString("N2")
 					</td>
 					<td>
-						$@(item.Discount ?? 0).ToString("N2")
+						@((item.Discount ?? 0).ToString("N0"))%
 					</td>
 					<td>
-						$@(item.Tax ?? 0).ToString("N2")
+						@((item.Tax ?? 0).ToString("N0"))%
 					</td>
-					<td>
-						@*ViewModel: Quantity * Price *@
-						$@item.LineTotal.ToString("N2")
+					<td id="line-total-@item.OrderProductId">
+						$@calculatedLineTotal.ToString("N2")
 					</td>
 				</tr>
 			}
-
-			@* <tr>
-				<td> <img width="60" src="themes/images/products/4.jpg" alt="" /></td>
-				<td>MASSA AST<br />Color : black, Material : metal</td>
-				<td>
-					<div class="input-append"><input class="span1" style="max-width:34px" placeholder="1" id="appendedInputButtons" size="16" type="text"><button class="btn" type="button"><i class="icon-minus"></i></button><button class="btn" type="button"><i class="icon-plus"></i></button><button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>				</div>
-				</td>
-				<td>$120.00</td>
-				<td>$25.00</td>
-				<td>$15.00</td>
-				<td>$110.00</td>
-			</tr> *@
 		</tbody>
 	</table>
-	<a asp-controller="Prod"
-	   asp-action="Pay" class="btn btn-large pull-right">Proceed<i class="icon-arrow-right"></i></a>
+	<form asp-controller="Prod" asp-action="Pay" method="post" style="display:inline;">
+		@for (int i = 0; i < Model.Count; i++)
+		{
+			// Bind the required properties of CartItemViewModel to hidden inputs
+			<input type="hidden" name="list[@i].OrderProductId" value="@Model[i].OrderProductId" />
+			<input type="hidden" name="list[@i].ProductId" value="@Model[i].ProductId" />
+			<input type="hidden"
+				   name="list[@i].Quantity"
+				   value="@Model[i].Quantity"
+				   id="hidden-qty-@Model[i].OrderProductId" />
+
+			// Include other necessary properties like Price, Discount, Tax, etc.,
+			// if needed in the final Pay processing but here I dont do that so...
+		}
+
+		<button type="submit" class="btn btn-large pull-right">
+			Proceed <i class="icon-arrow-right"></i>
+		</button>
+	</form>
 </div>
+@section Scripts {
+	<script>
+		// Function to format a number as currency (e.g., 1234.56 -> $1,234.56)
+		function formatCurrency(value) {
+			return '$' + parseFloat(value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
+		// Main function triggered on quantity change
+		function updateLineTotal(inputElement) {
+			const orderProductId = inputElement.getAttribute('data-id');
+			const newQuantity = parseInt(inputElement.value);
+			const row = document.getElementById(`row-${orderProductId}`);
+			const totalCell = document.getElementById(`line-total-${orderProductId}`);
+			const maxStock = parseInt(inputElement.getAttribute('max'));
+
+			// Find the corresponding hidden input field using the new ID
+			const hiddenQuantityInput = document.getElementById(`hidden-qty-${orderProductId}`); // NEW LINE
+
+			if (newQuantity < 1) {
+				// Revert to 1 if user enters a negative or zero quantity
+				inputElement.value = 1;
+				if (hiddenQuantityInput) { hiddenQuantityInput.value = 1; } // ADDED
+				return;
+			}
+
+			if (newQuantity > maxStock) {
+				// Revert to max stock if user exceeds limit
+				alert(`Maximum stock for this item is ${maxStock}.`);
+				inputElement.value = maxStock;
+				if (hiddenQuantityInput) { hiddenQuantityInput.value = maxStock; } // ADDED
+				return;
+			}
+
+			// 1. Get values from data attributes on the row
+			const price = parseFloat(row.getAttribute('data-price'));
+			const discountRate = parseFloat(row.getAttribute('data-discount')) / 100.0;
+			const taxRate = parseFloat(row.getAttribute('data-tax')) / 100.0;
+
+			// 2. Perform the server-side calculation logic (replicated in JavaScript)
+			const discountAmountPerUnit = price * discountRate;
+			const discountedPricePerUnit = price - discountAmountPerUnit;
+			const taxAmountPerUnit = price * taxRate;
+
+			const finalPricePerUnit = discountedPricePerUnit + taxAmountPerUnit;
+
+			const calculatedLineTotal = finalPricePerUnit * newQuantity;
+
+			// 3. Update the displayed line total
+			totalCell.innerText = formatCurrency(calculatedLineTotal);
+
+			// 4. Update the hidden input value so the correct quantity is submitted to the server
+			if (hiddenQuantityInput) {
+				hiddenQuantityInput.value = newQuantity; // NEW LINE
+			}
+		}
+	</script>
+}
