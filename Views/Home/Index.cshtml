@@ -61,33 +61,49 @@
 <h4>Latest Products </h4>
 <ul class="thumbnails">
 	@{
+		// Assuming Model has a property called FeaturedProducts which is a collection of Product objects
 		var latestSix = Model.FeaturedProducts
-		.OrderByDescending(p => p.Id) //sort by Id
-		.Take(6); //take newest 6
+		.OrderByDescending(p => p.Id) // Sort by Id to get newer items (assuming higher Id means newer)
+		.Take(6); // Take newest 6 items
 	}
+
 	@foreach (var item in latestSix)
 	{
+		// Logic to safely truncate the description to fix card height
+		var displayDescription = item.Description;
+		if (displayDescription.Length > 50)
+		{
+			displayDescription = displayDescription.Substring(0, 50) + "...";
+		}
+
 		<li class="span3">
 			<div class="thumbnail">
-				<a
-					asp-controller="Prod"
-					asp-action="ProdDetail"
-					asp-route-id="@item.Id">
+				@* Image Link *@
+				<a asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@item.Id">
 					<img src="@item.ImageUrl" alt="@item.Name">
 				</a>
+
 				<div class="caption">
 					<h5>@item.Name</h5>
-					<p>@item.Description</p>
+
+					@* FIX: Truncate the description to fix card height *@
+					<p>@displayDescription</p>
+
 					@* Action Buttons and Price *@
 					<h4 style="text-align:center">
+						@* View Details Button *@
 						<a class="btn"
-							asp-controller="Prod"
-							asp-action="ProdDetail"
-							asp-route-id="@item.Id">
+						   asp-controller="Prod"
+						   asp-action="ProdDetail"
+						   asp-route-id="@item.Id">
 							<i class="icon-zoom-in"></i>
 						</a>
+
+						@* Add to Cart Button (Href should point to the AddToCart action) *@
 						<a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
-						<a class="btn btn-primary" href="#">$@item.Price.ToString("F2")</a>
+
+						@* Price *@
+						<a class="btn btn-primary">$@item.Price.ToString("N2")</a>
 					</h4>
 				</div>
 			</div>

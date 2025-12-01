@@ -65,6 +65,7 @@
 			<tr>
 				<th>Product</th>
 				<th>Description</th>
+				@* Name and type *@
 				<th>Quantity/Update</th>
 				<th>Price</th>
 				<th>Discount</th>
@@ -73,7 +74,49 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						<img width="60" src="@item.ImageUrl" alt="@item.ProductName" />
+					</td>
+					<td>
+						@item.ProductName
+						<br />
+						<small>@item.Description</small>
+					</td>
+					<td>
+						<div class="input-append">
+							<input class="span1"
+								   style="max-width:34px"
+								   placeholder="@item.Quantity"
+								   id="appendedInputButtons_@item.OrderProductId"
+								   size="16"
+								   type="text"
+								   value="@item.Quantity"
+								   data-id="@item.OrderProductId"
+								   min="1"
+								   max="@item.MaxStock">
+							<button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>
+						</div>
+					</td>
+					<td>
+						$@item.Price.ToString("N2")
+					</td>
+					<td>
+						$@(item.Discount ?? 0).ToString("N2")
+					</td>
+					<td>
+						$@(item.Tax ?? 0).ToString("N2")
+					</td>
+					<td>
+						@*ViewModel: Quantity * Price *@
+						$@item.LineTotal.ToString("N2")
+					</td>
+				</tr>
+			}
+
+			@* <tr>
 				<td> <img width="60" src="themes/images/products/4.jpg" alt="" /></td>
 				<td>MASSA AST<br />Color : black, Material : metal</td>
 				<td>
@@ -83,49 +126,9 @@
 				<td>$25.00</td>
 				<td>$15.00</td>
 				<td>$110.00</td>
-			</tr>
-			<tr>
-				<td> <img width="60" src="themes/images/products/8.jpg" alt="" /></td>
-				<td>MASSA AST<br />Color : black, Material : metal</td>
-				<td>
-					<div class="input-append"><input class="span1" style="max-width:34px" placeholder="1" size="16" type="text"><button class="btn" type="button"><i class="icon-minus"></i></button><button class="btn" type="button"><i class="icon-plus"></i></button><button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>				</div>
-				</td>
-				<td>$7.00</td>
-				<td>--</td>
-				<td>$1.00</td>
-				<td>$8.00</td>
-			</tr>
-			<tr>
-				<td> <img width="60" src="themes/images/products/3.jpg" alt="" /></td>
-				<td>MASSA AST<br />Color : black, Material : metal</td>
-				<td>
-					<div class="input-append"><input class="span1" style="max-width:34px" placeholder="1" size="16" type="text"><button class="btn" type="button"><i class="icon-minus"></i></button><button class="btn" type="button"><i class="icon-plus"></i></button><button class="btn btn-danger" type="button"><i class="icon-remove icon-white"></i></button>				</div>
-				</td>
-				<td>$120.00</td>
-				<td>$25.00</td>
-				<td>$15.00</td>
-				<td>$110.00</td>
-			</tr>
-
-			<tr>
-				<td colspan="6" style="text-align:right">Total Price:	</td>
-				<td> $228.00</td>
-			</tr>
-			<tr>
-				<td colspan="6" style="text-align:right">Total Discount:	</td>
-				<td> $50.00</td>
-			</tr>
-			<tr>
-				<td colspan="6" style="text-align:right">Total Tax:	</td>
-				<td> $31.00</td>
-			</tr>
-			<tr>
-				<td colspan="6" style="text-align:right"><strong>TOTAL ($228 - $50 + $31) =</strong></td>
-				<td class="label label-important" style="display:block"> <strong> $155.00 </strong></td>
-			</tr>
+			</tr> *@
 		</tbody>
 	</table>
 	<a asp-controller="Prod"
-	   asp-action="Pay"> class="btn btn-large pull-right">Proceed<i class="icon-arrow-right"></i></a>
-
+	   asp-action="Pay" class="btn btn-large pull-right">Proceed<i class="icon-arrow-right"></i></a>
 </div>

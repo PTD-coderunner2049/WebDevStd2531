@@ -11,5 +11,6 @@
 
         public int? Quantity { get; set; }
         public double? Price { get; set; }
+        public required string Type { get; set; } // Black/small/big/etc, for description show in cart
     }
 }

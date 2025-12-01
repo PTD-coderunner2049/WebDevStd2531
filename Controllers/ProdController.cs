@@ -55,13 +55,11 @@ namespace WebDevStd2531.Controllers
         }
         public IActionResult CartDetail()
         {
-            // curr user's ID
+            // Fetch
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(currentUserId))
-            {
-                // to login page
                 return RedirectToAction("Login", "User");
-            }
+
             var cart = _db.Orders
                 .Include(o => o.OrderProducts!)
                 .ThenInclude(op => op.Product)
@@ -81,7 +79,10 @@ namespace WebDevStd2531.Controllers
                         ProductId = op.ProductId,
                         ProductName = op.Product!.Name,
                         ImageUrl = op.Product.ImageUrl,
-                        MaxStock = op.Product.Stock
+                        MaxStock = op.Product.Stock,
+                        Description = op.Type,
+                        Discount = op.Product.Discount,
+                        Tax = op.Product.Tax
                     })
                     .ToList();
             }
