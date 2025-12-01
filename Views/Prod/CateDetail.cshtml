@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = Model.Name;
     var productCount = Model.Products?.Count() ?? 0;
+    var defaultType = "Default";
 }
 
 <ul class="breadcrumb">
@@ -69,7 +70,16 @@
                                 </label><br />
 
                                 @* The "Add to Cart" link is the same as "View Details" For now, until I start working on cart I will change it here #HARDCODED *@
-                                <a asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
+                                @* Done. can void that cause these working fine now *@
+                                <form asp-controller="Prod" asp-action="AddCart" method="post" style="display:inline;">
+                                    <input type="hidden" name="ProductId" value="@product.Id" />
+                                    <input type="hidden" name="Quantity" value="1" />
+                                    <input type="hidden" name="SelectedType" value="@defaultType" />
+
+                                    <button type="submit" class="btn">
+                                        Add to <i class="icon-shopping-cart"></i>
+                                    </button>
+                                </form>
                                 <a
                                     class="btn btn-large"
                                     asp-controller="Prod"
@@ -107,8 +117,16 @@
                                     </p>
                                     <h4 style="text-align:center">
                                         <a class="btn" asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id"> <i class="icon-zoom-in"></i></a>
-                                        @* Add to Cart HARDCODED *@
-                                        <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
+                                        @* Add to Cart *@
+                                        <form asp-controller="Prod" asp-action="AddCart" method="post" style="display:inline;">
+                                            <input type="hidden" name="ProductId" value="@product.Id" />
+                                            <input type="hidden" name="Quantity" value="1" />
+                                            <input type="hidden" name="SelectedType" value="@defaultType" />
+
+                                            <button type="submit" class="btn">
+                                                Add to <i class="icon-shopping-cart"></i>
+                                            </button>
+                                        </form>
                                         <a class="btn btn-primary" href="#">$@product.Price.ToString("N2")</a>
                                     </h4>
                                 </div>
