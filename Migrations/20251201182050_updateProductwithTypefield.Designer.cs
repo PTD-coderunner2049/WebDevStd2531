@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebDevStd2531.AppData;
 
@@ -11,9 +12,11 @@ using WebDevStd2531.AppData;
 namespace WebDevStd2531.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251201182050_updateProductwithTypefield")]
+    partial class updateProductwithTypefield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,33 +376,15 @@ namespace WebDevStd2531.Migrations
                     b.Property<double?>("Tax")
                         .HasColumnType("float");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("WebDevStd2531.Models.ProductOption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductOptions");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -494,17 +479,6 @@ namespace WebDevStd2531.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("WebDevStd2531.Models.ProductOption", b =>
-                {
-                    b.HasOne("WebDevStd2531.Models.Product", "Product")
-                        .WithMany("AvailableOptions")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("WebDevStd2531.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -522,8 +496,6 @@ namespace WebDevStd2531.Migrations
 
             modelBuilder.Entity("WebDevStd2531.Models.Product", b =>
                 {
-                    b.Navigation("AvailableOptions");
-
                     b.Navigation("OrderProducts");
                 });
 #pragma warning restore 612, 618

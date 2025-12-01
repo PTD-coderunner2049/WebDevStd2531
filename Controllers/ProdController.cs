@@ -143,5 +143,74 @@ namespace WebDevStd2531.Controllers
                 return RedirectToAction("CartDetail");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> AddCart(AddCartViewModel model)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            // Fetch Product
+            var product = await _db.Products.FindAsync(model.ProductId);
+            if (product == null)
+                return NotFound();
+
+            if (model.Quantity <= 0)
+                return RedirectToAction("CartDetail"); // Or display an error??
+
+            using var transaction = await _db.Database.BeginTransactionAsync();
+            try
+            {
+                // Find/Create Pending Order
+                var cart = await _db.Orders
+                    .Include(o => o.OrderProducts!)
+                    .FirstOrDefaultAsync(o => o.UserId == currentUserId && o.Status == "Pending");
+
+                if (cart == null)
+                {
+                    cart = new Order
+                    {
+                        UserId = currentUserId,
+                        Status = "Pending",
+                        CreatedAt = DateTime.UtcNow,
+                        OrderProducts = new List<OrderProduct>()
+                    };
+                    _db.Orders.Add(cart);
+                    await _db.SaveChangesAsync();
+                }
+
+                // Add OrderProduct
+                var existingOrderProduct = cart.OrderProducts!
+                    .FirstOrDefault(op => op.ProductId == model.ProductId && op.Type == model.SelectedType);
+
+                if (existingOrderProduct != null)
+                {
+                    // Exist, increase
+                    existingOrderProduct.Quantity = (existingOrderProduct.Quantity ?? 0) + model.Quantity;
+                }
+                else // Add new
+                {
+                    var newOrderProduct = new OrderProduct
+                    {
+                        ProductId = model.ProductId,
+                        OrderId = cart.Id!.Value,
+                        Quantity = model.Quantity,
+                        Price = product.Price,
+                        Type = model.SelectedType
+                    };
+                    _db.OrderProducts.Add(newOrderProduct);
+                }
+
+                await _db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return RedirectToAction("CartDetail");
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return RedirectToAction("CartDetail");
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 @{
+	var defaultType = "Default";
     var allProducts = Model
         .SelectMany(gc => gc.Categories)
         .SelectMany(c => c.Products)
@@ -68,7 +69,15 @@
                     asp-route-id="@item.Id">
                     <i class="icon-zoom-in"></i>
                 </a>
-                <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
+                <form asp-controller="Prod" asp-action="AddCart" method="post" style="display:inline;">
+                    <input type="hidden" name="ProductId" value="@item.Id" />
+                    <input type="hidden" name="Quantity" value="1" />
+                    <input type="hidden" name="SelectedType" value="@defaultType" />
+
+                    <button type="submit" class="btn">
+                        Add to <i class="icon-shopping-cart"></i>
+                    </button>
+                </form>
                 <a class="btn btn-primary" href="#">$@item.Price.ToString("F2")</a>
             </h4>
         </div>

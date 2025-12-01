@@ -19,11 +19,14 @@ namespace WebDevStd2531.Controllers
 
         public IActionResult Index()
         {
-            var featuredProducts = _db.Products.ToList();
+            var featuredProducts = _db.Products
+                .Include(p => p.AvailableOptions)
+                .ToList();
             var Categories = _db.Categories.ToList();
             var grandCategoriesWithAllData = _db.GrandCategories
                 .Include(gc => gc.Categories)          // if a gcate have 0 cate inside, it is fine. I dont care.
                 .ThenInclude(c => c.Products)          // I want to load everything before sending to view so I can count them in the sidebar, it has a counting number there so....
+                .ThenInclude(p => p.AvailableOptions)
                 .ToList();
             return View(new HomeViewModelIndex {
                 FeaturedProducts = featuredProducts,

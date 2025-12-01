@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<WebDevStd2531.Models.Product>
 @{
+	var defaultType = "Default";
     var products = Model ?? Enumerable.Empty<WebDevStd2531.Models.Product>();
 }
 
@@ -64,8 +65,26 @@
                                     @(product.Description.Length > 50 ? product.Description.Substring(0, 50) + "..." : product.Description)
                                 </p>
                                 <h4 style="text-align:center">
-                                    <a class="btn" href="@Url.Action("ProdDetail", new { Id = product.Id })"> <i class="icon-zoom-in"></i></a>
-                                    <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
+                                    @* <a class="btn" href="@Url.Action("ProdDetail", new { Id = product.Id })"> <i class="icon-zoom-in"></i></a> *@
+                                    <a class="btn"
+                                       asp-controller="Prod"
+                                       asp-action="ProdDetail"
+                                       asp-route-id="@product.Id">
+                                        <i class="icon-zoom-in"></i>
+                                    </a>
+                                    <form asp-controller="Prod" asp-action="AddCart" method="post" style="display:inline;">
+                                        <input type="hidden" name="ProductId" value="@product.Id" />
+                                        <input type="hidden" name="Quantity" value="1" />
+                                        <input type="hidden" name="SelectedType" value="@defaultType" />
+
+                                        <button type="submit" class="btn">
+                                            Add to <i class="icon-shopping-cart"></i>
+                                        </button>
+                                    </form>
+                                    @* <a class="btn"
+                                       asp-controller="Prod"
+                                       asp-action="AddCartSingle"
+                                       asp-route-id="@product.Id">Add to <i class="icon-shopping-cart"></i></a> *@
                                     <a class="btn btn-primary" href="#">$@product.Price.ToString("N2")</a>
                                 </h4>
                             </div>

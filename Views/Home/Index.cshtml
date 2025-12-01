@@ -61,7 +61,6 @@
 <h4>Latest Products </h4>
 <ul class="thumbnails">
 	@{
-		// Assuming Model has a property called FeaturedProducts which is a collection of Product objects
 		var latestSix = Model.FeaturedProducts
 		.OrderByDescending(p => p.Id) // Sort by Id to get newer items (assuming higher Id means newer)
 		.Take(6); // Take newest 6 items
@@ -69,6 +68,16 @@
 
 	@foreach (var item in latestSix)
 	{
+		// PREREQUISITE: The 'item' product must have its AvailableOptions collection loaded
+		
+		var defaultType = "Default"; // fallback value
+		
+		if (item.AvailableOptions != null && item.AvailableOptions.Any())
+		{
+			// Get the Value property of the first option
+			defaultType = item.AvailableOptions.First().Value; 
+		}
+
 		// Logic to safely truncate the description to fix card height
 		var displayDescription = item.Description;
 		if (displayDescription.Length > 50)
@@ -99,9 +108,22 @@
 							<i class="icon-zoom-in"></i>
 						</a>
 
-						@* Add to Cart Button (Href should point to the AddToCart action) *@
-						<a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
+						@* Add to Cart Button*@
+						@* <form asp-controller="Prod" asp-action="AddCartSingle" method="post" style="display:inline;">
+							<input type="hidden" name="id" value="@item.Id" />
+							<button type="submit" class="btn">
+								Add to <i class="icon-shopping-cart"></i>
+							</button>
+						</form> *@
+						<form asp-controller="Prod" asp-action="AddCart" method="post" style="display:inline;">
+							<input type="hidden" name="ProductId" value="@item.Id" />
+							<input type="hidden" name="Quantity" value="1" />
+							<input type="hidden" name="SelectedType" value="@defaultType" />
 
+							<button type="submit" class="btn">
+								Add to <i class="icon-shopping-cart"></i>
+							</button>
+						</form>
 						@* Price *@
 						<a class="btn btn-primary">$@item.Price.ToString("N2")</a>
 					</h4>
