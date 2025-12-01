@@ -216,6 +216,19 @@ namespace WebDevStd2531.Controllers
                 return RedirectToAction("CartDetail");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> RemoveCartItem(int OrderProductId)
+        {
+            // Find the OrderProduct entity (the M:N entry)
+            var orderProductToRemove = await _db.OrderProducts.FindAsync(OrderProductId);
 
+            if (orderProductToRemove != null)
+            {
+                _db.OrderProducts.Remove(orderProductToRemove);
+                await _db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("CartDetail");
+        }
     }
 }

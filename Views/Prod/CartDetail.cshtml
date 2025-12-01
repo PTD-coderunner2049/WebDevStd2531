@@ -73,7 +73,7 @@
 						<br />
 						<small>@item.Description</small>
 						<br />
-						<small>Option: <strong>@item.SelectedType</strong></small> @* Display the selected option *@
+						<small>Option: <strong>@item.SelectedType</strong></small>
 					</td>
 					<td>
 						<div class="input-append">
@@ -87,11 +87,19 @@
 								   min="1"
 								   max="@item.MaxStock"
 								   data-id="@item.OrderProductId"
-								   onchange="updateLineTotal(this)"> @* Removed onchange/data-id *@
+								   onchange="updateLineTotal(this)">
                 
-							<button class="btn btn-danger btn-remove" type="button" disabled> @* Added disabled *@
+							@* <button class="btn btn-danger btn-remove" type="button" disabled> 
 								<i class="icon-remove icon-white"></i>
-							</button>
+							</button> *@
+							<form asp-controller="Prod" asp-action="RemoveCartItem" method="post" style="display:inline;">
+								@* This hidden input passes the unique ID of the item in the OrderProduct table *@
+								<input type="hidden" name="OrderProductId" value="@item.OrderProductId" />
+
+								<button class="btn btn-danger btn-remove" type="submit" title="Remove Item">
+									<i class="icon-remove icon-white"></i>
+								</button>
+							</form>
 						</div>
 					</td>
 					<td>
@@ -132,12 +140,11 @@
 </div>
 @section Scripts {
 	<script>
-		// Function to format a number as currency (e.g., 1234.56 -> $1,234.56)
+		//  (1234.56 -> $1,234.56)
 		function formatCurrency(value) {
 			return '$' + parseFloat(value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 
-		// Main function triggered on quantity change
 		function updateLineTotal(inputElement) {
 			const orderProductId = inputElement.getAttribute('data-id');
 			const newQuantity = parseInt(inputElement.value);
@@ -146,12 +153,12 @@
 			const maxStock = parseInt(inputElement.getAttribute('max'));
 
 			// Find the corresponding hidden input field using the new ID
-			const hiddenQuantityInput = document.getElementById(`hidden-qty-${orderProductId}`); // NEW LINE
+			const hiddenQuantityInput = document.getElementById(`hidden-qty-${orderProductId}`);
 
 			if (newQuantity < 1) {
 				// Revert to 1 if user enters a negative or zero quantity
 				inputElement.value = 1;
-				if (hiddenQuantityInput) { hiddenQuantityInput.value = 1; } // ADDED
+				if (hiddenQuantityInput) { hiddenQuantityInput.value = 1; }
 				return;
 			}
 
@@ -159,16 +166,14 @@
 				// Revert to max stock if user exceeds limit
 				alert(`Maximum stock for this item is ${maxStock}.`);
 				inputElement.value = maxStock;
-				if (hiddenQuantityInput) { hiddenQuantityInput.value = maxStock; } // ADDED
+				if (hiddenQuantityInput) { hiddenQuantityInput.value = maxStock; }
 				return;
 			}
 
-			// 1. Get values from data attributes on the row
 			const price = parseFloat(row.getAttribute('data-price'));
 			const discountRate = parseFloat(row.getAttribute('data-discount')) / 100.0;
 			const taxRate = parseFloat(row.getAttribute('data-tax')) / 100.0;
 
-			// 2. Perform the server-side calculation logic (replicated in JavaScript)
 			const discountAmountPerUnit = price * discountRate;
 			const discountedPricePerUnit = price - discountAmountPerUnit;
 			const taxAmountPerUnit = price * taxRate;
@@ -176,13 +181,11 @@
 			const finalPricePerUnit = discountedPricePerUnit + taxAmountPerUnit;
 
 			const calculatedLineTotal = finalPricePerUnit * newQuantity;
-
-			// 3. Update the displayed line total
 			totalCell.innerText = formatCurrency(calculatedLineTotal);
 
-			// 4. Update the hidden input value so the correct quantity is submitted to the server
+			// Update the hidden input value so the correct quantity is submitted to the server
 			if (hiddenQuantityInput) {
-				hiddenQuantityInput.value = newQuantity; // NEW LINE
+				hiddenQuantityInput.value = newQuantity;
 			}
 		}
 	</script>
