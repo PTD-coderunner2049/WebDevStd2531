@@ -21,7 +21,7 @@ namespace WebDevStd2531.Controllers
         {
             Product? currProd = _db.Products
                 .Include(p => p.Category)
-                .ThenInclude(c => c.GrandCategory)
+                .ThenInclude(c => c.Products)
                 .Include(p => p.AvailableOptions)
                 .Where(p => p.Id == Id)
                 .FirstOrDefault();
