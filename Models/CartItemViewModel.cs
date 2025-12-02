@@ -5,9 +5,9 @@
         // one item in the cart, CartDetail get a list of these CartItemViewModel.
         public int OrderProductId { get; set; }
         public int ProductId { get; set; }
+        //public Product Product { get; set; } = null!;
         public string ProductName { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;
-        public string Description { get; set; } = null!;
         public int MaxStock { get; set; }
         public int Quantity { get; set; }
         public double Price { get; set; }

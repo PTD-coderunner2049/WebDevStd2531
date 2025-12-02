@@ -82,7 +82,6 @@ namespace WebDevStd2531.Controllers
                         ProductName = op.Product!.Name,
                         ImageUrl = op.Product.ImageUrl,
                         MaxStock = op.Product.Stock,
-                        Description = op.Type,
                         Discount = op.Product.Discount,
                         Tax = op.Product.Tax,
                         SelectedType = op.Type
@@ -98,13 +97,12 @@ namespace WebDevStd2531.Controllers
             if (string.IsNullOrEmpty(currentUserId))
                 return RedirectToAction("Login", "User");
 
-            // Fetch Product
+            if (model.Quantity <= 0)
+                return RedirectToAction("CartDetail"); // Or display an error??
+
             var product = await _db.Products.FindAsync(model.ProductId);
             if (product == null)
                 return NotFound();
-
-            if (model.Quantity <= 0)
-                return RedirectToAction("CartDetail"); // Or display an error??
 
             using var transaction = await _db.Database.BeginTransactionAsync();
             try
@@ -127,16 +125,15 @@ namespace WebDevStd2531.Controllers
                     await _db.SaveChangesAsync();
                 }
 
-                // Add OrderProduct
+                // Add: Exist? increase, None? addNew
                 var existingOrderProduct = cart.OrderProducts!
                     .FirstOrDefault(op => op.ProductId == model.ProductId && op.Type == model.SelectedType);
 
                 if (existingOrderProduct != null)
                 {
-                    // Exist, increase
                     existingOrderProduct.Quantity = (existingOrderProduct.Quantity ?? 0) + model.Quantity;
                 }
-                else // Add new
+                else
                 {
                     var newOrderProduct = new OrderProduct
                     {
@@ -161,62 +158,6 @@ namespace WebDevStd2531.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> Pay(List<CartItemViewModel> list)
-        {
-            if (list == null || !list.Any())
-                return RedirectToAction("CartDetail");
-            //fetch order (only one pending per user)
-            var orderProduct = await _db.OrderProducts
-                .Include(op => op.Order)
-                .FirstOrDefaultAsync(op => op.Id == list.First().OrderProductId);
-
-            var orderToUpdate = orderProduct?.Order;
-
-            if (orderToUpdate == null)
-                return RedirectToAction("CartDetail");
-
-            // Start a transaction so all operation go at once.(stock updates and status changes)
-            using var transaction = await _db.Database.BeginTransactionAsync();
-
-            try
-            {
-                orderToUpdate.Status = "Completed";
-                orderToUpdate.PaidAt = DateTime.UtcNow;
-
-                foreach (var item in list)
-                {
-                    //fetch product
-                    var product = await _db.Products.FindAsync(item.ProductId);
-
-                    if (product != null)
-                    {
-                        product.Stock -= item.Quantity;
-
-                        // stock safeguard, undo entire transaction if any product goes below 0
-                        // I should add somthing to notify user that stock is insufficient... but the
-                        // requirement doesn't ask for it so...
-                        if (product.Stock < 0)
-                        {
-                            await transaction.RollbackAsync();
-                            TempData["StockError"] = $"Transaction failed: Insufficient stock for {product.Name}. The payment cant be proceed.";
-                            return RedirectToAction("CartDetail");
-                        }
-                    }
-                }
-
-                await _db.SaveChangesAsync();
-                //Commit the transaction
-                await transaction.CommitAsync();
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception)
-            {
-                // Rollback on any failure (database error, unexpected exception)
-                await transaction.RollbackAsync();
-                return RedirectToAction("CartDetail");
-            }
-        }
-        [HttpPost]
         public async Task<IActionResult> RemoveCartItem(int OrderProductId)
         {
             // Find the OrderProduct entity (the M:N entry)
@@ -229,6 +170,58 @@ namespace WebDevStd2531.Controllers
             }
 
             return RedirectToAction("CartDetail");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Pay(List<CartItemViewModel> list)
+        {
+            if (list == null || !list.Any())
+                return RedirectToAction("CartDetail");
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            //fetch order (only one pending per user)
+            var orderToUpdate = await _db.Orders
+                .FirstOrDefaultAsync(o => o.UserId == currentUserId && o.Status == "Pending");
+            if (orderToUpdate == null)
+                return RedirectToAction("CartDetail");
+
+            using var transaction = await _db.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var item in list)
+                {
+                    //fetch product (single)
+                    var product = await _db.Products.FindAsync(item.ProductId);
+
+                    if (product != null)
+                    {
+
+                        // stock safeguard, undo entire transaction if any product goes below 0
+                        // I should add somthing to notify user that stock is insufficient... but the
+                        // requirement doesn't ask for it so...
+                        if (product.Stock < item.Quantity)
+                        {
+                            await transaction.RollbackAsync();
+                            TempData["StockError"] = $"Transaction failed: Insufficient stock for {product.Name}. The payment cant be proceed.";
+                            return RedirectToAction("CartDetail");
+                        }
+                        product.Stock -= item.Quantity;
+                    }
+                }
+                orderToUpdate.Status = "Completed";
+                orderToUpdate.PaidAt = DateTime.UtcNow;
+
+                await _db.SaveChangesAsync();
+                //Commit the transaction
+                await transaction.CommitAsync();
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return RedirectToAction("CartDetail");
+            }
         }
     }
 }
