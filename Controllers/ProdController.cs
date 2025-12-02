@@ -17,7 +17,6 @@ namespace WebDevStd2531.Controllers
             _db = context;
             _userManager = userManager;
         }
-
         public IActionResult ProdDetail(int Id)
         {
             Product? currProd = _db.Products
@@ -32,9 +31,9 @@ namespace WebDevStd2531.Controllers
             {
                 return NotFound();
             }
-            var relatedProducts = _db.Products
-                .Where(p => p.CategoryId == currProd.CategoryId && p.Id != currProd.Id).Take(4)
-                .ToList();
+            //var relatedProducts = _db.Products
+            //    .Where(p => p.CategoryId == currProd.CategoryId && p.Id != currProd.Id).Take(4)
+            //    .ToList();
             return View(currProd);
 
             //return View(new ProductDetailModel
@@ -42,6 +41,22 @@ namespace WebDevStd2531.Controllers
             //    MainProduct = currProd!,
             //    RelatedProds = relatedProducts
             //});
+        }
+        public IActionResult EditProd(int Id)
+        {
+            Product? currProd = _db.Products
+                .Include(p => p.Category)
+                .ThenInclude(c => c.GrandCategory)
+                .Include(p => p.AvailableOptions)
+                .Where(p => p.Id == Id)
+                .FirstOrDefault();
+            //fully loaded currProd with Category and GrandCategory? for the edit view? ABSOLUTELY NECESSARY
+            if (currProd == null)
+            {
+                return NotFound();
+            }
+
+            return View(currProd);
         }
         public IActionResult CateDetail(int Id)
         {
@@ -95,6 +110,7 @@ namespace WebDevStd2531.Controllers
             }
             return View(cartItems);
         }
+        
         public async Task<IActionResult> ProdAdminist()
         {
             // Fetch
@@ -294,6 +310,78 @@ namespace WebDevStd2531.Controllers
                 TempData["ErrorMessage"] = "A critical error occurred while deleting the product. Operation rolled back.";
                 return RedirectToAction("ProdAdminist");
             }
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddProd(Product product, string CategoryNameInput)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUser = await _userManager.FindByIdAsync(currentUserId);
+            if (appUser == null || !appUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            using var transaction = await _db.Database.BeginTransactionAsync();
+            try
+            {
+                var categoryName = CategoryNameInput.Trim();
+                var category = await _db.Categories
+                    // case-insensitive
+                    .FirstOrDefaultAsync(c => c.Name.ToUpper() == categoryName.ToUpper());
+
+                if (category == null)
+                {
+                    await transaction.RollbackAsync();
+                    TempData["ErrorMessage"] = $"Operation failed: Category '{categoryName}' does not exist. Please use an existing category name.";
+                    return View("EditProd", product);
+                }
+                product.CategoryId = category.Id;
+
+                if (product.Id > 0)
+                {
+                    // Id is > 0, so it's an existing product (UPDATE)
+                    _db.Products.Update(product);
+                }
+                else
+                {
+                    // Id is 0 (or default value), so it's a new product (INSERT)
+                    _db.Products.Add(product);
+                }
+
+                await _db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                TempData["SuccessMessage"] = $"Product '{product.Name}' was {(product.Id > 0 ? "updated" : "added")} successfully.";
+                return RedirectToAction("ProdAdminist");
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                TempData["ErrorMessage"] = "A database error occurred while saving the product. Operation rolled back.";
+                return RedirectToAction("ProdAdminist");
+            }
+        }
+        [HttpGet]
+        public IActionResult AddProd()
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            var emptyProduct = new Product
+            {
+                Id = 0,
+                Name = string.Empty,
+                Description = string.Empty,
+                Price = 0.0,
+                Stock = 0,
+                ImageUrl = string.Empty,
+                CategoryId = 0,
+                Discount = 0.0,
+                Tax = 0.0
+            };
+
+            return View("EditProd", emptyProduct);
         }
     }
 }

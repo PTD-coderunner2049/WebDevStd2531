@@ -1,0 +1,106 @@
+﻿@model WebDevStd2531.Models.Product
+@using Microsoft.AspNetCore.Identity
+@using WebDevStd2531.AppData
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+	ViewData["Title"] = "Add New Product";
+}
+
+<div class="span9">
+	<ul class="breadcrumb">
+		<li>
+			<a asp-controller="Home"
+			     asp-action="Index">
+				Home
+			</a> <span class="divider">/</span>
+		</li>
+		<li class="active"> Product Insert</li>
+	</ul>
+
+	<h3>
+		Insert New Product
+		<a asp-controller="Prod" asp-action="ProdAdminist" class="btn pull-right">
+			<i class="icon-arrow-left"></i>
+			Return to Administration
+		</a>
+	</h3>
+	<hr class="soft" />
+	@if (TempData["ErrorMessage"] != null)
+	{
+		<div class="alert alert-error">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Error!</strong> @TempData["ErrorMessage"]
+		</div>
+	}
+	<form asp-controller="Prod" asp-action="AddProd" method="post" class="form-horizontal">
+
+		<input type="hidden" name="Id" value="@Model.Id" />
+
+		<div class="control-group">
+			<label class="control-label" for="Name">Product Name</label>
+			<div class="controls">
+				<input type="text" id="Name" name="Name" class="span3" value="@Model.Name" required />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="Description">Description</label>
+			<div class="controls">
+				<textarea id="Description" name="Description" rows="3" class="span5" required>@Model.Description</textarea>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="Price">Price $</label>
+			<div class="controls">
+				<input type="number" id="Price" name="Price" class="span2" step="0.01" min="0.01" value="@Model.Price" required />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="Stock">Stock Quantity</label>
+			<div class="controls">
+				<input type="number" id="Stock" name="Stock" class="span1" min="0" value="@Model.Stock" required />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="CategoryNameInput">Category Name</label>
+			<div class="controls">
+				<input type="text" id="CategoryNameInput" name="CategoryNameInput" class="span3"
+					   value="@Model.Category?.Name" required />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="ImageUrl">Image URL</label>
+			<div class="controls">
+				<input type="url" id="ImageUrl" name="ImageUrl" class="span5" value="@Model.ImageUrl" required />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="Discount">Discount (%)</label>
+			<div class="controls">
+				<input type="number" id="Discount" name="Discount" class="span1" min="0" max="100" value="@(Model.Discount ?? 0)" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="Tax">Tax (%)</label>
+			<div class="controls">
+				<input type="number" id="Tax" name="Tax" class="span1" min="0" max="100" value="@(Model.Tax ?? 0)" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" class="btn btn-success">Save Product</button>
+			</div>
+		</div>
+	</form>
+
+</div>
