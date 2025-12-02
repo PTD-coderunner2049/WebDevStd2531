@@ -7,7 +7,15 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        var appUser = await UserManager.GetUserAsync(User);
+
+        
         <div class="pull-right">
+            @if (appUser.IsAdmin)
+            {
+                <a asp-controller="Prod" asp-action="ProdAdminist"><span class="btn btn-mini btn-primary"> Product Data Bank</span> </a>
+                <a asp-controller="Prod" asp-action="CateAdminist"><span class="btn btn-mini btn-primary"> Category Data Bank</span> </a>
+            }
             <a asp-controller="home" asp-action="index"><span class="btn btn-mini btn-primary"> Check out ours Term and Service. </span> </a>
             @* <a asp-controller="User" asp-action="Logout"><span class="btn btn-mini btn-primary"> Log Out </span> </a> *@
             @* <form id="logoutForm" class="form-inline" asp-controller="User" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post">

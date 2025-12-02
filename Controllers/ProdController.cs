@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -9,10 +10,12 @@ namespace WebDevStd2531.Controllers
     public class ProdController : Controller
     {
         private readonly AppDBContext _db;
+        private readonly UserManager<AppUser> _userManager;
 
-        public ProdController(AppDBContext context)
+        public ProdController(AppDBContext context, UserManager<AppUser> userManager)
         {
             _db = context;
+            _userManager = userManager;
         }
 
         public IActionResult ProdDetail(int Id)
@@ -91,6 +94,24 @@ namespace WebDevStd2531.Controllers
                     .ToList();
             }
             return View(cartItems);
+        }
+        public async Task<IActionResult> ProdAdminist()
+        {
+            // Fetch
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            var appUser = await _userManager.FindByIdAsync(currentUserId);
+            if (appUser == null || !appUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var products = await _db.Products
+                .Include(p => p.Category) // Eager :DDDDD
+                .ToListAsync();
+            return View(products);
         }
         [HttpPost]
         public async Task<IActionResult> AddCart(AddCartViewModel model)
