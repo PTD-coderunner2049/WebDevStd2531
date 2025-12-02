@@ -246,5 +246,54 @@ namespace WebDevStd2531.Controllers
                 return RedirectToAction("CartDetail");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> DeleteProd(int Id)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            var appUser = await _userManager.FindByIdAsync(currentUserId);
+            if (appUser == null || !appUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            using var transaction = await _db.Database.BeginTransactionAsync();
+            try
+            {
+                // Fetch
+                var productToDelete = await _db.Products.FindAsync(Id);
+                if (productToDelete == null)
+                {
+                    // Product already gone??? ok
+                    return RedirectToAction("ProdAdminist");
+                }
+
+                //ongoing OrderProduct (active carts) that has this product
+                var orderProductsInPendingCarts = await _db.OrderProducts
+                    .Where(op => op.ProductId == Id && op.Order!.Status == "Pending")
+                    .ToListAsync();
+
+                if (orderProductsInPendingCarts.Any())
+                {
+                    _db.OrderProducts.RemoveRange(orderProductsInPendingCarts);
+                }
+                _db.Products.Remove(productToDelete);
+
+                await _db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                TempData["SuccessMessage"] = $"Product '{productToDelete.Name}' and {orderProductsInPendingCarts.Count} line item(s) from pending carts were successfully deleted.";
+                return RedirectToAction("ProdAdminist");
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                // Log the error (not shown here)
+                TempData["ErrorMessage"] = "A critical error occurred while deleting the product. Operation rolled back.";
+                return RedirectToAction("ProdAdminist");
+            }
+        }
     }
 }

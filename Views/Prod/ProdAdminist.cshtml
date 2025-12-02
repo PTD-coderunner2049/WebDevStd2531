@@ -20,7 +20,14 @@
 		<li class="active"> Current Data Bank of Products</li>
 	</ul>
 	
-	<h3> Current Data Bank of Products [ <small> @totalProd Item(s) </small>]<a asp-controller="home" asp-action="Index" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Return to Shop </a></h3>
+	<h3> Current Data Bank of Products [ <small> @totalProd Item(s) </small>]
+		<a asp-controller="Prod" asp-action="AddProd" class="btn btn-success pull-right">
+			Insert new Product
+		</a>
+		<a asp-controller="home" asp-action="Index" class="btn pull-right">
+			<i class="icon-arrow-left"></i>
+			Return to Shop </a>
+		</h3>
 	<hr class="soft" />
 
 	<table class="table table-bordered">
@@ -68,14 +75,16 @@
 							   class="btn btn-primary">
 								<i class="icon-edit icon-white"></i>
 							</a>
-
-							<a asp-controller="Prod"
-							   asp-action="DeleteProd"
-							   asp-route-id="@prod.Id"
-							   class="btn btn-danger"
-							   onclick="return confirm('Are you sure you want to delete this product?');">
-								<i class="icon-trash icon-white"></i>
-							</a>
+							<form asp-controller="Prod"
+								  asp-action="DeleteProd"
+								  asp-route-id="@prod.Id"
+								  method="post"
+								  style="display: inline;"
+								  onsubmit="return confirm('Are you sure you want to delete product @prod.Name?');">
+								<button type="submit" class="btn btn-danger">
+									<i class="icon-trash icon-white"></i>
+								</button>
+							</form>
 						</small>
 					</td>
 				</tr>
