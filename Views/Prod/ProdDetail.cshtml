@@ -66,7 +66,7 @@
 		<hr class="soft" />
 
 		@* CORRECTED FORM: Targets the AddCart action and includes all necessary inputs *@
-		<form asp-controller="Prod" asp-action="AddCart" method="post" class="form-horizontal qtyFrm">
+		<form asp-controller="Prod" asp-action="AddCartItem" method="post" class="form-horizontal qtyFrm">
 
 			@* Hidden input for ProductId (required for AddCart action) *@
 			<input type="hidden" name="ProductId" value="@Model.Id" />

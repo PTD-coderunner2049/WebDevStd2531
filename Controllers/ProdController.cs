@@ -42,6 +42,23 @@ namespace WebDevStd2531.Controllers
             //    RelatedProds = relatedProducts
             //});
         }
+        public IActionResult CateDetail(int Id)
+        {
+            Category? currCate = _db.Categories
+                .Include(c => c.Products)
+                .Where(c => c.Id == Id)
+                .FirstOrDefault();
+            //code for test
+            //if (Id == 1)
+            //{
+            //    if (currCate != null)
+            //    {
+            //        currCate.Products = new List<Product>();
+            //        currCate.Name = "(TEST EMPTY) " + currCate.Name; // Just to be sure
+            //    }
+            //}
+            return View(currCate);
+        }
         public IActionResult EditProd(int Id)
         {
             Product? currProd = _db.Products
@@ -71,23 +88,6 @@ namespace WebDevStd2531.Controllers
                 return NotFound();
             }
             //return View("EditCate", currProd);
-            return View(currCate);
-        }
-        public IActionResult CateDetail(int Id)
-        {
-            Category? currCate = _db.Categories
-                .Include(c => c.Products)
-                .Where(c => c.Id == Id)
-                .FirstOrDefault();
-            //code for test
-            //if (Id == 1)
-            //{
-            //    if (currCate != null)
-            //    {
-            //        currCate.Products = new List<Product>();
-            //        currCate.Name = "(TEST EMPTY) " + currCate.Name; // Just to be sure
-            //    }
-            //}
             return View(currCate);
         }
         public IActionResult CartDetail()
@@ -125,7 +125,6 @@ namespace WebDevStd2531.Controllers
             }
             return View(cartItems);
         }
-        
         public async Task<IActionResult> ProdAdminist()
         {
             // Fetch
@@ -162,7 +161,7 @@ namespace WebDevStd2531.Controllers
             return View(categories);
         }
         [HttpPost]
-        public async Task<IActionResult> AddCart(AddCartViewModel model)
+        public async Task<IActionResult> AddCartItem(AddCartViewModel model)
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(currentUserId))
@@ -344,6 +343,54 @@ namespace WebDevStd2531.Controllers
             }
         }
         [HttpPost]
+        public async Task<IActionResult> DeleteCate(int Id)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            var appUser = await _userManager.FindByIdAsync(currentUserId);
+            if (appUser == null || !appUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            using var transaction = await _db.Database.BeginTransactionAsync();
+            try
+            {
+                var categoryToDelete = await _db.Categories
+                    .Include(c => c.Products)
+                    .FirstOrDefaultAsync(c => c.Id == Id);
+
+                if (categoryToDelete == null)
+                {
+                    return RedirectToAction("CateAdminist");
+                }
+
+                var linkedProductsCount = categoryToDelete.Products?.Count ?? 0;
+                if (linkedProductsCount > 0)
+                {
+                    await transaction.RollbackAsync();
+                    TempData["ErrorMessage"] = $"Cannot delete Category '{categoryToDelete.Name}'. It currently has {linkedProductsCount} linked product(s). Remove or reassign the products first.";
+                    return RedirectToAction("CateAdminist");
+                }
+
+                _db.Categories.Remove(categoryToDelete);
+
+                await _db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                TempData["SuccessMessage"] = $"Category '{categoryToDelete.Name}' was successfully deleted.";
+                return RedirectToAction("CateAdminist");
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                TempData["ErrorMessage"] = "A critical error occurred while deleting the category. Operation rolled back.";
+                return RedirectToAction("CateAdminist");
+            }
+        }
+        [HttpPost]
         public async Task<IActionResult> AddProd(Product product, string CategoryNameInput)
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -377,6 +424,16 @@ namespace WebDevStd2531.Controllers
                 else
                 {
                     // Id is 0 (or default value), so it's a new product (INSERT)
+                    var existingProduct = await _db.Products
+                        .FirstOrDefaultAsync(p => p.Name.ToUpper() == product.Name!.ToUpper());
+
+                    if (existingProduct != null)
+                    {
+                        await transaction.RollbackAsync();
+                        TempData["ErrorMessage"] = $"Operation failed: A Product named '{product.Name}' already exists. Please use a unique product name.";
+                        product.Category = category;
+                        return View("EditProd", product);
+                    }
                     _db.Products.Add(product);
                 }
 
@@ -390,7 +447,77 @@ namespace WebDevStd2531.Controllers
             {
                 await transaction.RollbackAsync();
                 TempData["ErrorMessage"] = "A database error occurred while saving the product. Operation rolled back.";
-                return RedirectToAction("ProdAdminist");
+                return RedirectToAction("EditProd");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddCate(Category category, string GrandCategoryNameInput)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUser = await _userManager.FindByIdAsync(currentUserId);
+            if (appUser == null || !appUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (string.IsNullOrWhiteSpace(GrandCategoryNameInput))
+            {
+                TempData["ErrorMessage"] = "The Grand Category Name is required.";
+                // Ensure GrandCategory is still attached for the view to render correctly if it fails validation
+                category.GrandCategory = new GrandCategory { Name = GrandCategoryNameInput };
+                return View("EditCate", category);
+            }
+
+            using var transaction = await _db.Database.BeginTransactionAsync();
+            try
+            {
+                var grandCategoryName = GrandCategoryNameInput.Trim();
+
+                // EXISTING GRAND CATEGORY??
+                var grandCategory = await _db.GrandCategories
+                    // case-insensitive
+                    .FirstOrDefaultAsync(gc => gc.Name.ToUpper() == grandCategoryName.ToUpper());
+
+                if (grandCategory == null)
+                {
+                    grandCategory = new GrandCategory { Name = grandCategoryName };
+                    _db.GrandCategories.Add(grandCategory);
+                    await _db.SaveChangesAsync(); // Save to generate the GrandCategory.Id
+                }
+                category.GrandCategoryId = grandCategory.Id;
+
+                if (category.Id > 0)
+                {
+                    _db.Categories.Update(category);
+                }
+                else
+                {
+                    // Check for duplicate category name within this Grand Category
+                    var existingCategory = await _db.Categories
+                        .FirstOrDefaultAsync(c => c.Name.ToUpper() == category.Name!.ToUpper() && c.GrandCategoryId == grandCategory.Id);
+
+                    if (existingCategory != null)
+                    {
+                        await transaction.RollbackAsync();
+                        TempData["ErrorMessage"] = $"Operation failed: A Category named '{category.Name}' already exists under the Grand Category '{grandCategory.Name}'.";
+                        category.GrandCategory = grandCategory; // Attach for view rendering
+                        return View("EditCate", category);
+                    }
+
+                    _db.Categories.Add(category);
+                }
+
+                await _db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                TempData["SuccessMessage"] = $"Category '{category.Name}' was {(category.Id > 0 ? "updated" : "added")} successfully.";
+                return RedirectToAction("CateAdminist");
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                TempData["ErrorMessage"] = "A database error occurred while saving the category. Operation rolled back.";
+                return RedirectToAction("CateAdminist");
             }
         }
         [HttpGet]
@@ -414,6 +541,24 @@ namespace WebDevStd2531.Controllers
             };
 
             return View("EditProd", emptyProduct);
+        }
+        [HttpGet]
+        public IActionResult AddCate()
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            var emptyCategory = new Category
+            {
+                Id = 0,
+                Name = string.Empty,
+                Description = string.Empty,
+                GrandCategoryId = 0,
+                GrandCategory = new GrandCategory { Name = string.Empty, Id = 0 }
+            };
+
+            return View("EditCate", emptyCategory);
         }
     }
 }

@@ -69,7 +69,7 @@
                     asp-route-id="@item.Id">
                     <i class="icon-zoom-in"></i>
                 </a>
-                <form asp-controller="Prod" asp-action="AddCart" method="post" style="display:inline;">
+                <form asp-controller="Prod" asp-action="AddCartItem" method="post" style="display:inline;">
                     <input type="hidden" name="ProductId" value="@item.Id" />
                     <input type="hidden" name="Quantity" value="1" />
                     <input type="hidden" name="SelectedType" value="@defaultType" />
