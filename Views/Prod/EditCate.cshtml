@@ -1,0 +1,71 @@
+﻿@model WebDevStd2531.Models.Category
+@using Microsoft.AspNetCore.Identity
+@using WebDevStd2531.AppData
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+	ViewData["Title"] = "Add New Category"; 
+}
+
+<div class="span9">
+	<ul class="breadcrumb">
+		<li>
+			<a asp-controller="Home"
+			     asp-action="Index">
+				Home
+			</a> <span class="divider">/</span>
+		</li>
+		<li class="active"> Category Insert</li>
+	</ul>
+
+	<h3>
+		Insert New Category
+		<a asp-controller="Prod" asp-action="CateAdminist" class="btn pull-right">
+			<i class="icon-arrow-left"></i>
+			Return to Product Administration
+		</a>
+	</h3>
+	<hr class="soft" />
+	@if (TempData["ErrorMessage"] != null)
+	{
+		<div class="alert alert-error">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Error!</strong> @TempData["ErrorMessage"] 
+		</div>
+	}
+	<form asp-controller="Prod" asp-action="AddCate" method="post" class="form-horizontal">
+
+		<input type="hidden" name="Id" value="@Model.Id" />
+
+		<div class="control-group">
+			<label class="control-label" for="Name">Category Name</label>
+			<div class="controls">
+				<input type="text" id="Name" name="Name" class="span3" value="@Model.Name" required />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="Description">Description (Optional)</label>
+			<div class="controls">
+				<textarea id="Description" name="Description" rows="3" class="span5">@Model.Description</textarea>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="GrandCategoryNameInput">Grand Category Name</label> @* CHANGED LABEL *@
+			<div class="controls">
+				<input type="text" id="GrandCategoryNameInput" name="GrandCategoryNameInput" class="span3"
+					   value="@Model.GrandCategory?.Name" required /> @* CHANGED NAME AND BINDING *@
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" class="btn btn-success">Save Category</button>
+			</div>
+		</div>
+	</form>
+
+</div>

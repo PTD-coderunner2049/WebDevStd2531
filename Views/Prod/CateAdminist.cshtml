@@ -1,0 +1,89 @@
+﻿@model List<WebDevStd2531.Models.Category>
+@using Microsoft.AspNetCore.Identity
+@using WebDevStd2531.AppData
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+	ViewData["Title"] = "CateAdminist";
+	var totalProd = Model.Count;
+}
+<div class="span9">
+	<ul class="breadcrumb">
+		<li>
+			<a asp-controller="Home"
+			   asp-action="Index">
+				Home
+			</a> <span class="divider">/</span>
+		</li>
+		<li class="active"> Current Data Bank of Categories</li>
+	</ul>
+	
+	<h3>
+		Current Data Bank of Categories [ <small> @totalProd Item(s) </small>]
+		<a asp-controller="Prod" asp-action="AddCate" class="btn btn-success pull-right">
+			Insert new Category
+		</a>
+		<a asp-controller="home" asp-action="Index" class="btn pull-right">
+			<i class="icon-arrow-left"></i>
+			Return to Shop </a>
+		</h3>
+	<hr class="soft" />
+	@if (TempData["SuccessMessage"] != null)
+	{
+		<div class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Success!</strong> @TempData["SuccessMessage"]
+		</div>
+	}
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Category</th>
+				<th>Description</th>
+				<th>GrandCategory</th>
+				<th>Administ</th>
+				@* for button *@
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var cate in Model)
+			{
+				<tr id="row-@cate.Id">
+					<td>
+						<strong>
+							@cate.Name
+						</strong>
+					</td>
+					<td>
+						<small>Description: <strong>@cate.Description</strong></small>
+					</td>
+					<td>
+						@cate.GrandCategory?.Name
+					</td>
+					<td>
+						 <small>
+							<a asp-controller="Prod"
+							   asp-action="EditCate"
+							   asp-route-id="@cate.Id"
+							   class="btn btn-primary">
+								<i class="icon-edit icon-white"></i>
+							</a>
+							<form asp-controller="Prod"
+								  asp-action="DeleteCate"
+								  asp-route-id="@cate.Id"
+								  method="post"
+								  style="display: inline;"
+								  onsubmit="return confirm('Are you sure you want to delete category @cate.Name?');">
+								<button type="submit" class="btn btn-danger">
+									<i class="icon-trash icon-white"></i>
+								</button>
+							</form>
+						</small>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

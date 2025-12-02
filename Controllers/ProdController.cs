@@ -55,8 +55,23 @@ namespace WebDevStd2531.Controllers
             {
                 return NotFound();
             }
+            //return View("EditProd", currProd);
 
             return View(currProd);
+        }
+        public IActionResult EditCate(int Id)
+        {
+            var currCate = _db.Categories
+                .Include(c => c.GrandCategory)
+                .Where(c => c.Id == Id)
+                .FirstOrDefault();
+
+            if (currCate == null)
+            {
+                return NotFound();
+            }
+            //return View("EditCate", currProd);
+            return View(currCate);
         }
         public IActionResult CateDetail(int Id)
         {
@@ -128,6 +143,23 @@ namespace WebDevStd2531.Controllers
                 .Include(p => p.Category) // Eager :DDDDD
                 .ToListAsync();
             return View(products);
+        }
+        public async Task<IActionResult> CateAdminist()
+        {
+            // Fetch
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+            var appUser = await _userManager.FindByIdAsync(currentUserId);
+            if (appUser == null || !appUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var categories = await _db.Categories
+                .Include(c => c.GrandCategory) // Eager :DDDDD
+                .ToListAsync();
+            return View(categories);
         }
         [HttpPost]
         public async Task<IActionResult> AddCart(AddCartViewModel model)
