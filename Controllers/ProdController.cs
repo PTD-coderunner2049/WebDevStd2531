@@ -32,11 +32,13 @@ namespace WebDevStd2531.Controllers
             var relatedProducts = _db.Products
                 .Where(p => p.CategoryId == currProd.CategoryId && p.Id != currProd.Id).Take(4)
                 .ToList();
-            return View(new ProductDetailModel
-            {
-                MainProduct = currProd!,
-                RelatedProds = relatedProducts
-            });
+            return View(currProd);
+
+            //return View(new ProductDetailModel
+            //{
+            //    MainProduct = currProd!,
+            //    RelatedProds = relatedProducts
+            //});
         }
         public IActionResult CateDetail(int Id)
         {

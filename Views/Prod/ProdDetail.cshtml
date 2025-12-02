@@ -1,10 +1,10 @@
-﻿@model WebDevStd2531.Models.ProductDetailModel
+﻿@model WebDevStd2531.Models.Product
 @{
-	ViewData["Title"] = Model.MainProduct.Name;
+	ViewData["Title"] = Model.Name;
 }
 
 @{
-	var mProduct = Model.MainProduct;
+	// var mProduct = Model;
 }
 
 <ul class="breadcrumb">
@@ -15,33 +15,34 @@
 		</a> <span class="divider">/</span>
 	</li>
 
-	@if (mProduct.Category?.GrandCategory != null)
+	@if (Model.Category?.GrandCategory != null)
 	{
-		<li><a href="#">@mProduct.Category.GrandCategory.Name</a> <span class="divider">/</span></li>
+		<li><a href="#">@Model.Category.GrandCategory.Name</a> <span class="divider">/</span></li>
 	}
-	@if (mProduct.Category != null)
+	@if (Model.Category != null)
 	{
 		<li>
 			<a asp-controller="Prod"
 			   asp-action="CateDetail"
-			   asp-route-id="@mProduct.Category.Id">
-			   @mProduct.Category.Name</a> <span class="divider">/</span>
+			   asp-route-id="@Model.Category.Id">
+				@Model.Category.Name
+			</a> <span class="divider">/</span>
 		</li>
 	}
-	<li class="active">@mProduct.Name</li>
+	<li class="active">@Model.Name</li>
 </ul>
 
 <div class="row">
 	<div id="gallery" class="span3">
-		<a href="@mProduct.ImageUrl" title="@mProduct.Name">
-			<img src="@mProduct.ImageUrl" style="width:100%" alt="@mProduct.Name" />
+		<a href="@Model.ImageUrl" title="@Model.Name">
+			<img src="@Model.ImageUrl" style="width:100%" alt="@Model.Name" />
 		</a>
 		<div id="differentview" class="moreOptopm carousel slide">
 			<div class="carousel-inner">
 				<div class="item active">
-					<a href="@mProduct.ImageUrl"> <img style="width:29%" src="@mProduct.ImageUrl" alt="" /></a>
-					<a href="@mProduct.ImageUrl"> <img style="width:29%" src="@mProduct.ImageUrl" alt="" /></a>
-					<a href="@mProduct.ImageUrl"> <img style="width:29%" src="@mProduct.ImageUrl" alt="" /></a>
+					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
+					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
+					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
 				</div>
 			</div>
 		</div>
@@ -60,18 +61,18 @@
 	</div>
 	<div class="span6">
 
-		<h3>@mProduct.Name </h3>
-		<small>- @mProduct.Description</small>
+		<h3>@Model.Name </h3>
+		<small>- @Model.Description</small>
 		<hr class="soft" />
 
 		@* CORRECTED FORM: Targets the AddCart action and includes all necessary inputs *@
 		<form asp-controller="Prod" asp-action="AddCart" method="post" class="form-horizontal qtyFrm">
 
 			@* Hidden input for ProductId (required for AddCart action) *@
-			<input type="hidden" name="ProductId" value="@mProduct.Id" />
+			<input type="hidden" name="ProductId" value="@Model.Id" />
 
 			<div class="control-group">
-				<label class="control-label"><span>$@mProduct.Price.ToString("N2")</span></label>
+				<label class="control-label"><span>$@Model.Price.ToString("N2")</span></label>
 				<div class="controls">
 
 					@* Quantity Input: Name must be 'Quantity' for binding *@
@@ -81,7 +82,7 @@
 						   placeholder="Qty."
 						   value="1"
 						   min="1"
-						   max="@mProduct.Stock" />
+						   max="@Model.Stock" />
 
 					@* Add to Cart Button *@
 					<button type="submit" class="btn btn-large btn-primary pull-right">
@@ -92,16 +93,16 @@
 
 			<hr class="soft" />
 
-			<h4>@mProduct.Stock items in stock</h4>
+			<h4>@Model.Stock items in stock</h4>
 
 			<div class="control-group">
 				<label class="control-label"><span>Color</span></label>
 				<div class="controls">
 					<select name="SelectedType" class="span2">
 						@* product's AvailableOptions *@
-						@if (mProduct.AvailableOptions != null && mProduct.AvailableOptions.Any())
+						@if (Model.AvailableOptions != null && Model.AvailableOptions.Any())
 						{
-							@foreach (var option in mProduct.AvailableOptions)
+							@foreach (var option in Model.AvailableOptions)
 							{
 								// Assuming ProductOption has a 'Name' property for the option value/text
 								<option value="@option.Value">@option.Value</option>
@@ -119,7 +120,7 @@
 		</form>
 		@* END OF CORRECTED FORM *@
 
-		<p> @mProduct.Description </p>
+		<p> @Model.Description </p>
 		<a class="btn btn-small pull-right" href="#detail">More Details</a>
 		<br class="clr" />
 		<a href="#" name="detail"></a>
@@ -132,10 +133,10 @@
 		</ul>
 		<div id="myTabContent" class="tab-content">
 			<div class="tab-pane fade active in" id="home">
-				<partial name="_ProductDetailsTab" model="mProduct" />
+				<partial name="_ProductDetailsTab" model="Model" />
 			</div>
 			<div class="tab-pane fade" id="profile">
-				<partial name="_relatedProductsTab" model="Model.RelatedProds" />
+				<partial name="_relatedProductsTab" model="Model.Category.Products" />
 			</div>
 		</div>
 	</div>
