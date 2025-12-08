@@ -46,10 +46,7 @@
 				<div class="span6">
 					@if (User.Identity!.IsAuthenticated)
 					{
-						// 1. Get the current AppUser object
 						var user = await UserManager.GetUserAsync(User);
-
-						// 2. Display the FullName
 						if (user != null)
 						{
 							<span>Welcome!<strong> @user.FullName</strong></span>
@@ -57,7 +54,6 @@
 					}
 					else
 					{
-						// Display generic welcome if not logged in
 						<span>Welcome!<strong> Guest</strong></span>
 					}
 				</div>
@@ -82,7 +78,7 @@
 					<span class="icon-bar"></span>
 				</a>
 				<div class="navbar-inner">
-					<a class="brand" asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/logo.png" alt="Bootsshop" /></a>
+					<a class="brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/logo.png" alt="Bootsshop" /></a>
 					<form class="form-inline navbar-search" method="post" action="products.html">
 						<input id="srchFld" class="srchTxt" type="text" />
 						<select class="srchTxt">
@@ -102,7 +98,7 @@
 						@if (SignInManager.IsSignedIn(User))
 						{
 							<li class="">
-								<a asp-controller="User" asp-action="Logout" style="padding-right:0">
+								<a asp-area="" asp-controller="User" asp-action="Logout" style="padding-right:0">
 									<span class="btn btn-large btn-success">Logout</span>
 								</a>
 							</li>
@@ -110,7 +106,7 @@
 						else 
 						{
 							<li class="">
-								<a asp-controller="User" asp-action="Login" style="padding-right:0">
+								<a asp-area="" asp-controller="User" asp-action="Login" style="padding-right:0">
 									<span class="btn btn-large btn-success">Login</span>
 								</a>
 							</li>
@@ -126,7 +122,7 @@
 			<div class="carousel-inner">
 				<div class="item active">
 					<div class="container">
-						<a asp-controller="Home" asp-action="Index"><img style="width:100%" src="~/assets/themes/images/carousel/1.png" alt="special offers" /></a>
+						<a asp-area="" asp-controller="Home" asp-action="Index"><img style="width:100%" src="~/assets/themes/images/carousel/1.png" alt="special offers" /></a>
 						<div class="carousel-caption">
 							<h4>Second Thumbnail label</h4>
 							<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -135,7 +131,7 @@
 				</div>
 				<div class="item">
 					<div class="container">
-						<a asp-controller="Home" asp-action="Index"><img style="width:100%" src="~/assets/themes/images/carousel/2.png" alt="" /></a>
+						<a asp-area="" asp-controller="Home" asp-action="Index"><img style="width:100%" src="~/assets/themes/images/carousel/2.png" alt="" /></a>
 						<div class="carousel-caption">
 							<h4>Second Thumbnail label</h4>
 							<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -144,17 +140,7 @@
 				</div>
 				<div class="item">
 					<div class="container">
-						<a asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/carousel/3.png" alt="" /></a>
-						<div class="carousel-caption">
-							<h4>Second Thumbnail label</h4>
-							<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-						</div>
-
-					</div>
-				</div>
-				<div class="item">
-					<div class="container">
-						<a asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/carousel/4.png" alt="" /></a>
+						<a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/carousel/3.png" alt="" /></a>
 						<div class="carousel-caption">
 							<h4>Second Thumbnail label</h4>
 							<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -164,7 +150,17 @@
 				</div>
 				<div class="item">
 					<div class="container">
-						<a asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/carousel/5.png" alt="" /></a>
+						<a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/carousel/4.png" alt="" /></a>
+						<div class="carousel-caption">
+							<h4>Second Thumbnail label</h4>
+							<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+						</div>
+
+					</div>
+				</div>
+				<div class="item">
+					<div class="container">
+						<a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/carousel/5.png" alt="" /></a>
 						<div class="carousel-caption">
 							<h4>Second Thumbnail label</h4>
 							<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -173,7 +169,7 @@
 				</div>
 				<div class="item">
 					<div class="container">
-						<a asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/carousel/6.png" alt="" /></a>
+						<a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/themes/images/carousel/6.png" alt="" /></a>
 						<div class="carousel-caption">
 							<h4>Second Thumbnail label</h4>
 							<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
@@ -245,6 +241,7 @@
 
 	<script src="~/assets/themes/js/bootshop.js"></script>
 	<script src="~/assets/themes/js/jquery.lightbox-0.5.js"></script>
+
 	@RenderSection("Scripts", required: false)
 	<!-- Themes switcher section ============================================================================================= -->
 	<div id="secectionBox">
