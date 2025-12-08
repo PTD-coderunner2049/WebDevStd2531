@@ -12,21 +12,33 @@
 <div class="span9">
 	<ul class="breadcrumb">
 		<li>
-			<a asp-controller="Home"
-			   asp-action="Index">
+			<a 
+				asp-area=""
+			    asp-controller="Home"
+			    asp-action="Index">
 				Home
-			</a> <span class="divider">/</span>
+			</a>
+			<span class="divider">/</span>
 		</li>
 		<li class="active"> Current Data Bank of Products</li>
 	</ul>
 	
 	<h3> Current Data Bank of Products [ <small> @totalProd Item(s) </small>]
-		<a asp-controller="Prod" asp-action="AddProd" class="btn btn-success pull-right">
+		<a
+			asp-area="Admin"
+			asp-controller="ProdAdmin"
+			asp-action="AddProd"
+			class="btn btn-success pull-right">
 			Insert new Product
 		</a>
-		<a asp-controller="home" asp-action="Index" class="btn pull-right">
+		<a 
+			asp-area=""
+		    asp-controller="home"
+			asp-action="Index"
+			class="btn pull-right">
 			<i class="icon-arrow-left"></i>
-			Return to Shop </a>
+			Return to Shop
+		</a>
 		</h3>
 	<hr class="soft" />
 	@if (TempData["SuccessMessage"] != null)
@@ -75,18 +87,22 @@
 					</td>
 					<td>
 						 <small>
-							<a asp-controller="Prod"
-							   asp-action="EditProd"
-							   asp-route-id="@prod.Id"
-							   class="btn btn-primary">
+							<a 
+								asp-area="Admin"
+								asp-controller="ProdAdmin"
+							    asp-action="EditProd"
+							    asp-route-id="@prod.Id"
+							    class="btn btn-primary">
 								<i class="icon-edit icon-white"></i>
 							</a>
-							<form asp-controller="Prod"
-								  asp-action="DeleteProd"
-								  asp-route-id="@prod.Id"
-								  method="post"
-								  style="display: inline;"
-								  onsubmit="return confirm('Are you sure you want to delete product @prod.Name?');">
+							<form
+								asp-area="Admin"
+								asp-controller="ProdAdmin"
+								asp-action="DeleteProd"
+								asp-route-id="@prod.Id"
+								method="post"
+								style="display: inline;"
+								onsubmit="return confirm('Are you sure you want to delete product @prod.Name?');">
 								<button type="submit" class="btn btn-danger">
 									<i class="icon-trash icon-white"></i>
 								</button>

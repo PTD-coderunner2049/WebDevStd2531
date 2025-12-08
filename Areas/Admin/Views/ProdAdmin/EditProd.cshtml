@@ -12,17 +12,24 @@
 <div class="span9">
 	<ul class="breadcrumb">
 		<li>
-			<a asp-controller="Home"
-			     asp-action="Index">
+			<a 
+				asp-area=""
+			    asp-controller="Home"
+			    asp-action="Index">
 				Home
-			</a> <span class="divider">/</span>
+			</a>
+			<span class="divider">/</span>
 		</li>
 		<li class="active"> Product Insert</li>
 	</ul>
 
 	<h3>
 		Insert New Product
-		<a asp-controller="Prod" asp-action="ProdAdminist" class="btn pull-right">
+		<a
+			asp-area="Admin"
+			asp-controller="ProdAdmin"
+			asp-action="ProdAdminist"
+			class="btn pull-right">
 			<i class="icon-arrow-left"></i>
 			Return to Administration
 		</a>
@@ -35,7 +42,12 @@
 			<strong>Error!</strong> @TempData["ErrorMessage"]
 		</div>
 	}
-	<form asp-controller="Prod" asp-action="AddProd" method="post" class="form-horizontal">
+	<form
+		asp-area="Admin"
+		asp-controller="ProdAdmin"
+		asp-action="AddProd"
+		method="post"
+		class="form-horizontal">
 
 		<input type="hidden" name="Id" value="@Model.Id" />
 

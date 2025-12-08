@@ -22,7 +22,7 @@
     {
         <div class="well well-small">
         @* Cart data remains hardcoded as I aint going for it yet *@
-        <a id="myCart" asp-controller="Prod" asp-action="CartDetail"><img src="~/assets/themes/images/ico-cart.png" alt="cart">Visit shopping cart@*<span class="badge badge-warning pull-right">$(OwO).00</span>*@</a>
+        <a id="myCart" asp-controller="Cart" asp-action="CartDetail"><img src="~/assets/themes/images/ico-cart.png" alt="cart">Visit shopping cart@*<span class="badge badge-warning pull-right">$(OwO).00</span>*@</a>
         </div>
     }
 
@@ -41,7 +41,7 @@
                     int categoryCount = category.Products?.Count() ?? 0;
                     <li>
                         <a
-                            asp-controller="Prod"
+                            asp-controller="Cate"
                             asp-action="CateDetail"
                             asp-route-id="@category.Id">
                             <i class="icon-chevron-right"></i>@category.Name (@categoryCount)
@@ -69,7 +69,7 @@
                     asp-route-id="@item.Id">
                     <i class="icon-zoom-in"></i>
                 </a>
-                <form asp-controller="Prod" asp-action="AddCartItem" method="post" style="display:inline;">
+                <form asp-controller="Cart" asp-action="AddCartItem" method="post" style="display:inline;">
                     <input type="hidden" name="ProductId" value="@item.Id" />
                     <input type="hidden" name="Quantity" value="1" />
                     <input type="hidden" name="SelectedType" value="@defaultType" />

@@ -71,7 +71,7 @@
 
                                 @* The "Add to Cart" link is the same as "View Details" For now, until I start working on cart I will change it here #HARDCODED *@
                                 @* Done. can void that cause these working fine now *@
-                                <form asp-controller="Prod" asp-action="AddCartItem" method="post" style="display:inline;">
+                                <form asp-controller="Cart" asp-action="AddCartItem" method="post" style="display:inline;">
                                     <input type="hidden" name="ProductId" value="@product.Id" />
                                     <input type="hidden" name="Quantity" value="1" />
                                     <input type="hidden" name="SelectedType" value="@defaultType" />
@@ -118,7 +118,7 @@
                                     <h4 style="text-align:center">
                                         <a class="btn" asp-controller="Prod" asp-action="ProdDetail" asp-route-id="@product.Id"> <i class="icon-zoom-in"></i></a>
                                         @* Add to Cart *@
-                                        <form asp-controller="Prod" asp-action="AddCartItem" method="post" style="display:inline;">
+                                        <form asp-controller="Cart" asp-action="AddCartItem" method="post" style="display:inline;">
                                             <input type="hidden" name="ProductId" value="@product.Id" />
                                             <input type="hidden" name="Quantity" value="1" />
                                             <input type="hidden" name="SelectedType" value="@defaultType" />

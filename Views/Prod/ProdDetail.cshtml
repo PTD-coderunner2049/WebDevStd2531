@@ -22,7 +22,7 @@
 	@if (Model.Category != null)
 	{
 		<li>
-			<a asp-controller="Prod"
+			<a asp-controller="Cate"
 			   asp-action="CateDetail"
 			   asp-route-id="@Model.Category.Id">
 				@Model.Category.Name
@@ -66,7 +66,7 @@
 		<hr class="soft" />
 
 		@* CORRECTED FORM: Targets the AddCart action and includes all necessary inputs *@
-		<form asp-controller="Prod" asp-action="AddCartItem" method="post" class="form-horizontal qtyFrm">
+		<form asp-controller="Cart" asp-action="AddCartItem" method="post" class="form-horizontal qtyFrm">
 
 			@* Hidden input for ProductId (required for AddCart action) *@
 			<input type="hidden" name="ProductId" value="@Model.Id" />

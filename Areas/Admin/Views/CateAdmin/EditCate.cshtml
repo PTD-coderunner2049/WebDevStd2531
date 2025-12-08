@@ -12,17 +12,24 @@
 <div class="span9">
 	<ul class="breadcrumb">
 		<li>
-			<a asp-controller="Home"
-			     asp-action="Index">
+			<a 
+				asp-area=""
+				asp-controller="Home"
+			    asp-action="Index">
 				Home
-			</a> <span class="divider">/</span>
+			</a>
+			<span class="divider">/</span>
 		</li>
 		<li class="active"> Category Insert</li>
 	</ul>
 
 	<h3>
 		Insert New Category
-		<a asp-controller="Prod" asp-action="CateAdminist" class="btn pull-right">
+		<a
+			asp-area="Admin"
+			asp-controller="CateAdmin"
+			asp-action="CateAdminist"
+			class="btn pull-right">
 			<i class="icon-arrow-left"></i>
 			Return to Product Administration
 		</a>
@@ -35,7 +42,12 @@
 			<strong>Error!</strong> @TempData["ErrorMessage"] 
 		</div>
 	}
-	<form asp-controller="Prod" asp-action="AddCate" method="post" class="form-horizontal">
+	<form
+		asp-area="Admin"
+		asp-controller="CateAdmin"
+		asp-action="AddCate"
+		method="post"
+		class="form-horizontal">
 
 		<input type="hidden" name="Id" value="@Model.Id" />
 
@@ -54,10 +66,10 @@
 		</div>
 
 		<div class="control-group">
-			<label class="control-label" for="GrandCategoryNameInput">Grand Category Name</label> @* CHANGED LABEL *@
+			<label class="control-label" for="GrandCategoryNameInput">Grand Category Name</label>
 			<div class="controls">
 				<input type="text" id="GrandCategoryNameInput" name="GrandCategoryNameInput" class="span3"
-					   value="@Model.GrandCategory?.Name" required /> @* CHANGED NAME AND BINDING *@
+					   value="@Model.GrandCategory?.Name" required />
 			</div>
 		</div>
 

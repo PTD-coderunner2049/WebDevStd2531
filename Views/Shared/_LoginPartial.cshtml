@@ -7,14 +7,14 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        var appUser = await UserManager.GetUserAsync(User);
-
+        @* var appUser = await UserManager.GetUserAsync(User); OLD manual stuff*@ 
+        var isAdmin = await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin");
         
         <div class="pull-right">
-            @if (appUser.IsAdmin)
+            @if (isAdmin)
             {
-                <a asp-controller="Prod" asp-action="ProdAdminist"><span class="btn btn-mini btn-primary"> Product Data Bank</span> </a>
-                <a asp-controller="Prod" asp-action="CateAdminist"><span class="btn btn-mini btn-primary"> Category Data Bank</span> </a>
+                <a asp-area="Admin" asp-controller="ProdAdmin" asp-action="ProdAdminist"><span class="btn btn-mini btn-primary"> Product Data Bank</span> </a>
+                <a asp-area="Admin" asp-controller="CateAdmin" asp-action="CateAdminist"><span class="btn btn-mini btn-primary"> Category Data Bank</span> </a>
             }
             <a asp-controller="home" asp-action="index"><span class="btn btn-mini btn-primary"> Check out ours Term and Service. </span> </a>
             @* <a asp-controller="User" asp-action="Logout"><span class="btn btn-mini btn-primary"> Log Out </span> </a> *@

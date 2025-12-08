@@ -115,7 +115,7 @@
 								Add to <i class="icon-shopping-cart"></i>
 							</button>
 						</form> *@
-						<form asp-controller="Prod" asp-action="AddCartItem" method="post" style="display:inline;">
+						<form asp-controller="Cart" asp-action="AddCartItem" method="post" style="display:inline;">
 							<input type="hidden" name="ProductId" value="@item.Id" />
 							<input type="hidden" name="Quantity" value="1" />
 							<input type="hidden" name="SelectedType" value="@defaultType" />

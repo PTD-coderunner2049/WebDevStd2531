@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using System.Text;
-using System.Text.Encodings.Web;
 using WebDevStd2531.AppData;
 using WebDevStd2531.Models;
 
@@ -17,18 +12,20 @@ namespace WebDevStd2531.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IUserStore<AppUser> _userStore;
         //private readonly IUserEmailStore<AppUser> _emailStore;
-        //private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<UserController> _logger;
         //private readonly IEmailSender _emailSender;
         public UserController(AppDBContext context,
             UserManager<AppUser> userManager,
             IUserStore<AppUser> userStore,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager,
+            ILogger<UserController> logger)
         {
             _userManager = userManager;
             _userStore = userStore;
             //_emailStore = GetEmailStore();
             _signInManager = signInManager;
             _db = context;
+            _logger = logger;
         }
         public IActionResult Index()
         {
@@ -86,7 +83,13 @@ namespace WebDevStd2531.Controllers
 
                 if (result.Succeeded)
                 {
-                    //_logger.LogInformation("User created a new account with password.");
+                    // ROLE HERE (DEFAULT = USER)
+                    var roleResult = await _userManager.AddToRoleAsync(user, "User");
+                    if (!roleResult.Succeeded)
+                    {
+                        _logger.LogError("Failed to assign initial role to new user.");
+                    }
+                    _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -120,7 +123,6 @@ namespace WebDevStd2531.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
@@ -154,7 +156,6 @@ namespace WebDevStd2531.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
         private AppUser CreateUser()
         {
             try
