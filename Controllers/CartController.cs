@@ -191,5 +191,66 @@ namespace WebDevStd2531.Controllers
                 return RedirectToAction("CartDetail");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> IncrCartItem(int OrderProductId)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            var orderProductToUpdate = await _db.OrderProducts
+                .Include(op => op.Product) // Include Product to check MaxStock
+                .FirstOrDefaultAsync(op => op.Id == OrderProductId);
+
+            if (orderProductToUpdate == null || orderProductToUpdate.Product == null)
+            {
+                return RedirectToAction("CartDetail");
+            }
+
+            var currentQuantity = orderProductToUpdate.Quantity ?? 0;
+            var maxStock = orderProductToUpdate.Product.Stock;
+
+            if (currentQuantity + 1 > maxStock)
+            {
+                TempData["StockError"] = $"Cannot add more: Maximum stock for {orderProductToUpdate.Product.Name} is {maxStock}.";
+                return RedirectToAction("CartDetail");
+            }
+
+            orderProductToUpdate.Quantity = currentQuantity + 1;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("CartDetail");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DecrCartItem(int OrderProductId)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserId))
+                return RedirectToAction("Login", "User");
+
+            var orderProductToUpdate = await _db.OrderProducts.FindAsync(OrderProductId);
+
+            if (orderProductToUpdate == null)
+            {
+                return RedirectToAction("CartDetail");
+            }
+
+            var currentQuantity = orderProductToUpdate.Quantity ?? 0;
+
+            if (currentQuantity - 1 <= 0)
+            {
+                _db.OrderProducts.Remove(orderProductToUpdate);
+            }
+            else
+            {
+                orderProductToUpdate.Quantity = currentQuantity - 1;
+            }
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("CartDetail");
+        }
     }
 }

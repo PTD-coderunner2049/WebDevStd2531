@@ -79,25 +79,29 @@
 					</td>
 					<td>
 						<div class="input-append">
-							<input class="span1 cart-quantity-input"
-								   style="max-width:34px"
+							<form asp-controller="Cart" asp-action="DecrCartItem" method="post" style="display:inline-block;">
+								<input type="hidden" name="OrderProductId" value="@item.OrderProductId" />
+								<button class="btn" type="submit" title="Decrease Quantity">
+									<i class="icon-minus"></i>
+								</button>
+							</form>
+							<input class="span1"
+								   style="max-width:34px; text-align:center;"
 								   placeholder="@item.Quantity"
-								   id="qty-input-@item.OrderProductId"
 								   size="16"
 								   type="number"
 								   value="@item.Quantity"
-								   min="1"
-								   max="@item.MaxStock"
-								   data-id="@item.OrderProductId"
-								   onchange="updateLineTotal(this)">
-                
-							@* <button class="btn btn-danger btn-remove" type="button" disabled> 
-								<i class="icon-remove icon-white"></i>
-							</button> *@
-							<form asp-controller="Cart" asp-action="RemoveCartItem" method="post" style="display:inline;">
-								@* This hidden input passes the unique ID of the item in the OrderProduct table *@
-								<input type="hidden" name="OrderProductId" value="@item.OrderProductId" />
+								   readonly> @* Important: Make this readonly to force button interaction *@
 
+							<form asp-controller="Cart" asp-action="IncrCartItem" method="post" style="display:inline-block;">
+								<input type="hidden" name="OrderProductId" value="@item.OrderProductId" />
+								<button class="btn" type="submit" title="Increase Quantity">
+									<i class="icon-plus"></i>
+								</button>
+							</form>
+
+							<form asp-controller="Cart" asp-action="RemoveCartItem" method="post" style="display:inline;">
+								<input type="hidden" name="OrderProductId" value="@item.OrderProductId" />
 								<button class="btn btn-danger btn-remove" type="submit" title="Remove Item">
 									<i class="icon-remove icon-white"></i>
 								</button>
