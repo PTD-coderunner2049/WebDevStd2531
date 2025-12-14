@@ -15,6 +15,14 @@ namespace WebDevStd2531.Controllers
         {
             _db = context;
         }
+        public IActionResult ConfirmPay(List<CartItemViewModel> cartItems)
+        {
+            if (cartItems == null || !cartItems.Any())
+            {
+                return RedirectToAction("CartDetail");
+            }
+            return View(cartItems);
+        }
         public IActionResult CartDetail()
         {
             // Fetch
@@ -49,6 +57,7 @@ namespace WebDevStd2531.Controllers
                     .ToList();
             }
             return View(cartItems);
+        }
         }
         [HttpPost]
         public async Task<IActionResult> AddCartItem(AddCartViewModel model)

@@ -5,6 +5,14 @@
 
 @{
 	// var mProduct = Model
+
+	// Discount Calculation
+	double discountFactor = 1 - ((Model.Discount ?? 0) / 100);
+	double finalPrice = Model.Price * discountFactor;
+
+	string newPriceFormatted = finalPrice.ToString("F2");
+	string oldPriceFormatted = Model.Price.ToString("F2");
+
 }
 
 <ul class="breadcrumb">
@@ -40,9 +48,7 @@
 		<div id="differentview" class="moreOptopm carousel slide">
 			<div class="carousel-inner">
 				<div class="item active">
-					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
-					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
-					<a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a>
+					@* <a href="@Model.ImageUrl"> <img style="width:29%" src="@Model.ImageUrl" alt="" /></a> *@
 				</div>
 			</div>
 		</div>
@@ -60,22 +66,27 @@
 		</div>
 	</div>
 	<div class="span6">
-
 		<h3>@Model.Name </h3>
 		<small>- @Model.Description</small>
 		<hr class="soft" />
 
-		@* CORRECTED FORM: Targets the AddCart action and includes all necessary inputs *@
 		<form asp-controller="Cart" asp-action="AddCartItem" method="post" class="form-horizontal qtyFrm">
 
-			@* Hidden input for ProductId (required for AddCart action) *@
 			<input type="hidden" name="ProductId" value="@Model.Id" />
 
 			<div class="control-group">
-				<label class="control-label"><span>$@Model.Price.ToString("N2")</span></label>
+				@* <label class="control-label"><span>$@Model.Price.ToString("N2")</span></label> *@
+				<label class="control-label">
+					<span class="pull-right">
+						<strong>$@newPriceFormatted</strong>
+						@if ((Model.Discount ?? 0) > 0)
+						{
+							<small style="text-decoration: line-through;">$@oldPriceFormatted</small>
+						}
+					</span>
+				</label>
 				<div class="controls">
 
-					@* Quantity Input: Name must be 'Quantity' for binding *@
 					<input type="number"
 						   name="Quantity"
 						   class="span1"
@@ -84,7 +95,6 @@
 						   min="1"
 						   max="@Model.Stock" />
 
-					@* Add to Cart Button *@
 					<button type="submit" class="btn btn-large btn-primary pull-right">
 						Add to cart <i class=" icon-shopping-cart"></i>
 					</button>
@@ -99,18 +109,15 @@
 				<label class="control-label"><span>Color</span></label>
 				<div class="controls">
 					<select name="SelectedType" class="span2">
-						@* product's AvailableOptions *@
 						@if (Model.AvailableOptions != null && Model.AvailableOptions.Any())
 						{
 							@foreach (var option in Model.AvailableOptions)
 							{
-								// Assuming ProductOption has a 'Name' property for the option value/text
 								<option value="@option.Value">@option.Value</option>
 							}
 						}
 						else
 						{
-							// Fallback option if no options are defined
 							<option value="Default">N/A (Default)</option>
 						}
 					</select>
@@ -118,7 +125,6 @@
 			</div>
 			<hr class="soft clr" />
 		</form>
-		@* END OF CORRECTED FORM *@
 
 		<p> @Model.Description </p>
 		<a class="btn btn-small pull-right" href="#detail">More Details</a>
