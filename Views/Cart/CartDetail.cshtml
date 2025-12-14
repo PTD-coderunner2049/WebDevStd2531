@@ -37,7 +37,6 @@
 		<thead>
 			<tr>
 				<th>Product</th>
-				<th>Description</th>
 				@* Name and type *@
 				<th>Quantity/Update</th>
 				<th>Price</th>
@@ -75,7 +74,7 @@
 					</td>
 					<td>
 						@item.ProductName
-						<br/>
+						<br />
 						<small>Option: <strong>@item.SelectedType</strong></small>
 					</td>
 					<td>
@@ -140,20 +139,21 @@
 		</tbody>
 	</table>
 	<hr class="soft" />
-	
-	<form asp-controller="Cart" asp-action="Pay" method="post" style="display:inline;">
+
+	<form asp-controller="Cart" asp-action="ConfirmPay" method="post" style="display:inline;">
 		@for (int i = 0; i < Model.Count; i++)
 		{
-			// Bind the required properties of CartItemViewModel to hidden inputs
-			<input type="hidden" name="list[@i].OrderProductId" value="@Model[i].OrderProductId" />
-			<input type="hidden" name="list[@i].ProductId" value="@Model[i].ProductId" />
+			<input type="hidden" name="cartItems[@i].ProductName" value="@Model[i].ProductName" />
+			<input type="hidden" name="cartItems[@i].OrderProductId" value="@Model[i].OrderProductId" />
+			<input type="hidden" name="cartItems[@i].ProductId" value="@Model[i].ProductId" />
 			<input type="hidden"
-				   name="list[@i].Quantity"
+				   name="cartItems[@i].Quantity"
 				   value="@Model[i].Quantity"
 				   id="hidden-qty-@Model[i].OrderProductId" />
-
-			// Include other necessary properties like Price, Discount, Tax, etc.,
-			// if needed in the final Pay processing but here I dont do that so...
+			<input type="hidden" name="cartItems[@i].Price" value="@Model[i].Price" />
+			<input type="hidden" name="cartItems[@i].Discount" value="@Model[i].Discount" />
+			<input type="hidden" name="cartItems[@i].Tax" value="@Model[i].Tax" />
+			<input type="hidden" name="cartItems[@i].SelectedType" value="@Model[i].SelectedType" />
 		}
 
 		<button type="submit" class="btn btn-large pull-right">

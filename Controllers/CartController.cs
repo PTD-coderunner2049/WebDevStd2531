@@ -58,7 +58,6 @@ namespace WebDevStd2531.Controllers
             }
             return View(cartItems);
         }
-        }
         [HttpPost]
         public async Task<IActionResult> AddCartItem(AddCartViewModel model)
         {
@@ -141,9 +140,9 @@ namespace WebDevStd2531.Controllers
             return RedirectToAction("CartDetail");
         }
         [HttpPost]
-        public async Task<IActionResult> Pay(List<CartItemViewModel> list)
+        public async Task<IActionResult> Pay(List<CartItemViewModel> cartItems)
         {
-            if (list == null || !list.Any())
+            if (cartItems == null || !cartItems.Any())
                 return RedirectToAction("CartDetail");
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(currentUserId))
@@ -158,7 +157,7 @@ namespace WebDevStd2531.Controllers
             using var transaction = await _db.Database.BeginTransactionAsync();
             try
             {
-                foreach (var item in list)
+                foreach (var item in cartItems)
                 {
                     //fetch product (single)
                     var product = await _db.Products.FindAsync(item.ProductId);

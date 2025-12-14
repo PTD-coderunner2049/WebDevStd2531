@@ -1,0 +1,125 @@
+﻿@model List<WebDevStd2531.Models.CartItemViewModel>
+@using Microsoft.AspNetCore.Identity
+@using WebDevStd2531.AppData
+
+@{
+	ViewData["Title"] = "Confirm Payment";
+	var totalLineItems = Model.Count;
+	var totalPrice = 0.00;
+}
+
+<div class="span9">
+	<ul class="breadcrumb">
+		<li>
+			<a asp-controller="Home"
+			      asp-action="Index">
+				Home
+			</a> <span class="divider">/</span>
+		</li>
+		<li>
+			<a asp-controller="Cart"
+			      asp-action="CartDetail">
+				Shopping Cart
+			</a> <span class="divider">/</span>
+		</li>
+		<li class="active"> Payment Confirmation</li>
+	</ul>
+
+	<h3> CONFIRM ORDER DETAILS [<small> @totalLineItems Item(s) </small>]</h3>
+	<hr class="soft" />
+
+	<form asp-controller="Cart" asp-action="ConfirmOrder" method="post" class="form-horizontal">
+
+		<h4>Shipping Details</h4>
+		<div class="control-group">
+			<label class="control-label" for="receiverName">Receiver's Name</label>
+			<div class="controls">
+				<input type="text" id="receiverName" name="ReceiverName" placeholder="Full Name" required />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="receiverPhone">Receiver's Phone</label>
+			<div class="controls">
+				<input type="tel" id="receiverPhone" name="ReceiverPhone" placeholder="Phone Number" required />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="shippingAddress">Shipping Address</label>
+			<div class="controls">
+				<textarea id="shippingAddress" name="ShippingAddress" placeholder="Full Shipping Address" rows="3" required></textarea>
+			</div>
+		</div>
+
+		<hr class="soft" />
+
+		<h4>Order Summary</h4>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Products</th>
+					<th>Quantity</th>
+					<th>Final Price Per Unit</th>
+					<th>Line Total (Incl. Discount & Tax)</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (int i = 0; i < Model.Count; i++)
+				{
+					var item = Model[i];
+
+					// Calculations (retained for accurate display in this view)
+					double discountRate = (item.Discount ?? 0) / 100.0;
+					double taxRate = (item.Tax ?? 0) / 100.0;
+					int quantity = item.Quantity;
+
+					double pricePerUnit = item.Price;
+					double discountedPricePerUnit = pricePerUnit * (1 - discountRate);
+					double finalPricePerUnit = discountedPricePerUnit * (1 + taxRate); // Price + Tax
+					double calculatedLineTotal = finalPricePerUnit * quantity;
+
+					totalPrice += calculatedLineTotal;
+
+					<tr>
+						<td>
+							@item.ProductName
+							<br />
+							<small>Option: <strong>@item.SelectedType</strong></small>
+						</td>
+						<td>@item.Quantity</td>
+						<td>$@finalPricePerUnit.ToString("N2")</td>
+						<td>$@calculatedLineTotal.ToString("N2")</td>
+					</tr>
+					// FOR PAY action
+					<input type="hidden" name="cartItems[@i].ProductId" value="@item.ProductId" />
+					<input type="hidden" name="cartItems[@i].Quantity" value="@item.Quantity" />
+				}
+			</tbody>
+		</table>
+
+		<hr class="soft" />
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td>
+						<span class="pull-right">
+							<strong>Grand Total (Incl. Discount & Tax):</strong>
+						</span>
+					</td>
+					<td>
+						<span class="pull-right">
+							<strong>$@totalPrice.ToString("N2")</strong>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr class="soft" />
+
+		<a asp-controller="Cart" asp-action="CartDetail" class="btn btn-large"><i class="icon-arrow-left"></i> Back to Edit Cart </a>
+		<button type="submit" class="btn btn-large btn-primary pull-right">
+			Confirm Order <i class="icon-arrow-right"></i>
+		</button>
+	</form>
+</div>
