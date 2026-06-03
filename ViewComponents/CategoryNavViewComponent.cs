@@ -14,7 +14,17 @@ public class CategoryNavViewComponent : ViewComponent
     // This method runs whenever the View Component is called
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        HomeViewModelIndex homeModel = await _catalogClient.GetHomeAsync();
+        HomeViewModelIndex homeModel;
+
+        try
+        {
+            homeModel = await _catalogClient.GetHomeAsync();
+        }
+        catch
+        {
+            homeModel = new HomeViewModelIndex();
+        }
+
         return View("_Sidebar", homeModel.AllGrandCategories);
     }
 }

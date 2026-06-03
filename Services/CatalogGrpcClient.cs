@@ -29,13 +29,26 @@ public class CatalogGrpcClient : ICatalogGrpcClient, IDisposable
 
     public async Task<HomeViewModelIndex> GetHomeAsync(CancellationToken cancellationToken = default)
     {
-        var response = await _client.GetHomeCatalogAsync(new CatalogRequest(), cancellationToken: cancellationToken);
-        return new HomeViewModelIndex
+        try
         {
-            FeaturedProducts = response.FeaturedProducts.Select(MapProduct).ToList(),
-            AllGrandCategories = response.GrandCategories.Select(MapGrandCategory).ToList(),
-            AllCategories = response.Categories.Select(MapCategory).ToList()
-        };
+            var response = await _client.GetHomeCatalogAsync(new CatalogRequest(), cancellationToken: cancellationToken);
+            return new HomeViewModelIndex
+            {
+                FeaturedProducts = response.FeaturedProducts.Select(MapProduct).ToList(),
+                AllGrandCategories = response.GrandCategories.Select(MapGrandCategory).ToList(),
+                AllCategories = response.Categories.Select(MapCategory).ToList()
+            };
+        }
+        catch (RpcException ex)
+        {
+            _logger.LogWarning(ex, "CatalogService failed while loading home catalog data.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected failure while loading home catalog data from CatalogService.");
+        }
+
+        return new HomeViewModelIndex();
     }
 
     public async Task<Product?> GetProductAsync(int id, CancellationToken cancellationToken = default)

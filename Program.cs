@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection")
     ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
 
-builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDBContext>(options =>
+    options.UseSqlServer(connectionString, sql => sql.EnableRetryOnFailure()));
 
 builder.Services.AddSingleton<WebDevStd2531.Services.IUserAccountGrpcClient, WebDevStd2531.Services.UserAccountGrpcClient>();
 builder.Services.AddSingleton<ICatalogGrpcClient, CatalogGrpcClient>();
@@ -26,8 +27,16 @@ var app = builder.Build();
 // Roles Seeding
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    await SeedRoles(roleManager);
+    try
+    {
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        await SeedRoles(roleManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
+        logger.LogWarning(ex, "Skipping role seeding because the database is not available yet.");
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -65,6 +74,13 @@ app.MapGet("/health", async (AppDBContext db) =>
     var databaseHealthy = await db.Database.CanConnectAsync();
     return databaseHealthy
         ? Results.Ok(new { status = "Healthy", database = "Healthy" })
+        : Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+});
+app.MapGet("/db-health", async (AppDBContext db) =>
+{
+    var databaseHealthy = await db.Database.CanConnectAsync();
+    return databaseHealthy
+        ? Results.Ok(new { status = "Running", message = "Database is running." })
         : Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
 });
 app.Run();
