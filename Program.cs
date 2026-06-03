@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebDevStd2531.AppData;
 using WebDevStd2531.Services;
+using WebDevStd2531.Services.Messaging;
 using WebDevStd2531.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 builder.Services.AddSingleton<WebDevStd2531.Services.IUserAccountGrpcClient, WebDevStd2531.Services.UserAccountGrpcClient>();
 builder.Services.AddSingleton<ICatalogGrpcClient, CatalogGrpcClient>();
 builder.Services.AddSingleton<IOrderGrpcClient, OrderGrpcClient>();
+builder.Services.AddHostedService<RabbitMqEventConsumerHostedService>();
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()// Enable Roles so I can use RoleManager: lines 21-25
