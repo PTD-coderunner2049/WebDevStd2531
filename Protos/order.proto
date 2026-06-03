@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option csharp_namespace = "WebDevStd2531.Protos";
+
+package order;
+
+service OrderManagement {
+  rpc GetCart (CartRequest) returns (CartReply);
+  rpc AddCartItem (AddCartItemRequest) returns (MutationReply);
+  rpc RemoveCartItem (CartItemActionRequest) returns (MutationReply);
+  rpc IncrementCartItem (CartItemActionRequest) returns (MutationReply);
+  rpc DecrementCartItem (CartItemActionRequest) returns (MutationReply);
+  rpc Pay (PayRequest) returns (PayReply);
+  rpc StreamCartItems (CartRequest) returns (stream CartItemSummary);
+}
+
+message CartRequest {
+  string user_id = 1;
+}
+
+message CartItemActionRequest {
+  string user_id = 1;
+  int32 order_product_id = 2;
+}
+
+message AddCartItemRequest {
+  string user_id = 1;
+  int32 product_id = 2;
+  string selected_type = 3;
+  int32 quantity = 4;
+}
+
+message PayRequest {
+  string user_id = 1;
+}
+
+message CartItemSummary {
+  int32 order_product_id = 1;
+  int32 product_id = 2;
+  string product_name = 3;
+  string image_url = 4;
+  int32 max_stock = 5;
+  int32 quantity = 6;
+  double price = 7;
+  double discount = 8;
+  double tax = 9;
+  string selected_type = 10;
+}
+
+message CartReply {
+  repeated CartItemSummary items = 1;
+  double grand_total = 2;
+}
+
+message MutationReply {
+  bool success = 1;
+  string message = 2;
+}
+
+message PayReply {
+  bool success = 1;
+  string message = 2;
+  double total = 3;
+  int32 item_count = 4;
+}

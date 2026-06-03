@@ -12,6 +12,7 @@ builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(conn
 
 builder.Services.AddSingleton<WebDevStd2531.Services.IUserAccountGrpcClient, WebDevStd2531.Services.UserAccountGrpcClient>();
 builder.Services.AddSingleton<ICatalogGrpcClient, CatalogGrpcClient>();
+builder.Services.AddSingleton<IOrderGrpcClient, OrderGrpcClient>();
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()// Enable Roles so I can use RoleManager: lines 21-25

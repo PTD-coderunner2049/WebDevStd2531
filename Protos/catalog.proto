@@ -12,6 +12,7 @@ service Catalog {
   rpc ListCategories (CatalogRequest) returns (CategoryListReply);
   rpc UpsertProduct (UpsertProductRequest) returns (CatalogMutationReply);
   rpc DeleteProduct (DeleteRequest) returns (CatalogMutationReply);
+  rpc AdjustStock (AdjustStockRequest) returns (AdjustStockReply);
   rpc UpsertCategory (UpsertCategoryRequest) returns (CatalogMutationReply);
   rpc DeleteCategory (DeleteRequest) returns (CatalogMutationReply);
   rpc StreamProducts (CatalogRequest) returns (stream ProductSummary);
@@ -111,4 +112,15 @@ message CatalogMutationReply {
   bool success = 1;
   string message = 2;
   int32 id = 3;
+}
+
+message AdjustStockRequest {
+  int32 product_id = 1;
+  int32 quantity_delta = 2;
+}
+
+message AdjustStockReply {
+  bool success = 1;
+  string message = 2;
+  int32 new_stock = 3;
 }
