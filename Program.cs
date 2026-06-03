@@ -4,7 +4,8 @@ using WebDevStd2531.AppData;
 using WebDevStd2531.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");;
+var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection")
+    ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
 
 builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
 
@@ -32,7 +33,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsEnvironment("Docker"))
+{
+    app.UseHttpsRedirection();
+}
 app.UseRouting();
 
 app.UseAuthorization();
