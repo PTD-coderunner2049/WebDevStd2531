@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebDevStd2531.Models.Product>
+@model IEnumerable<WebDevStd2531.Models.Product>
 @{
 	var defaultType = "Default";
     var products = Model ?? Enumerable.Empty<WebDevStd2531.Models.Product>();
@@ -19,7 +19,7 @@
             {
                 <div class="row">
                     <div class="span2">
-                        <a href="@Url.Action("ProdDetail", new { Id = product.Id })">
+                        <a href="@Url.Action("ProdDetail", new { area = "", Id = product.Id })">
                             <img src="@product.ImageUrl" alt="@product.Name" style="max-width: 100%;" />
                         </a>
                     </div>
@@ -30,18 +30,18 @@
                         <p>
                             @product.Description
                         </p>
-                        <a class="btn btn-small pull-right" href="@Url.Action("ProdDetail", new { Id = product.Id })">View Details</a>
+                        <a class="btn btn-small pull-right" href="@Url.Action("ProdDetail", new { area = "", Id = product.Id })">View Details</a>
                         <br class="clr" />
                     </div>
                     <div class="span3 alignR">
                         <form class="form-horizontal qtyFrm">
                             <h3> $@product.Price.ToString("N2")</h3>
                             <label class="checkbox">
-                                <input type="checkbox">  Adds product to compare
+                                <input type="checkbox"> Adds product to compare
                             </label><br />
                             <div class="btn-group">
                                 <a href="#" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                                <a href="@Url.Action("ProdDetail", new { Id = product.Id })" class="btn btn-large"><i class="icon-zoom-in"></i></a>
+                                <a href="@Url.Action("ProdDetail", new { area = "", Id = product.Id })" class="btn btn-large"><i class="icon-zoom-in"></i></a>
                             </div>
                         </form>
                     </div>
@@ -56,7 +56,7 @@
                 {
                     <li class="span3">
                         <div class="thumbnail">
-                            <a href="@Url.Action("ProdDetail", new { Id = product.Id })">
+                            <a href="@Url.Action("ProdDetail", new { area = "", Id = product.Id })">
                                 <img src="@product.ImageUrl" alt="@product.Name" />
                             </a>
                             <div class="caption">
@@ -65,14 +65,15 @@
                                     @(product.Description.Length > 50 ? product.Description.Substring(0, 50) + "..." : product.Description)
                                 </p>
                                 <h4 style="text-align:center">
-                                    @* <a class="btn" href="@Url.Action("ProdDetail", new { Id = product.Id })"> <i class="icon-zoom-in"></i></a> *@
+                                    @* <a class="btn" href="@Url.Action("ProdDetail", new { area = "", Id = product.Id })"> <i class="icon-zoom-in"></i></a> *@
                                     <a class="btn"
+                                       asp-area=""
                                        asp-controller="Prod"
                                        asp-action="ProdDetail"
                                        asp-route-id="@product.Id">
                                         <i class="icon-zoom-in"></i>
                                     </a>
-                                    <form asp-controller="Cart" asp-action="AddCartItem" method="post" style="display:inline;">
+                                    <form asp-area="" asp-controller="Cart" asp-action="AddCartItem" method="post" style="display:inline;">
                                         <input type="hidden" name="ProductId" value="@product.Id" />
                                         <input type="hidden" name="Quantity" value="1" />
                                         <input type="hidden" name="SelectedType" value="@defaultType" />
@@ -81,10 +82,6 @@
                                             Add to <i class="icon-shopping-cart"></i>
                                         </button>
                                     </form>
-                                    @* <a class="btn"
-                                       asp-controller="Prod"
-                                       asp-action="AddCartSingle"
-                                       asp-route-id="@product.Id">Add to <i class="icon-shopping-cart"></i></a> *@
                                     <a class="btn btn-primary" href="#">$@product.Price.ToString("N2")</a>
                                 </h4>
                             </div>
@@ -95,13 +92,27 @@
             <hr class="soft" />
         </div>
     </div>
-    <br class="clr">
+    @* HARDCODED *@
+    <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
+    <div class="pagination">
+        <ul>
+            <li><a href="#">&lsaquo;</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">...</a></li>
+            <li><a href="#">&rsaquo;</a></li>
+        </ul>
+    </div>
+    <br class="clr" />
 }
 else
 {
+    @* ELSE Block: Display empty message *@
     <div class="alert alert-info">
         <h4 class="alert-heading">No Related Products Found!</h4>
-        <p>Sorry, there are no other related products in this category at this time.</p>
-        <p>Please check back later or explore our <a asp-controller="Home" asp-action="Index">other categories</a>.</p>
+        <p>Sorry, there are currently no products available in this category.</p>
+        <p>Please check back later or explore our <a asp-area="" asp-controller="Home" asp-action="Index">other categories</a>.</p>
     </div>
 }

@@ -1,4 +1,4 @@
-﻿@model List<WebDevStd2531.Models.GrandCategory>
+@model List<WebDevStd2531.Models.GrandCategory>
 @using Microsoft.AspNetCore.Identity
 @using WebDevStd2531.AppData
 
@@ -22,7 +22,7 @@
     {
         <div class="well well-small">
         @* Cart data remains hardcoded as I aint going for it yet *@
-        <a id="myCart" asp-controller="Cart" asp-action="CartDetail"><img src="~/assets/themes/images/ico-cart.png" alt="cart">Visit shopping cart@*<span class="badge badge-warning pull-right">$(OwO).00</span>*@</a>
+        <a id="myCart" asp-area="" asp-controller="Cart" asp-action="CartDetail"><img src="~/assets/themes/images/ico-cart.png" alt="cart">Visit shopping cart@*<span class="badge badge-warning pull-right">$(OwO).00</span>*@</a>
         </div>
     }
 
@@ -41,6 +41,7 @@
                     int categoryCount = category.Products?.Count() ?? 0;
                     <li>
                         <a
+                            asp-area=""
                             asp-controller="Cate"
                             asp-action="CateDetail"
                             asp-route-id="@category.Id">
@@ -64,12 +65,13 @@
             <h5>@item.Name</h5>
             <h4 style="text-align:center">
                 <a class="btn"
+                    asp-area=""
                     asp-controller="Prod"
                     asp-action="ProdDetail"
                     asp-route-id="@item.Id">
                     <i class="icon-zoom-in"></i>
                 </a>
-                <form asp-controller="Cart" asp-action="AddCartItem" method="post" style="display:inline;">
+                <form asp-area="" asp-controller="Cart" asp-action="AddCartItem" method="post" style="display:inline;">
                     <input type="hidden" name="ProductId" value="@item.Id" />
                     <input type="hidden" name="Quantity" value="1" />
                     <input type="hidden" name="SelectedType" value="@defaultType" />
@@ -92,7 +94,3 @@
         <h5>Payment Methods</h5>
     </div>
 </div>
-
-
-
-

@@ -4,6 +4,7 @@ using WebDevStd2531.Services;
 
 namespace WebDevStd2531.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CateAdminController : AdminController
     {
         private readonly ICatalogGrpcClient _catalogClient;

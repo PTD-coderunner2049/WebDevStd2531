@@ -14,12 +14,14 @@ public class CatalogGrpcClient : ICatalogGrpcClient, IDisposable
     private readonly GrpcChannel _channel;
     private readonly Catalog.CatalogClient _client;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<CatalogGrpcClient> _logger;
 
-    public CatalogGrpcClient(IConfiguration configuration)
+    public CatalogGrpcClient(IConfiguration configuration, ILogger<CatalogGrpcClient> logger)
     {
         AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
         _configuration = configuration;
+        _logger = logger;
         var address = configuration["CatalogService:Address"] ?? "http://localhost:8082";
         _channel = GrpcChannel.ForAddress(address);
         _client = new Catalog.CatalogClient(_channel);
@@ -47,8 +49,14 @@ public class CatalogGrpcClient : ICatalogGrpcClient, IDisposable
             product.Category = category;
             return product;
         }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
+        {
+            _logger.LogWarning("CatalogService reported product {ProductId} not found.", id);
+            return null;
+        }
         catch
         {
+            _logger.LogError("Failed to fetch product detail for product {ProductId} from CatalogService.", id);
             return null;
         }
     }
@@ -60,8 +68,14 @@ public class CatalogGrpcClient : ICatalogGrpcClient, IDisposable
             var response = await _client.GetCategoryDetailAsync(new CategoryRequest { Id = id }, cancellationToken: cancellationToken);
             return MapCategory(response.Category);
         }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.NotFound)
+        {
+            _logger.LogWarning("CatalogService reported category {CategoryId} not found.", id);
+            return null;
+        }
         catch
         {
+            _logger.LogError("Failed to fetch category detail for category {CategoryId} from CatalogService.", id);
             return null;
         }
     }
