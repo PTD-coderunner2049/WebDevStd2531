@@ -61,6 +61,12 @@
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
 
+            <div class="mb-3 form-check">
+                <input asp-for="IsAdmin" class="form-check-input" />
+                <label asp-for="IsAdmin" class="form-check-label"></label>
+                <span asp-validation-for="IsAdmin" class="text-danger"></span>
+            </div>
+
             @* === Identity Generated Password Fields === *@
 
             <div class="mb-3">

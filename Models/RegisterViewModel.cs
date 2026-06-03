@@ -44,5 +44,8 @@ namespace WebDevStd2531.Models
         [Required(ErrorMessage = "Gender selection is required.")]
         [Display(Name = "Gender")]
         public required string Gender { get; set; }
+
+        [Display(Name = "Register as admin")]
+        public bool IsAdmin { get; set; }
     }
 }

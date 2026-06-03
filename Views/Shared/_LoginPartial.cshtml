@@ -8,7 +8,8 @@
     @if (SignInManager.IsSignedIn(User))
     {
         @* var appUser = await UserManager.GetUserAsync(User); OLD manual stuff*@ 
-        var isAdmin = await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin");
+        var currentUser = await UserManager.GetUserAsync(User);
+        var isAdmin = currentUser != null && await UserManager.IsInRoleAsync(currentUser, "Admin");
         
         <div class="pull-right">
             @if (isAdmin)
