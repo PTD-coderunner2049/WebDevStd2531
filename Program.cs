@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebDevStd2531.AppData;
+using WebDevStd2531.Services;
 using WebDevStd2531.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("IdentityContex
 builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddSingleton<WebDevStd2531.Services.IUserAccountGrpcClient, WebDevStd2531.Services.UserAccountGrpcClient>();
+builder.Services.AddSingleton<ICatalogGrpcClient, CatalogGrpcClient>();
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()// Enable Roles so I can use RoleManager: lines 21-25

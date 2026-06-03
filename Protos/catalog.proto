@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+option csharp_namespace = "WebDevStd2531.Protos";
+
+package catalog;
+
+service Catalog {
+  rpc GetHomeCatalog (CatalogRequest) returns (HomeCatalogReply);
+  rpc GetProductDetail (ProductRequest) returns (ProductDetailReply);
+  rpc GetCategoryDetail (CategoryRequest) returns (CategoryDetailReply);
+  rpc ListProducts (CatalogRequest) returns (ProductListReply);
+  rpc ListCategories (CatalogRequest) returns (CategoryListReply);
+  rpc UpsertProduct (UpsertProductRequest) returns (CatalogMutationReply);
+  rpc DeleteProduct (DeleteRequest) returns (CatalogMutationReply);
+  rpc UpsertCategory (UpsertCategoryRequest) returns (CatalogMutationReply);
+  rpc DeleteCategory (DeleteRequest) returns (CatalogMutationReply);
+  rpc StreamProducts (CatalogRequest) returns (stream ProductSummary);
+}
+
+message CatalogRequest {}
+
+message ProductRequest {
+  int32 id = 1;
+}
+
+message CategoryRequest {
+  int32 id = 1;
+}
+
+message DeleteRequest {
+  int32 id = 1;
+}
+
+message ProductOptionDto {
+  int32 id = 1;
+  string value = 2;
+}
+
+message ProductSummary {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stock = 5;
+  double discount = 6;
+  double tax = 7;
+  string image_url = 8;
+  int32 category_id = 9;
+  string category_name = 10;
+  repeated ProductOptionDto available_options = 11;
+}
+
+message CategorySummary {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  int32 grand_category_id = 4;
+  string grand_category_name = 5;
+  repeated ProductSummary products = 6;
+}
+
+message GrandCategorySummary {
+  int32 id = 1;
+  string name = 2;
+  repeated CategorySummary categories = 3;
+}
+
+message HomeCatalogReply {
+  repeated ProductSummary featured_products = 1;
+  repeated GrandCategorySummary grand_categories = 2;
+  repeated CategorySummary categories = 3;
+}
+
+message ProductDetailReply {
+  ProductSummary product = 1;
+  repeated ProductSummary related_products = 2;
+}
+
+message CategoryDetailReply {
+  CategorySummary category = 1;
+}
+
+message ProductListReply {
+  repeated ProductSummary products = 1;
+}
+
+message CategoryListReply {
+  repeated CategorySummary categories = 1;
+}
+
+message UpsertProductRequest {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stock = 5;
+  double discount = 6;
+  double tax = 7;
+  string image_url = 8;
+  string category_name = 9;
+}
+
+message UpsertCategoryRequest {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  string grand_category_name = 4;
+}
+
+message CatalogMutationReply {
+  bool success = 1;
+  string message = 2;
+  int32 id = 3;
+}

@@ -1,25 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebDevStd2531.AppData;
+using Microsoft.AspNetCore.Mvc;
+using WebDevStd2531.Models;
+using WebDevStd2531.Services;
 
 public class CategoryNavViewComponent : ViewComponent
 {
-    private readonly AppDBContext _db;
+    private readonly ICatalogGrpcClient _catalogClient;
 
-    public CategoryNavViewComponent(AppDBContext context)
+    public CategoryNavViewComponent(ICatalogGrpcClient catalogClient)
     {
-        _db = context;
+        _catalogClient = catalogClient;
     }
 
     // This method runs whenever the View Component is called
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var grandCategories = await _db.GrandCategories
-            .Include(gc => gc.Categories)
-            .ThenInclude(c => c.Products) // Still needed for product counts, like always sadly
-            .ToListAsync();
-        return View("_Sidebar", grandCategories);
+        HomeViewModelIndex homeModel = await _catalogClient.GetHomeAsync();
+        return View("_Sidebar", homeModel.AllGrandCategories);
     }
-
-
 }
