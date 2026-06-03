@@ -60,6 +60,13 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 app.MapRazorPages(); // I added this line to enable Razor Pages after Identity scaffolding added.
+app.MapGet("/health", async (AppDBContext db) =>
+{
+    var databaseHealthy = await db.Database.CanConnectAsync();
+    return databaseHealthy
+        ? Results.Ok(new { status = "Healthy", database = "Healthy" })
+        : Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+});
 app.Run();
 
 
