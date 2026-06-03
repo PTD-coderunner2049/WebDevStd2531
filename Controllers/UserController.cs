@@ -11,15 +11,18 @@ public class UserController : Controller
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserAccountGrpcClient _userService;
+    private readonly ILogger<UserController> _logger;
 
     public UserController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
-        IUserAccountGrpcClient userService)
+        IUserAccountGrpcClient userService,
+        ILogger<UserController> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _userService = userService;
+        _logger = logger;
     }
 
     public IActionResult Index()
@@ -46,6 +49,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Logout(string? returnUrl = null)
     {
+        _logger.LogInformation("Logout requested.");
         await _signInManager.SignOutAsync();
 
         if (returnUrl != null)
@@ -63,9 +67,11 @@ public class UserController : Controller
 
         if (ModelState.IsValid)
         {
+            _logger.LogInformation("Register submit received for user {UserName}.", model.UserName);
             var result = await _userService.RegisterAsync(model);
             if (result.Success)
             {
+                _logger.LogInformation("Register succeeded for user {UserName}.", model.UserName);
                 var localUser = await _userManager.FindByNameAsync(model.UserName);
                 if (localUser != null)
                 {
@@ -77,6 +83,7 @@ public class UserController : Controller
                 return View(model);
             }
 
+            _logger.LogWarning("Register failed for user {UserName}: {Message}", model.UserName, result.Message);
             ModelState.AddModelError(string.Empty, result.Message);
         }
 
@@ -90,9 +97,11 @@ public class UserController : Controller
 
         if (ModelState.IsValid)
         {
+            _logger.LogInformation("Login submit received for user {UserName}.", model.UserName);
             var result = await _userService.LoginAsync(model);
             if (result.Success)
             {
+                _logger.LogInformation("Login succeeded for user {UserName}.", model.UserName);
                 var localUser = await _userManager.FindByNameAsync(model.UserName);
                 if (localUser != null)
                 {
@@ -104,6 +113,7 @@ public class UserController : Controller
                 return View(model);
             }
 
+            _logger.LogWarning("Login failed for user {UserName}: {Message}", model.UserName, result.Message);
             ModelState.AddModelError(string.Empty, result.Message);
         }
 
