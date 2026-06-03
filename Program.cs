@@ -9,6 +9,8 @@ var connectionString = builder.Configuration.GetConnectionString("IdentityContex
 
 builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(connectionString));
 
+builder.Services.AddSingleton<WebDevStd2531.Services.IUserAccountGrpcClient, WebDevStd2531.Services.UserAccountGrpcClient>();
+
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()// Enable Roles so I can use RoleManager: lines 21-25
     .AddEntityFrameworkStores<AppDBContext>();
@@ -38,7 +40,7 @@ if (!app.Environment.IsEnvironment("Docker"))
     app.UseHttpsRedirection();
 }
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

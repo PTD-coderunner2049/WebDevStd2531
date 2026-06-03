@@ -1,156 +1,112 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebDevStd2531.AppData;
 using WebDevStd2531.Models;
+using WebDevStd2531.Services;
 
-namespace WebDevStd2531.Controllers
+namespace WebDevStd2531.Controllers;
+
+public class UserController : Controller
 {
-    public class UserController : Controller
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
+    private readonly IUserAccountGrpcClient _userService;
+
+    public UserController(
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
+        IUserAccountGrpcClient userService)
     {
-        private readonly AppDBContext _db;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IUserStore<AppUser> _userStore;
-        //private readonly IUserEmailStore<AppUser> _emailStore;
-        private readonly ILogger<UserController> _logger;
-        //private readonly IEmailSender _emailSender;
-        public UserController(AppDBContext context,
-            UserManager<AppUser> userManager,
-            IUserStore<AppUser> userStore,
-            SignInManager<AppUser> signInManager,
-            ILogger<UserController> logger)
-        {
-            _userManager = userManager;
-            _userStore = userStore;
-            //_emailStore = GetEmailStore();
-            _signInManager = signInManager;
-            _db = context;
-            _logger = logger;
-        }
-        public IActionResult Index()
-        {
-            return View();
-        }
-        public IActionResult Register()
-        {
-            return View();
-        }
-        public IActionResult Login(string? returnUrl = null)
-        {
-            var model = new LoginViewModel
-            {
-                UserName = string.Empty,
-                Password = string.Empty,
-                ReturnUrl = returnUrl // Pass the return URL for post-login redirect
-            };
-            return View(model);
-        }
-        public async Task<IActionResult> Logout(string? returnUrl = null)
-        {
-            await _signInManager.SignOutAsync();
-            //_logger.LogInformation("User logged out.");
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-            else
-            {
-                // This needs to be a redirect so that the browser performs a new
-                // request and the identity for the user gets updated.
-                return RedirectToAction("Index", "Home");
-            }
-        }
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model, String returnUrl = "~/")
-        {
-            returnUrl = Url.Content("~/");
-            // ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
-            {
-                var user = CreateUser();
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _userService = userService;
+    }
 
-                await _userStore.SetUserNameAsync(user, model.UserName, CancellationToken.None);
-                var emailStore = (IUserEmailStore<AppUser>)_userStore;
-                await emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
+    public IActionResult Index()
+    {
+        return View();
+    }
 
-                user.FullName = model.FullName;
-                user.DateOfBirth = model.DateOfBirth;
-                user.Address = model.Address;
-                user.Gender = model.Gender;
-                user.EmailConfirmed = true;
+    public IActionResult Register()
+    {
+        return View();
+    }
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+    public IActionResult Login(string? returnUrl = null)
+    {
+        var model = new LoginViewModel
+        {
+            UserName = string.Empty,
+            Password = string.Empty,
+            ReturnUrl = returnUrl
+        };
 
-                if (result.Succeeded)
+        return View(model);
+    }
+
+    public async Task<IActionResult> Logout(string? returnUrl = null)
+    {
+        await _signInManager.SignOutAsync();
+
+        if (returnUrl != null)
+        {
+            return LocalRedirect(returnUrl);
+        }
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = "~/")
+    {
+        returnUrl = Url.Content("~/");
+
+        if (ModelState.IsValid)
+        {
+            var result = await _userService.RegisterAsync(model);
+            if (result.Success)
+            {
+                var localUser = await _userManager.FindByNameAsync(model.UserName);
+                if (localUser != null)
                 {
-                    var roleName = model.IsAdmin ? "Admin" : "User";
-                    var roleResult = await _userManager.AddToRoleAsync(user, roleName);
-                    if (!roleResult.Succeeded)
-                    {
-                        _logger.LogError("Failed to assign initial role '{RoleName}' to new user.", roleName);
-                    }
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    _logger.LogInformation("Created user {UserId} with role {RoleName}.", userId, roleName);
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(localUser, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
+                ModelState.AddModelError(string.Empty, "Registration succeeded, but the local login cookie could not be created.");
+                return View(model);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            ModelState.AddModelError(string.Empty, result.Message);
         }
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+    {
+        returnUrl = Url.Content("~/");
+
+        if (ModelState.IsValid)
         {
-            returnUrl = Url.Content("~/");
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+            var result = await _userService.LoginAsync(model);
+            if (result.Success)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var localUser = await _userManager.FindByNameAsync(model.UserName);
+                if (localUser != null)
                 {
-                    //_logger.LogInformation("User logged in.");
+                    await _signInManager.SignInAsync(localUser, isPersistent: model.RememberMe);
                     return RedirectToAction("Index", "Home");
                 }
-                //if (result.RequiresTwoFactor)
-                //{
-                //    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                //}
-                //if (result.IsLockedOut)
-                //{
-                //    //_logger.LogWarning("User account locked out.");
-                //    return RedirectToPage("./Lockout");
-                //}
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model); // Redisplay the form with the error
-                }
+
+                ModelState.AddModelError(string.Empty, "Login succeeded, but the local login cookie could not be created.");
+                return View(model);
             }
-            // If we got this far, something failed, redisplay form
-            return View(model);
+
+            ModelState.AddModelError(string.Empty, result.Message);
         }
-        private AppUser CreateUser()
-        {
-            try
-            {
-                return Activator.CreateInstance<AppUser>();
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(AppUser)}'. " +
-                    $"Ensure that '{nameof(AppUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-            }
-        }
+
+        return View(model);
     }
 }
