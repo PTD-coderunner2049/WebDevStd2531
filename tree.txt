@@ -1,0 +1,1119 @@
+Folder PATH listing for volume Acer
+Volume serial number is 000000EE 9E6C:194C
+C:.
+|   .dockerignore
+|   docker-compose.yml
+|   Dockerfile
+|   Dockerfile.db
+|   tree.txt
+|   
++---docker
+|       db-entrypoint.sh
+|       
+\---WebDevStd2531
+    |   .gitattributes
+    |   .gitignore
+    |   appsettings.Development.json
+    |   appsettings.json
+    |   Program.cs
+    |   README.md
+    |   WebDevStd2531.bak
+    |   WebDevStd2531.csproj
+    |   WebDevStd2531.sln
+    |   
+    +---AppData
+    |       AppDBContext.cs
+    |       AppUser.cs
+    |       
+    +---Areas
+    |   +---Admin
+    |   |   +---Controllers
+    |   |   |       AdminController.cs
+    |   |   |       CateAdminController.cs
+    |   |   |       ProdAdminController.cs
+    |   |   |       
+    |   |   \---Views
+    |   |       |   _ViewImports.cshtml
+    |   |       |   _ViewStart.cshtml
+    |   |       |   
+    |   |       +---CateAdmin
+    |   |       |       CateAdminist.cshtml
+    |   |       |       EditCate.cshtml
+    |   |       |       
+    |   |       \---ProdAdmin
+    |   |               EditProd.cshtml
+    |   |               ProdAdminist.cshtml
+    |   |               
+    |   \---Identity
+    |       +---Data
+    |       |       IdentityContext.cs
+    |       |       
+    |       \---Pages
+    |           |   _ValidationScriptsPartial.cshtml
+    |           |   _ViewImports.cshtml
+    |           |   _ViewStart.cshtml
+    |           |   
+    |           \---Account
+    |                   Login.cshtml
+    |                   Login.cshtml.cs
+    |                   Logout.cshtml
+    |                   Logout.cshtml.cs
+    |                   Register.cshtml
+    |                   Register.cshtml.cs
+    |                   _ViewImports.cshtml
+    |                   
+    +---bin
+    |   \---Debug
+    |       \---net9.0
+    |           |   appsettings.Development.json
+    |           |   appsettings.json
+    |           |   Azure.Core.dll
+    |           |   Azure.Identity.dll
+    |           |   dotnet-aspnet-codegenerator-design.dll
+    |           |   Humanizer.dll
+    |           |   Microsoft.AspNetCore.Cryptography.Internal.dll
+    |           |   Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+    |           |   Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+    |           |   Microsoft.AspNetCore.Identity.UI.dll
+    |           |   Microsoft.AspNetCore.Razor.Language.dll
+    |           |   Microsoft.Bcl.AsyncInterfaces.dll
+    |           |   Microsoft.Build.dll
+    |           |   Microsoft.Build.Framework.dll
+    |           |   Microsoft.Build.Locator.dll
+    |           |   Microsoft.CodeAnalysis.AnalyzerUtilities.dll
+    |           |   Microsoft.CodeAnalysis.CSharp.dll
+    |           |   Microsoft.CodeAnalysis.CSharp.Features.dll
+    |           |   Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+    |           |   Microsoft.CodeAnalysis.dll
+    |           |   Microsoft.CodeAnalysis.Elfie.dll
+    |           |   Microsoft.CodeAnalysis.Features.dll
+    |           |   Microsoft.CodeAnalysis.Razor.dll
+    |           |   Microsoft.CodeAnalysis.Scripting.dll
+    |           |   Microsoft.CodeAnalysis.Workspaces.dll
+    |           |   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+    |           |   Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+    |           |   Microsoft.Data.SqlClient.dll
+    |           |   Microsoft.DiaSymReader.dll
+    |           |   Microsoft.DotNet.Scaffolding.Shared.dll
+    |           |   Microsoft.EntityFrameworkCore.Abstractions.dll
+    |           |   Microsoft.EntityFrameworkCore.Design.dll
+    |           |   Microsoft.EntityFrameworkCore.dll
+    |           |   Microsoft.EntityFrameworkCore.Relational.dll
+    |           |   Microsoft.EntityFrameworkCore.SqlServer.dll
+    |           |   Microsoft.Extensions.Caching.Abstractions.dll
+    |           |   Microsoft.Extensions.Caching.Memory.dll
+    |           |   Microsoft.Extensions.Configuration.Abstractions.dll
+    |           |   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+    |           |   Microsoft.Extensions.DependencyInjection.dll
+    |           |   Microsoft.Extensions.DependencyModel.dll
+    |           |   Microsoft.Extensions.FileProviders.Abstractions.dll
+    |           |   Microsoft.Extensions.FileProviders.Embedded.dll
+    |           |   Microsoft.Extensions.Identity.Core.dll
+    |           |   Microsoft.Extensions.Identity.Stores.dll
+    |           |   Microsoft.Extensions.Logging.Abstractions.dll
+    |           |   Microsoft.Extensions.Logging.dll
+    |           |   Microsoft.Extensions.Options.dll
+    |           |   Microsoft.Extensions.Primitives.dll
+    |           |   Microsoft.Identity.Client.dll
+    |           |   Microsoft.Identity.Client.Extensions.Msal.dll
+    |           |   Microsoft.IdentityModel.Abstractions.dll
+    |           |   Microsoft.IdentityModel.JsonWebTokens.dll
+    |           |   Microsoft.IdentityModel.Logging.dll
+    |           |   Microsoft.IdentityModel.Protocols.dll
+    |           |   Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+    |           |   Microsoft.IdentityModel.Tokens.dll
+    |           |   Microsoft.NET.StringTools.dll
+    |           |   Microsoft.SqlServer.Server.dll
+    |           |   Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+    |           |   Microsoft.VisualStudio.Web.CodeGeneration.dll
+    |           |   Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+    |           |   Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+    |           |   Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+    |           |   Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+    |           |   Mono.TextTemplating.dll
+    |           |   Newtonsoft.Json.dll
+    |           |   NuGet.Common.dll
+    |           |   NuGet.Configuration.dll
+    |           |   NuGet.DependencyResolver.Core.dll
+    |           |   NuGet.Frameworks.dll
+    |           |   NuGet.LibraryModel.dll
+    |           |   NuGet.Packaging.dll
+    |           |   NuGet.ProjectModel.dll
+    |           |   NuGet.Protocol.dll
+    |           |   NuGet.Versioning.dll
+    |           |   System.ClientModel.dll
+    |           |   System.CodeDom.dll
+    |           |   System.Composition.AttributedModel.dll
+    |           |   System.Composition.Convention.dll
+    |           |   System.Composition.Hosting.dll
+    |           |   System.Composition.Runtime.dll
+    |           |   System.Composition.TypedParts.dll
+    |           |   System.Configuration.ConfigurationManager.dll
+    |           |   System.Formats.Asn1.dll
+    |           |   System.IdentityModel.Tokens.Jwt.dll
+    |           |   System.Memory.Data.dll
+    |           |   System.Reflection.MetadataLoadContext.dll
+    |           |   System.Runtime.Caching.dll
+    |           |   System.Security.Cryptography.ProtectedData.dll
+    |           |   System.Text.Json.dll
+    |           |   WebDevStd2531.deps.json
+    |           |   WebDevStd2531.dll
+    |           |   WebDevStd2531.exe
+    |           |   WebDevStd2531.pdb
+    |           |   WebDevStd2531.runtimeconfig.json
+    |           |   WebDevStd2531.staticwebassets.endpoints.json
+    |           |   WebDevStd2531.staticwebassets.runtime.json
+    |           |   
+    |           +---af
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---ar
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---az
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---bg
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---bn-BD
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---cs
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---da
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---de
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---el
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---es
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---fa
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---fi-FI
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---fr
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---fr-BE
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---he
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---hr
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---hu
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---hy
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---id
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---is
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---it
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---ja
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---ko
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---ko-KR
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---ku
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---lv
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---ms-MY
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---mt
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---nb
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---nb-NO
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---nl
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---pl
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---pt
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---pt-BR
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---ro
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---ru
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---runtimes
+    |           |   +---unix
+    |           |   |   \---lib
+    |           |   |       \---net6.0
+    |           |   |               Microsoft.Data.SqlClient.dll
+    |           |   |               
+    |           |   +---win
+    |           |   |   \---lib
+    |           |   |       \---net6.0
+    |           |   |               Microsoft.Data.SqlClient.dll
+    |           |   |               System.Runtime.Caching.dll
+    |           |   |               
+    |           |   +---win-arm
+    |           |   |   \---native
+    |           |   |           Microsoft.Data.SqlClient.SNI.dll
+    |           |   |           
+    |           |   +---win-arm64
+    |           |   |   \---native
+    |           |   |           Microsoft.Data.SqlClient.SNI.dll
+    |           |   |           
+    |           |   +---win-x64
+    |           |   |   \---native
+    |           |   |           Microsoft.Data.SqlClient.SNI.dll
+    |           |   |           
+    |           |   \---win-x86
+    |           |       \---native
+    |           |               Microsoft.Data.SqlClient.SNI.dll
+    |           |               
+    |           +---sk
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---sl
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---sr
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---sr-Latn
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---sv
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---th-TH
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---tr
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           +---uk
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---uz-Cyrl-UZ
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---uz-Latn-UZ
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---vi
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---zh-CN
+    |           |       Humanizer.resources.dll
+    |           |       
+    |           +---zh-Hans
+    |           |       Humanizer.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+    |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |           |       Microsoft.CodeAnalysis.Features.resources.dll
+    |           |       Microsoft.CodeAnalysis.resources.dll
+    |           |       Microsoft.CodeAnalysis.Scripting.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |           |       
+    |           \---zh-Hant
+    |                   Humanizer.resources.dll
+    |                   Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+    |                   Microsoft.CodeAnalysis.CSharp.resources.dll
+    |                   Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+    |                   Microsoft.CodeAnalysis.Features.resources.dll
+    |                   Microsoft.CodeAnalysis.resources.dll
+    |                   Microsoft.CodeAnalysis.Scripting.resources.dll
+    |                   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+    |                   Microsoft.CodeAnalysis.Workspaces.resources.dll
+    |                   
+    +---Controllers
+    |       CartController.cs
+    |       CateController.cs
+    |       HomeController.cs
+    |       ProdController.cs
+    |       UserController.cs
+    |       
+    +---Migrations
+    |       20251019145643_DBFirst.cs
+    |       20251019145643_DBFirst.Designer.cs
+    |       20251102210705_changeproducttable.cs
+    |       20251102210705_changeproducttable.Designer.cs
+    |       20251102220052_addImageProperty.cs
+    |       20251102220052_addImageProperty.Designer.cs
+    |       20251102234018_addGrandCategory.cs
+    |       20251102234018_addGrandCategory.Designer.cs
+    |       20251102234731_addGrandCategory2.cs
+    |       20251102234731_addGrandCategory2.Designer.cs
+    |       20251116171023_uppdateUser.cs
+    |       20251116171023_uppdateUser.Designer.cs
+    |       20251116180311_uppdateUserwithdetail.cs
+    |       20251116180311_uppdateUserwithdetail.Designer.cs
+    |       20251130233312_cartmodeladded.cs
+    |       20251130233312_cartmodeladded.Designer.cs
+    |       20251201005556_orderAnaUpdate.cs
+    |       20251201005556_orderAnaUpdate.Designer.cs
+    |       20251201015625_updateProductRelated.cs
+    |       20251201015625_updateProductRelated.Designer.cs
+    |       20251201182050_updateProductwithTypefield.cs
+    |       20251201182050_updateProductwithTypefield.Designer.cs
+    |       20251201192853_addProducOptionTable.cs
+    |       20251201192853_addProducOptionTable.Designer.cs
+    |       20251201230747_addAdmintoUserModel.cs
+    |       20251201230747_addAdmintoUserModel.Designer.cs
+    |       20251202030001_updateProduct.cs
+    |       20251202030001_updateProduct.Designer.cs
+    |       20251202030140_reverseProduct.cs
+    |       20251202030140_reverseProduct.Designer.cs
+    |       20251202085150_addUniqueForCateandGCate.cs
+    |       20251202085150_addUniqueForCateandGCate.Designer.cs
+    |       20251202095920_removeUnique.cs
+    |       20251202095920_removeUnique.Designer.cs
+    |       20251208184448_removeIsAdminFromUser.cs
+    |       20251208184448_removeIsAdminFromUser.Designer.cs
+    |       AppDBContextModelSnapshot.cs
+    |       
+    +---Models
+    |       AddCartViewModel.cs
+    |       CartItemViewModel.cs
+    |       Category.cs
+    |       ErrorViewModel.cs
+    |       GrandCategory.cs
+    |       HomeViewModelIndex.cs
+    |       LoginViewModel.cs
+    |       Order.cs
+    |       OrderProduct.cs
+    |       Product.cs
+    |       ProductDetailModel.cs
+    |       ProductOption.cs
+    |       RegisterViewModel.cs
+    |       
+    +---obj
+    |   |   project.assets.json
+    |   |   project.nuget.cache
+    |   |   WebDevStd2531.csproj.nuget.dgspec.json
+    |   |   WebDevStd2531.csproj.nuget.g.props
+    |   |   WebDevStd2531.csproj.nuget.g.targets
+    |   |   
+    |   \---Debug
+    |       \---net9.0
+    |           |   .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+    |           |   apphost.exe
+    |           |   rbcswa.dswa.cache.json
+    |           |   rjimswa.dswa.cache.json
+    |           |   rjsmcshtml.dswa.cache.json
+    |           |   rjsmrazor.dswa.cache.json
+    |           |   rpswa.dswa.cache.json
+    |           |   staticwebassets.build.endpoints.json
+    |           |   staticwebassets.build.json
+    |           |   staticwebassets.build.json.cache
+    |           |   staticwebassets.development.json
+    |           |   WebDevSt.3D33F6EE.Up2Date
+    |           |   WebDevStd2531.AssemblyInfo.cs
+    |           |   WebDevStd2531.AssemblyInfoInputs.cache
+    |           |   WebDevStd2531.assets.cache
+    |           |   WebDevStd2531.csproj.AssemblyReference.cache
+    |           |   WebDevStd2531.csproj.CoreCompileInputs.cache
+    |           |   WebDevStd2531.csproj.FileListAbsolute.txt
+    |           |   WebDevStd2531.dll
+    |           |   WebDevStd2531.GeneratedMSBuildEditorConfig.editorconfig
+    |           |   WebDevStd2531.genruntimeconfig.cache
+    |           |   WebDevStd2531.GlobalUsings.g.cs
+    |           |   WebDevStd2531.MvcApplicationPartsAssemblyInfo.cache
+    |           |   WebDevStd2531.MvcApplicationPartsAssemblyInfo.cs
+    |           |   WebDevStd2531.pdb
+    |           |   WebDevStd2531.RazorAssemblyInfo.cache
+    |           |   WebDevStd2531.RazorAssemblyInfo.cs
+    |           |   WebDevStd2531.sourcelink.json
+    |           |   
+    |           +---compressed
+    |           |       09e15g3yjx-ltid2c489k.gz
+    |           |       0k1i85ntyh-6cfz1n2cew.gz
+    |           |       14ipv7q33s-bqjiyaj88i.gz
+    |           |       1fc4q00scq-khv3u5hwcm.gz
+    |           |       1pw20ov6la-zukzqjkv1d.gz
+    |           |       1vma7ftg5n-hd3gran6i8.gz
+    |           |       28owtwaa36-22vffe00uq.gz
+    |           |       2tikzqlmtu-ag7o75518u.gz
+    |           |       34k070zdua-fvhpjtyr6v.gz
+    |           |       3aw53i226n-m9qm4tazc0.gz
+    |           |       3fa9pdro4o-61n19gt1b8.gz
+    |           |       3tzsqhslk9-ub07r2b239.gz
+    |           |       47012z8l2l-pj5nd1wqec.gz
+    |           |       4iv1pkt5xy-cnv1yc13xj.gz
+    |           |       4vzefxwp2m-46ein0sx1k.gz
+    |           |       54pkkjgaih-6hnzb6jihf.gz
+    |           |       5i7fdevpg2-udja6jpml1.gz
+    |           |       6var8b2m4n-x0xux1xptm.gz
+    |           |       6yg164xesx-1wkeyal93e.gz
+    |           |       75ht6yulys-ft3s53vfgj.gz
+    |           |       79s6uo394g-48y08845bh.gz
+    |           |       7gagvxagbr-gye83jo8yx.gz
+    |           |       7o8oyvng68-tdbxkamptv.gz
+    |           |       85dy1rg3xg-yi265e83da.gz
+    |           |       8axix7wldr-fsbi9cje9m.gz
+    |           |       8d6l53df77-jjsuc0puko.gz
+    |           |       8d6w8sebuz-h1s4sie4z3.gz
+    |           |       8dexpgz5e9-vfpcwyb9zf.gz
+    |           |       8olo0z81k6-keugtjm085.gz
+    |           |       8pnzs78j22-x0q3zqp4vz.gz
+    |           |       8xykfy6qmd-r4e9w2rdcm.gz
+    |           |       90wcutje79-d4r6k3f320.gz
+    |           |       982xk57w00-c63t5i9ira.gz
+    |           |       9glsckmvxo-aexeepp0ev.gz
+    |           |       9l9reop518-ttgo8qnofa.gz
+    |           |       9muusbdg0a-x0q3zqp4vz.gz
+    |           |       a0svxf3p8e-6vb23o178q.gz
+    |           |       a3ygkwa5zy-2z0ns9nrw6.gz
+    |           |       a7pkcfuyez-1wxm0vz5ej.gz
+    |           |       armsec2xml-y7v9cxd14o.gz
+    |           |       b1xf0bxrgp-tsfyegfa27.gz
+    |           |       b9lhb08218-ttgo8qnofa.gz
+    |           |       bakywehxsj-9kyq64ehyd.gz
+    |           |       bh4v3mdph9-v0zj4ognzu.gz
+    |           |       birkw915r4-3gkj6zejce.gz
+    |           |       bsgtv7lg7f-t1cqhe9u97.gz
+    |           |       bvh2g30b48-v0zj4ognzu.gz
+    |           |       bvy0djaege-cosvhxvwiu.gz
+    |           |       bww8ud00yd-ausgxo2sd3.gz
+    |           |       cf1ou7hd23-qltvzyugtb.gz
+    |           |       ckux76wv42-83jwlth58m.gz
+    |           |       clfh4o5vdc-mrlpezrjn3.gz
+    |           |       csjce20ule-q9ht133ko3.gz
+    |           |       cynp17w084-c2oey78nd0.gz
+    |           |       d5z9sfpxbi-rzd6atqjts.gz
+    |           |       dkqpxx4zc7-fayxoj26m7.gz
+    |           |       drwcre7cl2-rxsg74s51o.gz
+    |           |       eb27mqwgz2-erw9l3u2r3.gz
+    |           |       edcrak57d7-k8d9w2qqmf.gz
+    |           |       ekndnllpp3-rm371x9xfx.gz
+    |           |       f4lb6potc5-87fc7y1x7t.gz
+    |           |       ffpufklwa2-kbrnm935zg.gz
+    |           |       g5zeag6emp-u5a1ris7kh.gz
+    |           |       gir5pwg10i-aag7wj32gk.gz
+    |           |       gklku3s5yc-4221c9xrtg.gz
+    |           |       gw9pt6mqmx-ca6bad9qze.gz
+    |           |       h8wypbhitt-j5mq2jizvt.gz
+    |           |       h9vwtoirpy-j5mq2jizvt.gz
+    |           |       hbccwhe2g7-jd9uben2k1.gz
+    |           |       hgchr84yg7-u45lp6ozak.gz
+    |           |       hh8ihyobdx-d7shbmvgxk.gz
+    |           |       higufxz8op-vr1egmr9el.gz
+    |           |       hlxp16j0rt-356vix0kms.gz
+    |           |       hus6b1tjcr-fsbi9cje9m.gz
+    |           |       ia7fbphqqi-c2jlpeoesf.gz
+    |           |       igscs4x0yk-h1s4sie4z3.gz
+    |           |       ikaoyusz2c-0j3bgjxly4.gz
+    |           |       isxj8a7uru-yi265e83da.gz
+    |           |       ivy2s9gwh5-iovd86k7lj.gz
+    |           |       iznc766avz-nvvlpmu67g.gz
+    |           |       j3hwsq15kh-47otxtyo56.gz
+    |           |       j50dq457vf-c2oey78nd0.gz
+    |           |       j9swiz3yzq-90yqlj465b.gz
+    |           |       jmoac8e9qp-tv13wg210g.gz
+    |           |       k1t6x9i5ia-zub09dkrxp.gz
+    |           |       k8b25g0zwc-b7pk76d08c.gz
+    |           |       ke4kuha0mx-qlv3gktvvf.gz
+    |           |       kkefvq7jfr-hrwsygsryq.gz
+    |           |       km6y1lpb33-xtxxf3hu2r.gz
+    |           |       kppg4jfe4v-u9q1upor1n.gz
+    |           |       krb6u0nbsd-tmc1g35s3z.gz
+    |           |       l186vlgaag-37tfw0ft22.gz
+    |           |       l7zvkmdd4d-gk0pw8i4co.gz
+    |           |       l9yydqcbfh-d6nrnj6jjx.gz
+    |           |       ldxy2n3w6q-356vix0kms.gz
+    |           |       lr5hmrr0j7-493y06b0oq.gz
+    |           |       mfx1rzba0t-r4e9w2rdcm.gz
+    |           |       msn7kbful3-iovd86k7lj.gz
+    |           |       mv1sw80cn5-4094rpi4f9.gz
+    |           |       nezrqnk58p-muycvpuwrr.gz
+    |           |       nlrl0f3xs3-jd9uben2k1.gz
+    |           |       ns4583i71s-s35ty4nyc5.gz
+    |           |       nwxa1pdxif-ietryeya2t.gz
+    |           |       o5k23vqhrk-06098lyss8.gz
+    |           |       ofa40bqe71-b9sayid5wm.gz
+    |           |       omy54d6ryl-aexeepp0ev.gz
+    |           |       oxk5o6czdw-fvhpjtyr6v.gz
+    |           |       pbuk1b97hp-or438gbb7d.gz
+    |           |       pfjggizp2e-8vyfqsqgz1.gz
+    |           |       pl4b7w2mw2-ietryeya2t.gz
+    |           |       pnlpycctzy-wl58j5mj3v.gz
+    |           |       pogzkicjpz-0j3bgjxly4.gz
+    |           |       pu33p2ma6c-d8hm97sgce.gz
+    |           |       q3naettu8c-4v8eqarkd7.gz
+    |           |       qb2v4ttxx6-sejl45xvog.gz
+    |           |       qcpcazwe2t-ausgxo2sd3.gz
+    |           |       qf0wargv46-4d85u1mtcx.gz
+    |           |       qfr28sqcy1-ft3s53vfgj.gz
+    |           |       qxbbiioab5-reypo24w6p.gz
+    |           |       rh65p086id-c2jlpeoesf.gz
+    |           |       rhfws25epk-t0qk1vxukf.gz
+    |           |       rsc7qacj1u-hrwsygsryq.gz
+    |           |       rtz1z1q4r3-qesaa3a1fm.gz
+    |           |       s3tglgz8hr-kbrnm935zg.gz
+    |           |       saspdu1mrj-x0xux1xptm.gz
+    |           |       sf8kf2lula-cosvhxvwiu.gz
+    |           |       skicueg01g-ee0r1s7dh0.gz
+    |           |       t0qo7o574p-o1o13a6vjx.gz
+    |           |       t6e3b82hrf-mrlpezrjn3.gz
+    |           |       tg53r17ghy-dxx9fxp4il.gz
+    |           |       ti2n5q0zie-j6s9p6pogi.gz
+    |           |       tpsq5dibur-0i3buxo5is.gz
+    |           |       ttunhxnnl7-6ixpco0kzs.gz
+    |           |       u4wbqwi9jk-nvvlpmu67g.gz
+    |           |       u8428c4e9i-ee0r1s7dh0.gz
+    |           |       uocis9wxbx-lzl9nlhx6b.gz
+    |           |       v0zgfp0y55-87fc7y1x7t.gz
+    |           |       v7hso060v8-6pdc2jztkx.gz
+    |           |       vltxs1u3vm-xtxxf3hu2r.gz
+    |           |       vsrbd71spn-lcd1t2u6c8.gz
+    |           |       vw9sls9bhj-jj8uyg4cgr.gz
+    |           |       w9h23sa4yi-p7gs2cheff.gz
+    |           |       wr7rku5321-mlv21k5csn.gz
+    |           |       wu0crnok3u-worgj0nhwm.gz
+    |           |       wx0lomv97a-9vr69e8ynj.gz
+    |           |       xa379ftczi-6pdc2jztkx.gz
+    |           |       xjiz5wtw4f-pj5nd1wqec.gz
+    |           |       y1d13uag20-43atpzeawx.gz
+    |           |       y35mvjx9fq-03hjc8e09r.gz
+    |           |       yfc7ypekbg-mlv21k5csn.gz
+    |           |       ym8tkpcl2i-y7v9cxd14o.gz
+    |           |       ypthv7q62w-83jwlth58m.gz
+    |           |       yx0kc8t919-a8jlssbj2a.gz
+    |           |       z408qb6q7a-pk9g2wxc8p.gz
+    |           |       zap00c0tb5-63fj8s7r0e.gz
+    |           |       zhoc3x0p8j-xvp3kq03qx.gz
+    |           |       zico2wwai2-ynyaa8k90p.gz
+    |           |       zyn1e24pmg-yu3yjd1zf4.gz
+    |           |       zzna4nrm5w-notf2xhcfb.gz
+    |           |       
+    |           +---ref
+    |           |       WebDevStd2531.dll
+    |           |       
+    |           +---refint
+    |           |       WebDevStd2531.dll
+    |           |       
+    |           +---scopedcss
+    |           |   +---bundle
+    |           |   |       WebDevStd2531.styles.css
+    |           |   |       
+    |           |   +---projectbundle
+    |           |   |       WebDevStd2531.bundle.scp.css
+    |           |   |       
+    |           |   \---Views
+    |           |       \---Shared
+    |           |               _Layout - Default Original Backup.cshtml.rz.scp.css
+    |           |               _Layout.cshtml.rz.scp.css
+    |           |               
+    |           \---staticwebassets
+    +---Properties
+    |       launchSettings.json
+    |       serviceDependencies.json
+    |       serviceDependencies.local.json
+    |       
+    +---ViewComponents
+    |       CategoryNavViewComponent.cs
+    |       
+    +---Views
+    |   |   _ViewImports.cshtml
+    |   |   _ViewStart.cshtml
+    |   |   
+    |   +---Cart
+    |   |       CartDetail.cshtml
+    |   |       ConfirmPay.cshtml
+    |   |       
+    |   +---Cate
+    |   |       CateDetail.cshtml
+    |   |       
+    |   +---Home
+    |   |       Index.cshtml
+    |   |       Privacy.cshtml
+    |   |       
+    |   +---Prod
+    |   |       ProdDetail.cshtml
+    |   |       
+    |   +---Shared
+    |   |   |   Error.cshtml
+    |   |   |   _Layout - Default Original Backup.cshtml
+    |   |   |   _Layout - Default Original Backup.cshtml.css
+    |   |   |   _Layout.cshtml
+    |   |   |   _Layout.cshtml.css
+    |   |   |   _LoginPartial.cshtml
+    |   |   |   _ProductDetailsTab.cshtml
+    |   |   |   _RelatedProductsTab.cshtml
+    |   |   |   _ValidationScriptsPartial.cshtml
+    |   |   |   
+    |   |   \---Components
+    |   |       \---CategoryNav
+    |   |               _Sidebar.cshtml
+    |   |               
+    |   \---User
+    |           Login.cshtml
+    |           Register.cshtml
+    |           
+    \---wwwroot
+        |   favicon.ico
+        |   
+        +---assets
+        |   +---bootstrap
+        |   |   +---css
+        |   |   |       bootstrap-responsive.min.css
+        |   |   |       bootstrap.min.css
+        |   |   |       
+        |   |   +---img
+        |   |   |       glyphicons-halflings-white.png
+        |   |   |       glyphicons-halflings.png
+        |   |   |       
+        |   |   \---js
+        |   |           bootstrap.min.js
+        |   |           
+        |   \---themes
+        |       +---amelia
+        |       |       bootstrap.css
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---bootshop
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---businessltd
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---cerulean
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---css
+        |       |       base.css
+        |       |       bootstrap-responsive.min.css
+        |       |       font-awesome-ie7.css
+        |       |       font-awesome.css
+        |       |       
+        |       +---cyborg
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---font
+        |       |       fontawesome-webfont.eot
+        |       |       fontawesome-webfont.svg
+        |       |       fontawesome-webfont.ttf
+        |       |       fontawesome-webfont.woff
+        |       |       museo_slab_300-webfont.eot
+        |       |       museo_slab_300-webfont.ttf
+        |       |       museo_slab_500-webfont.eot
+        |       |       museo_slab_500-webfont.ttf
+        |       |       proximanova-webfont.eot
+        |       |       proximanova-webfont.ttf
+        |       |       
+        |       +---images
+        |       |   |   facebook.png
+        |       |   |   headerRepeat.png
+        |       |   |   ico-cart.png
+        |       |   |   logo.png
+        |       |   |   new.png
+        |       |   |   payment_methods.png
+        |       |   |   search.png
+        |       |   |   tabRepeatInactive.png
+        |       |   |   twitter.png
+        |       |   |   youtube.png
+        |       |   |   
+        |       |   +---carousel
+        |       |   |       1.png
+        |       |   |       2.png
+        |       |   |       3.png
+        |       |   |       4.png
+        |       |   |       5.png
+        |       |   |       6.png
+        |       |   |       7.png
+        |       |   |       
+        |       |   +---ico
+        |       |   |       apple-touch-icon-114-precomposed.png
+        |       |   |       apple-touch-icon-144-precomposed.png
+        |       |   |       apple-touch-icon-57-precomposed.png
+        |       |   |       apple-touch-icon-72-precomposed.png
+        |       |   |       favicon.ico
+        |       |   |       
+        |       |   +---lightbox
+        |       |   |       Close.png
+        |       |   |       lightbox-blank.gif
+        |       |   |       lightbox-btn-close.gif
+        |       |   |       lightbox-btn-next.gif
+        |       |   |       lightbox-btn-prev.gif
+        |       |   |       lightbox-ico-loading.gif
+        |       |   |       
+        |       |   \---products
+        |       |       |   1.jpg
+        |       |       |   10.jpg
+        |       |       |   11.jpg
+        |       |       |   12.jpg
+        |       |       |   13.jpg
+        |       |       |   2.jpg
+        |       |       |   3.jpg
+        |       |       |   4.jpg
+        |       |       |   5.jpg
+        |       |       |   6.jpg
+        |       |       |   7.jpg
+        |       |       |   8.jpg
+        |       |       |   9.jpg
+        |       |       |   b1.jpg
+        |       |       |   b2.jpg
+        |       |       |   b3.jpg
+        |       |       |   b4.jpg
+        |       |       |   kindle.png
+        |       |       |   panasonic.jpg
+        |       |       |   
+        |       |       \---large
+        |       |               3.jpg
+        |       |               f1.jpg
+        |       |               f2.jpg
+        |       |               f3.jpg
+        |       |               
+        |       +---img
+        |       |       glyphicons-halflings-white.png
+        |       |       glyphicons-halflings.png
+        |       |       
+        |       +---journal
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---js
+        |       |   |   bootshop.js
+        |       |   |   bootstrap.min.js
+        |       |   |   jquery.js
+        |       |   |   jquery.lightbox-0.5.js
+        |       |   |   less.js
+        |       |   |   
+        |       |   \---google-code-prettify
+        |       |           prettify.css
+        |       |           prettify.js
+        |       |           
+        |       +---less
+        |       |   |   accordion.less
+        |       |   |   alerts.less
+        |       |   |   amelia.less
+        |       |   |   bootshop.less
+        |       |   |   bootstrap.less
+        |       |   |   breadcrumbs.less
+        |       |   |   button-groups.less
+        |       |   |   buttons.less
+        |       |   |   carousel.less
+        |       |   |   classified.less
+        |       |   |   close.less
+        |       |   |   code.less
+        |       |   |   component-animations.less
+        |       |   |   dropdowns.less
+        |       |   |   font-awesome-ie7.less
+        |       |   |   font-awesome.less
+        |       |   |   forms.less
+        |       |   |   grid.less
+        |       |   |   hero-unit.less
+        |       |   |   labels-badges.less
+        |       |   |   layouts.less
+        |       |   |   mixins.less
+        |       |   |   modals.less
+        |       |   |   navbar.less
+        |       |   |   navs.less
+        |       |   |   pager.less
+        |       |   |   pagination.less
+        |       |   |   popovers.less
+        |       |   |   progress-bars.less
+        |       |   |   reset.less
+        |       |   |   responsive-1200px-min.less
+        |       |   |   responsive-767px-max.less
+        |       |   |   responsive-768px-979px.less
+        |       |   |   responsive-navbar.less
+        |       |   |   responsive-utilities.less
+        |       |   |   responsive.less
+        |       |   |   scaffolding.less
+        |       |   |   simplex.less
+        |       |   |   sprites.less
+        |       |   |   tables.less
+        |       |   |   thumbnails.less
+        |       |   |   tooltip.less
+        |       |   |   type.less
+        |       |   |   utilities.less
+        |       |   |   variables.less
+        |       |   |   wells.less
+        |       |   |   
+        |       |   +---amelia
+        |       |   |       bootswatch.less
+        |       |   |       variables.less
+        |       |   |       
+        |       |   +---bootshop
+        |       |   |       main.less
+        |       |   |       variables.less
+        |       |   |       
+        |       |   \---simplex
+        |       |           bootswatch.less
+        |       |           variables.less
+        |       |           
+        |       +---readable
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---simplex
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---slate
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---spacelab
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---spruce
+        |       |       bootstrap.css
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---superhero
+        |       |       bootstrap.min.css
+        |       |       
+        |       +---switch
+        |       |   |   theamswitcher.js
+        |       |   |   themeswitch.css
+        |       |   |   
+        |       |   \---images
+        |       |       |   hideme.png
+        |       |       |   styleTgl.png
+        |       |       |   
+        |       |       +---clr
+        |       |       |       amelia.png
+        |       |       |       bootshop.png
+        |       |       |       businessltd.png
+        |       |       |       cerulean.png
+        |       |       |       cyborg.png
+        |       |       |       journal.png
+        |       |       |       readable.png
+        |       |       |       simplex.png
+        |       |       |       slate.png
+        |       |       |       spacelab.png
+        |       |       |       spruce.png
+        |       |       |       superhero.png
+        |       |       |       united.png
+        |       |       |       
+        |       |       \---pattern
+        |       |               pattern1.png
+        |       |               pattern10.png
+        |       |               pattern11.png
+        |       |               pattern12.png
+        |       |               pattern13.png
+        |       |               pattern14.png
+        |       |               pattern15.png
+        |       |               pattern16.png
+        |       |               pattern16~.png
+        |       |               pattern17.png
+        |       |               pattern17~.png
+        |       |               pattern18.png
+        |       |               pattern19.png
+        |       |               pattern19~.png
+        |       |               pattern2.png
+        |       |               pattern20.png
+        |       |               pattern20~.png
+        |       |               pattern3.png
+        |       |               pattern4.png
+        |       |               pattern5.png
+        |       |               pattern6.png
+        |       |               pattern7.png
+        |       |               pattern8.png
+        |       |               pattern9.png
+        |       |               
+        |       \---united
+        |               bootstrap.min.css
+        |               
+        +---css
+        |       site.css
+        |       
+        +---js
+        |       site.js
+        |       
+        \---lib
+            +---bootstrap
+            |   |   LICENSE
+            |   |   
+            |   \---dist
+            |       +---css
+            |       |       bootstrap-grid.css
+            |       |       bootstrap-grid.css.map
+            |       |       bootstrap-grid.min.css
+            |       |       bootstrap-grid.min.css.map
+            |       |       bootstrap-grid.rtl.css
+            |       |       bootstrap-grid.rtl.css.map
+            |       |       bootstrap-grid.rtl.min.css
+            |       |       bootstrap-grid.rtl.min.css.map
+            |       |       bootstrap-reboot.css
+            |       |       bootstrap-reboot.css.map
+            |       |       bootstrap-reboot.min.css
+            |       |       bootstrap-reboot.min.css.map
+            |       |       bootstrap-reboot.rtl.css
+            |       |       bootstrap-reboot.rtl.css.map
+            |       |       bootstrap-reboot.rtl.min.css
+            |       |       bootstrap-reboot.rtl.min.css.map
+            |       |       bootstrap-utilities.css
+            |       |       bootstrap-utilities.css.map
+            |       |       bootstrap-utilities.min.css
+            |       |       bootstrap-utilities.min.css.map
+            |       |       bootstrap-utilities.rtl.css
+            |       |       bootstrap-utilities.rtl.css.map
+            |       |       bootstrap-utilities.rtl.min.css
+            |       |       bootstrap-utilities.rtl.min.css.map
+            |       |       bootstrap.css
+            |       |       bootstrap.css.map
+            |       |       bootstrap.min.css
+            |       |       bootstrap.min.css.map
+            |       |       bootstrap.rtl.css
+            |       |       bootstrap.rtl.css.map
+            |       |       bootstrap.rtl.min.css
+            |       |       bootstrap.rtl.min.css.map
+            |       |       
+            |       \---js
+            |               bootstrap.bundle.js
+            |               bootstrap.bundle.js.map
+            |               bootstrap.bundle.min.js
+            |               bootstrap.bundle.min.js.map
+            |               bootstrap.esm.js
+            |               bootstrap.esm.js.map
+            |               bootstrap.esm.min.js
+            |               bootstrap.esm.min.js.map
+            |               bootstrap.js
+            |               bootstrap.js.map
+            |               bootstrap.min.js
+            |               bootstrap.min.js.map
+            |               
+            +---jquery
+            |   |   LICENSE.txt
+            |   |   
+            |   \---dist
+            |           jquery.js
+            |           jquery.min.js
+            |           jquery.min.map
+            |           jquery.slim.js
+            |           jquery.slim.min.js
+            |           jquery.slim.min.map
+            |           
+            +---jquery-validation
+            |   |   LICENSE.md
+            |   |   
+            |   \---dist
+            |           additional-methods.js
+            |           additional-methods.min.js
+            |           jquery.validate.js
+            |           jquery.validate.min.js
+            |           
+            \---jquery-validation-unobtrusive
+                |   LICENSE.txt
+                |   
+                \---dist
+                        jquery.validate.unobtrusive.js
+                        jquery.validate.unobtrusive.min.js
+                        

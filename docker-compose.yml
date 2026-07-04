@@ -1,0 +1,164 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: webdevstd2531-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    restart: unless-stopped
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    container_name: webdevstd2531-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "Str0ngP@ssw0rd!123"
+      DB_NAME: WebDevStd2531
+      BACKUP_FILE: /var/opt/mssql/backup/WebDevStd2531.bak
+    ports:
+      - "1433:1433"
+    volumes:
+      - C:\mssql_data:/var/opt/mssql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "SQLCMD=/opt/mssql-tools18/bin/sqlcmd; if [ ! -x \"$$SQLCMD\" ]; then SQLCMD=/opt/mssql-tools/bin/sqlcmd; fi; \"$$SQLCMD\" -C -S localhost -U sa -P \"$${MSSQL_SA_PASSWORD}\" -Q \"SELECT 1\" -b -o /dev/null"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    restart: unless-stopped
+
+  userservice:
+    build:
+      context: .
+      dockerfile: UserService/Dockerfile
+    container_name: webdevstd2531-userservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__IdentityContextConnection: Server=db,1433;Database=WebDevStd2531;User Id=sa;Password=Str0ngP@ssw0rd!123;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true
+      Jwt__Issuer: UserService
+      Jwt__Audience: WebDevStd2531
+      Jwt__Key: DevOnly_ChangeThis_For_Real_Projects_1234567890!
+      Jwt__ExpiresMinutes: 120
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__UserName: guest
+      RabbitMq__Password: guest
+      RabbitMq__Exchange: webdevstd2531.events
+    ports:
+      - "8081:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
+  catalogservice:
+    build:
+      context: .
+      dockerfile: CatalogService/Dockerfile
+    container_name: webdevstd2531-catalogservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__CatalogConnection: Server=db,1433;Database=WebDevStd2531;User Id=sa;Password=Str0ngP@ssw0rd!123;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true
+      Jwt__Issuer: CatalogService
+      Jwt__Audience: WebDevStd2531
+      Jwt__Key: DevOnly_ChangeThis_For_Real_Projects_1234567890!
+      Jwt__ExpiresMinutes: 120
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__UserName: guest
+      RabbitMq__Password: guest
+      RabbitMq__Exchange: webdevstd2531.events
+    ports:
+      - "8082:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
+  orderservice:
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    container_name: webdevstd2531-orderservice
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__OrderConnection: Server=db,1433;Database=WebDevStd2531;User Id=sa;Password=Str0ngP@ssw0rd!123;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true
+      Jwt__Issuer: OrderService
+      Jwt__Audience: WebDevStd2531
+      Jwt__Key: DevOnly_ChangeThis_For_Real_Projects_1234567890!
+      Jwt__ExpiresMinutes: 120
+      CatalogService__Address: http://catalogservice:8080
+      CatalogService__Jwt__Issuer: CatalogService
+      CatalogService__Jwt__Audience: WebDevStd2531
+      CatalogService__Jwt__Key: DevOnly_ChangeThis_For_Real_Projects_1234567890!
+      CatalogService__Jwt__ExpiresMinutes: 120
+    ports:
+      - "8083:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      catalogservice:
+        condition: service_started
+    restart: unless-stopped
+
+  web:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    container_name: webdevstd2531-web
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:8080
+      UserService__Address: http://userservice:8080
+      CatalogService__Address: http://catalogservice:8080
+      OrderService__Address: http://orderservice:8080
+      OrderService__Jwt__Issuer: OrderService
+      OrderService__Jwt__Audience: WebDevStd2531
+      OrderService__Jwt__Key: DevOnly_ChangeThis_For_Real_Projects_1234567890!
+      OrderService__Jwt__ExpiresMinutes: 120
+      CatalogService__Jwt__Issuer: CatalogService
+      CatalogService__Jwt__Audience: WebDevStd2531
+      CatalogService__Jwt__Key: DevOnly_ChangeThis_For_Real_Projects_1234567890!
+      CatalogService__Jwt__ExpiresMinutes: 120
+      ConnectionStrings__IdentityContextConnection: Server=db,1433;Database=WebDevStd2531;User Id=sa;Password=Str0ngP@ssw0rd!123;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__UserName: guest
+      RabbitMq__Password: guest
+      RabbitMq__Exchange: webdevstd2531.events
+      RabbitMq__Queue: webdevstd2531.web
+    depends_on:
+      db:
+        condition: service_healthy
+      userservice:
+        condition: service_started
+      catalogservice:
+        condition: service_started
+      orderservice:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
